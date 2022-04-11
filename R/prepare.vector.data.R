@@ -1,4 +1,4 @@
-#' prepare.vector.data:
+#' Prepare vector data for further reflectance data sampling
 #'
 #'Function takes shapefile with polygons of different classes of surface (habitats, crops,
 #'vegetation, etc.), and retrieves ready-for-sampling sf object.
@@ -10,7 +10,7 @@
 #' @return Result of calculation
 #' @export
 #'
-#' @examples
+#' @examples sf_df <- prepare.vector.data("test_shapefile.shp", "veget_type")
 prepare.vector.data <- function(shapefile_name, label_field){
   # Upload a shapefile with polygons of knowing surface classes.
   # The shapefile must contain a text field with classes labels
@@ -36,7 +36,4 @@ prepare.vector.data <- function(shapefile_name, label_field){
   # delete objects with NA in the target variable
   nc <- nc[!is.na(nc$label) ,]
 }
-
-
-
 
