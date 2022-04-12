@@ -1,12 +1,3 @@
----
-title: "README"
-output: github_document
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, eval=FALSE)
-```
-
 # spectralR
 Spectral visual analysis of user-defined areas
 
@@ -40,35 +31,5 @@ Essential requirements:
 
 ## Installation
 ### Install rgee and its basic dependensies
-Install and set up rgee
 
-```{r}
-remotes::install_github("r-spatial/rgee")
 
-# Load the library
-library(rgee)
-
-## It is necessary just once to complete installation necessary dependencies
-ee_install()
-# If something went wrong in this step, see https://r-spatial.github.io/rgee/index.html#installation
-
-# Check non-R dependencies
-ee_check() 
-
-# rgee developers recommend installing the version of the Earth Engine Python API
-# which rgge was tested with, using the following command
-ee_install_upgrade()
-
-# Initialize Google Earth Engine API
-ee_Initialize()
-```
-
-If everything is OK on this step and you see a message of successful initiation of API with your GEE username in console, - congratulations, you managed to install and configure rgee!
-
-## Output examples
-![Spectral reflectance curves for user-defined set of habitat types](https://github.com/olehprylutskyi/habitat-spectral-reflectance/blob/main/SRC_within_bands_S35_S36_R1B_X18_T19_2019_15May-15Jun.png)
-![Reflectance per bands for user-defined set of habitat types](https://github.com/olehprylutskyi/habitat-spectral-reflectance/blob/main/Reflectance_within_bands_S35_S36_R1B_X18_T19_2019_15May-15Jun.png)
-![Density of values (as violin plots) for selected habitat types per band](https://github.com/olehprylutskyi/habitat-spectral-reflectance/blob/main/Violins_R_2019_15May-15Jun.png)
-
-## References
-Shyriaieva, D., Prylutskyi, O. (2021). Exploratory analysis of the spectral reflectance curves of habitat types: a case study on Southern Bug River valley, Ukraine. In: 63rd IAVS Annual Symposium: Book of Abstracts, p. 153.
