@@ -1,19 +1,18 @@
 README
 ================
 
-# spectralR
-
-Spectral visual analysis of user-defined areas
+# spectralR: Spectral reflectance visualisations for user-defined areas
 
 ## Description
 
-This code is aimed to obtain, process, and visualize spectral
-reflectance data for the user-defined land(water) surface classes, for
-visual exploring in which wavelength the classes differ. Input should be
-a shapefile with polygons of surface classes (it might be different
-habitat types, crops, any other things). The single source of spectral
-data are Sentinel2 L2A satellite mission optical bands pixel data so
-far, obtained through Google Earth Engine service.
+This package provides tools for obtaining, processing, and visualization
+of spectral reflectance data for the user-defined polygons of earth
+surface classes, allowing to explore visually in which wavelengths the
+classes differ. Input should be a shapefile with polygons of surface
+classes (it might be polygons of different habitat types, crops, any
+other things). As a source of spectral reflectance data we use Sentinel2
+L2A satellite mission (only optical bands), obtained through Google
+Earth Engine service.
 
 The workflow depends on rgee R package, which provides a bridge between
 R and Python API for Google Earth Engine. All the operations with
@@ -82,3 +81,21 @@ ee_Initialize()
 If everything is OK on this step and you see a message of successful
 initiation of API with your GEE username in console, - congratulations,
 you managed to install and configure rgee!
+
+## Output examples
+
+![Spectral reflectance curves for user-defined set of habitat
+types](https://github.com/olehprylutskyi/habitat-spectral-reflectance/blob/main/SRC_within_bands_S35_S36_R1B_X18_T19_2019_15May-15Jun.png)
+
+![Reflectance per bands for user-defined set of habitat
+types](https://github.com/olehprylutskyi/habitat-spectral-reflectance/blob/main/Reflectance_within_bands_S35_S36_R1B_X18_T19_2019_15May-15Jun.png)
+
+![Density of values (as violin plots) for selected habitat types per
+band](https://github.com/olehprylutskyi/habitat-spectral-reflectance/blob/main/Violins_R_2019_15May-15Jun.png)
+
+## References
+
+Shyriaieva, D., Prylutskyi, O. (2021). Exploratory analysis of the
+spectral reflectance curves of habitat types: a case study on Southern
+Bug River valley, Ukraine. In: 63rd IAVS Annual Symposium: Book of
+Abstracts, p. 153.
