@@ -7,13 +7,13 @@
 prepare.vector.data(shapefile_name, label_field)
 }
 \arguments{
-\item{shapefile_name}{shapefile name (should lie within working directory, using absolute
+\item{shapefile_name}{shapefile name (should be within working directory, using absolute
 paths were not tested)}
 
 \item{label_field}{name of the field which contains class labels}
 }
 \value{
-Result of calculation
+sf object with label (characters) and class (integer) variables, as well as geometry of each polygon
 }
 \description{
 Function takes shapefile with polygons of different classes of surface (habitats, crops,

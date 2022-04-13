@@ -3,11 +3,11 @@
 #'Function takes shapefile with polygons of different classes of surface (habitats, crops,
 #'vegetation, etc.), and retrieves ready-for-sampling sf object.
 
-#' @param shapefile_name shapefile name (should lie within working directory, using absolute
+#' @param shapefile_name shapefile name (should be within working directory, using absolute
 #' paths were not tested)
 #' @param label_field name of the field which contains class labels
 #'
-#' @return Result of calculation
+#' @return sf object with label (characters) and class (integer) variables, as well as geometry of each polygon
 #' @export
 #'
 #' @examples sf_df <- prepare.vector.data("test_shapefile.shp", "veget_type")

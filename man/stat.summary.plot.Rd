@@ -23,7 +23,9 @@ mean+standard deviation) for each group of variables
 }
 \examples{
 p2 <- stat.summary.plot(reflectance)
+
 p2
+
 p2 +
 labs(x = 'Sentinel-2 bands', y = 'Reflectance',
      colour = "Surface classes",

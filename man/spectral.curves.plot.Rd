@@ -20,7 +20,9 @@ Make spectral reflectance curves for defined classes of surface
 }
 \examples{
 p1 <- spectral.curves.plot(reflectance)
+
 p1
+
 p1+
  labs(x = 'Wavelength, nm', y = 'Reflectance',
       colour = "Surface classes",
