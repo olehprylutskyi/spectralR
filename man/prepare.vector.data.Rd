@@ -13,12 +13,17 @@ paths were not tested)}
 \item{label_field}{name of the field which contains class labels}
 }
 \value{
-sf object with label (characters) and class (integer) variables, as well as geometry of each polygon
+sf object with label (characters) and class (integer) variables, as well as geometry of each polygon,
+ready to further processing by rgee.
 }
 \description{
 Function takes shapefile with polygons of different classes of surface (habitats, crops,
 vegetation, etc.), and retrieves ready-for-sampling sf object.
 }
 \examples{
-sf_df <- prepare.vector.data("test_shapefile.shp", "veget_type")
+sf_df <- prepare.vector.data(
+  shapefile_name = "test_shapefile.shp",
+  label_field = "veget_type")
+
+head(sf_df)
 }

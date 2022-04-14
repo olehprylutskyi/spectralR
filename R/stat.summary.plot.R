@@ -1,5 +1,5 @@
-#' Transform the data to acquire statistical summaries (mean, mean-standard deviation,
-#' mean+standard deviation) for each group of variables
+#' Make a plot with statistical summary of reflectance values (mean, mean-standard deviation,
+#' mean+standard deviation) for defined classes of surface
 #'
 #' @param data reflectance data as dataframe with pixel values for Sentinel optical bands
 #' B2, B3, B4, B5, B6, B7, B8, B8A, B11, B12
@@ -8,19 +8,24 @@
 #' line with statistical summary for each satellite band (geom_line + geom_pointrange),
 #' See https://ggplot2.tidyverse.org/reference/geom_linerange.html
 #' https://ggplot2.tidyverse.org/reference/geom_path.html for more details.
+#' Wavelengths values (nm) acquired from mean known value for each optical band of Sentinel 2 sensor
+#' https://en.wikipedia.org/wiki/Sentinel-2
+#'
 #' @export
 #'
 #' @examples
-#' p2 <- stat.summary.plot(reflectance)
+#' p2 <- stat.summary.plot(
+#'   data = reflectance
+#'   )
 #'
 #' p2
 #'
 #' p2 +
-#' labs(x = 'Sentinel-2 bands', y = 'Reflectance',
-#'      colour = "Surface classes",
-#'      title = "Reflectance for different surface classes",
-#'      caption='Data: Sentinel-2 Level-2A\nmean ± standard deviation')+
-#'   theme_minimal()
+#'   labs(x = 'Sentinel-2 bands', y = 'Reflectance',
+#'       colour = "Surface classes",
+#'       title = "Reflectance for different surface classes",
+#'       caption='Data: Sentinel-2 Level-2A\nmean ± standard deviation')+
+#'    theme_minimal()
 stat.summary.plot <- function(data){
   # Create "dummy" wavelength object, containing mean wavelengths (nm) for Sentinel 2A
   # (https://en.wikipedia.org/wiki/Sentinel-2), for bands 2-12

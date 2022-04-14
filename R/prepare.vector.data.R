@@ -7,10 +7,16 @@
 #' paths were not tested)
 #' @param label_field name of the field which contains class labels
 #'
-#' @return sf object with label (characters) and class (integer) variables, as well as geometry of each polygon
+#' @return sf object with label (characters) and class (integer) variables, as well as geometry of each polygon,
+#' ready to further processing by rgee.
 #' @export
 #'
-#' @examples sf_df <- prepare.vector.data("test_shapefile.shp", "veget_type")
+#' @examples
+#' sf_df <- prepare.vector.data(
+#'   shapefile_name = "test_shapefile.shp",
+#'   label_field = "veget_type")
+#'
+#' head(sf_df)
 prepare.vector.data <- function(shapefile_name, label_field){
   # Upload a shapefile with polygons of knowing surface classes.
   # The shapefile must contain a text field with classes labels

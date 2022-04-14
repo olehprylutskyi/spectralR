@@ -1,11 +1,11 @@
 #' Obtain Sentinel-2 spectral reflectance data for user-defined vector polygons
 #'
-#' Function takes sf polygon object, obtained in the previous step, and retrieves data
-#' frame with brightness values for each pixel intersected with polygons, for each
-#' optical band of Sentinel-2 sensor, marked according to the label of surface class from
-#' the polygons.
+#' Function takes sf polygon object, created through prepare.vector.data function, and
+#' retrieves data frame with brightness values for each pixel intersected with polygons,
+#' for each optical band of Sentinel-2 sensor, marked according to the label of surface
+#' class from the polygons.
 #'
-#' @param sf_data polygons of surface classes as a sf object, prepared on previous step
+#' @param sf_data polygons of surface classes as a sf object, created through prepare.vector.data
 #' @param startday starting day for Sentinel image collection, as "YYYY-MM-DD". See Note 1 below
 #' @param endday final day for Sentinel image collection, as "YYYY-MM-DD"
 #' @param cloud_threshold maximum per cent of cloud-covered pixels per image by which individual
@@ -15,7 +15,6 @@
 #' @return A dataframe (non-spatial) with unscaled reflectance data for each pixel of median satellite
 #' image, for each optical band of Sentinel-2 sensor, marked according to the label of surface class from
 #' the polygons.
-#' @export
 #'
 #' Note 1.
 #' Particular satellite imagery is typically not ready for instant analysis - it contains clouds,
@@ -27,19 +26,31 @@
 #' obtain a ready-to-use, rectified image. Approach used in this script is that to find a median
 #' value for each pixel between several images within each of 10 optical band, and thereby make a
 #' composite image. To define a set of imageries between which we are going to calculate median,
-#' we should set a timeframe definining starting and final days. Sentinel-2 apparatus takes picture
+#' we should set a timespan defining starting and final days. Sentinel-2 apparatus takes picture
 #' once a 5 days, so if you set up month-long timesnap, you can expect that each pixel value will
 #' be calculated based on 5 to 6 values.
 #'
 #' Note 2.
-#' Finest resolution for Sentinel data - 10 m, while using larger scale values decreases
-#' required computational resources and size of resulting dataframe. Although sampling
-#' satellite data performs in a cloud, there are some limitations for geocalculatons placed
-#' by GEE itself. If you are about to sample large areas, consider setting higher 'scale'
+#' You may set up any image resolution (pixel size) for satellite imagery with GEE, but this is
+#' hardly to be reasonable setting the finer resolution than the finest for satellite source.
+#' Finest resolution for Sentinel data - 10 m, while using larger scale values requires less
+#' computational resources and returns smaller resulting dataframe. Although sampling
+#' satellite data performs in a cloud, there are some memory limitations placed
+#' by GEE itself. If you are about to sample really large areas, consider setting higher 'scale'
 #' value (100, 1000).
-# More about GEE best practices: https://developers.google.com/earth-engine/guides/best_practices
+#' More about GEE best practices: https://developers.google.com/earth-engine/guides/best_practices
 #'
-#' @examples reflectance = get.pixel.data(sf_df, "2019-05-15", "2019-06-30", 10, 100)
+#' @export
+#'
+#' @examples
+#' reflectance <-  get.pixel.data(
+#'   sf_data = sf_df,
+#'   startday = "2019-05-15",
+#'   endday = "2019-06-30",
+#'   cloud_threshold = 10,
+#'   scale_value = 100)
+#'
+#' head(reflectance)
 get.pixel.data <- function(sf_data, startday, endday, cloud_threshold, scale_value){
   ee_Initialize()
   ee_df <-  sf_as_ee(sf_data) # convert sf to ee featureCollection object

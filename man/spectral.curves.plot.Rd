@@ -11,15 +11,18 @@ spectral.curves.plot(data)
 B2, B3, B4, B5, B6, B7, B8, B8A, B11, B12}
 }
 \value{
-ggplot2 object with basic visual aesthetics, represents smoothers for defined types
-of surface. Default aesthetic is smoother curve (geom_smooth), method - gam.
+ggplot2 object with basic visual aesthetics, represents smoother lines with confidence
+intervals for each surface class. Default aesthetic is smoother curve (geom_smooth).
+May be time-consuming depending on input dataframe size.
 See https://ggplot2.tidyverse.org/reference/geom_smooth.html for more details.
 }
 \description{
 Make spectral reflectance curves for defined classes of surface
 }
 \examples{
-p1 <- spectral.curves.plot(reflectance)
+p1 <- spectral.curves.plot(
+  data = reflectance
+  )
 
 p1
 

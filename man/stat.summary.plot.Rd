@@ -2,8 +2,8 @@
 % Please edit documentation in R/stat.summary.plot.R
 \name{stat.summary.plot}
 \alias{stat.summary.plot}
-\title{Transform the data to acquire statistical summaries (mean, mean-standard deviation,
-mean+standard deviation) for each group of variables}
+\title{Make a plot with statistical summary of reflectance values (mean, mean-standard deviation,
+mean+standard deviation) for defined classes of surface}
 \usage{
 stat.summary.plot(data)
 }
@@ -16,20 +16,24 @@ ggplot2 object with basic visual aesthetics. Default aesthetics are
 line with statistical summary for each satellite band (geom_line + geom_pointrange),
 See https://ggplot2.tidyverse.org/reference/geom_linerange.html
 https://ggplot2.tidyverse.org/reference/geom_path.html for more details.
+Wavelengths values (nm) acquired from mean known value for each optical band of Sentinel 2 sensor
+https://en.wikipedia.org/wiki/Sentinel-2
 }
 \description{
-Transform the data to acquire statistical summaries (mean, mean-standard deviation,
-mean+standard deviation) for each group of variables
+Make a plot with statistical summary of reflectance values (mean, mean-standard deviation,
+mean+standard deviation) for defined classes of surface
 }
 \examples{
-p2 <- stat.summary.plot(reflectance)
+p2 <- stat.summary.plot(
+  data = reflectance
+  )
 
 p2
 
 p2 +
-labs(x = 'Sentinel-2 bands', y = 'Reflectance',
-     colour = "Surface classes",
-     title = "Reflectance for different surface classes",
-     caption='Data: Sentinel-2 Level-2A\nmean ± standard deviation')+
-  theme_minimal()
+  labs(x = 'Sentinel-2 bands', y = 'Reflectance',
+      colour = "Surface classes",
+      title = "Reflectance for different surface classes",
+      caption='Data: Sentinel-2 Level-2A\nmean ± standard deviation')+
+   theme_minimal()
 }
