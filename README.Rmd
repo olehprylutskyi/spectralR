@@ -25,7 +25,7 @@ Official documentation for rgee: https://r-spatial.github.io/rgee/index.html
 
 rgee source code: https://github.com/r-spatial/rgee
 
-We strongly encourage you to follow official rgee installation guide and messages arrived during installation process.
+We strongly encourage you to follow official `rgee` installation guide and messages arrived during installation process.
 
 The overall workflow is following:
 1. Load user's ESRI shapefile containing polygons for user-defined surface classes, as well as the text or numerical field with classes names (labels).
