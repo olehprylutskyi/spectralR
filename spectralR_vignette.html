@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Introduction</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: #990073
+   }
+
+   pre .number {
+     color: #099;
+   }
+
+   pre .comment {
+     color: #998;
+     font-style: italic
+   }
+
+   pre .keyword {
+     color: #900;
+     font-weight: bold
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: #d14;
+   }
+</style>
+
+<!-- R syntax highlighter -->
+<script type="text/javascript">
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
+hljs.initHighlightingOnLoad();
+</script>
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<h2>Introduction</h2>
+
+<p><code>spectralR</code> is aimed to obtain, process, and visualize spectral reflectance data for the user-defined earth surface classes (it might be different habitat or vegetation types, crops, land uses, landscapes, of any other types of territories or water areas), for visual exploring in which wavelengths the classes differ. Input should be a shapefile with polygons of surface classes (it might be different habitat types, crops, any other things). The single source of spectral data are <a href="https://sentinels.copernicus.eu/web/sentinel/missions/sentinel-2">Sentinel 2 Level 2A</a> satellite mission optical bands pixel data so far, obtained through <a href="https://earthengine.google.com/">Google Earth Engine</a> service.</p>
+
+<p>The workflow depends on <a href="https://r-spatial.github.io/rgee/">rgee</a> R package, which provides a bridge between R and Python API for Google Earth Engine. All the operations with satellite imageries run in a cloud, and afterwards obtained pixel data visualize locally. Therefore, despite of extent of input data, the most resource hungry operations do not overload your local machine. But that means that you need a stable Internet connection for using API.</p>
+
+<p>For using <code>rgee</code> you should have a Google Earth Engine account. If you don&#39;t, first <a href="https://earthengine.google.com/new_signup/">register</a> using your Google account.</p>
+
+<p>Depends on operating system you use and your current Python configuration, it may require some additional R and Python packages for running <code>rgee</code>. See the following links for instructions. See also <a href="https://www.rdocumentation.org/packages/rgee/versions/1.0.7">Quick Start User&#39;s Guide</a>, <a href="https://r-spatial.github.io/rgee/index.html">Official documentation</a>, and the <a href="https://github.com/r-spatial/rgee">source code</a> of rgee for solving issues arises during installation and setting up.</p>
+
+<p>We strongly encourage you to follow official <code>rgee</code> installation guide and messages arrived during installation process.</p>
+
+<p>The overall workflow is following:
+1. Load user&#39;s ESRI shapefile containing polygons for user-defined surface classes,
+as well as the text or numerical field with classes names (labels).
+2. Apply <code>rgee</code> functionality to retrieve multi-band pixel data for classes polygons from 
+Google Earth Engine service.
+3. Visualize retrieved pixel data locally, using <code>ggplot2</code> approach.</p>
+
+<p>Essential requirements:</p>
+
+<ul>
+<li>stable Internet connection (for using API)</li>
+<li>Installed and correctly pre-configured Python environment (v. 3.5 or above)</li>
+<li>active Google Earth Engine account</li>
+</ul>
+
+<h2>Essential preparations. Install and set up <code>rgee</code></h2>
+
+<pre><code class="r">remotes::install_github(&quot;r-spatial/rgee&quot;)
+</code></pre>
+
+<p>Load the library</p>
+
+<pre><code class="r">library(rgee)
+</code></pre>
+
+<p>It is necessary just once to complete installation necessary dependencies</p>
+
+<pre><code class="r">ee_install()
+</code></pre>
+
+<p>If something went wrong in this step, see <a href="https://r-spatial.github.io/rgee/index.html#installation">https://r-spatial.github.io/rgee/index.html#installation</a></p>
+
+<p>Check non-R dependencies</p>
+
+<pre><code class="r">ee_check() 
+</code></pre>
+
+<p><code>rgee</code> developers recommend installing the version of the Earth Engine Python API which <code>rgee</code> was tested with, using the following command. Despite it calls &ldquo;upgrade&rdquo;, it might actually downgrade your version of <code>earthengine_api</code>.</p>
+
+<pre><code class="r">ee_install_upgrade()
+</code></pre>
+
+<p>Initialize Google Earth Engine API for current session.</p>
+
+<pre><code class="r">ee_Initialize()
+</code></pre>
+
+<p>On this or one of previous step you would be prompted to link your Google earth Engine account with <code>rgee</code>. Follow instructions in R console, and you will be re-directered to web browser for logging into your Google Earth Engine account and confirm access rights. An authorization code generated during this step should be pasted into R console to finalize authentification.</p>
+
+<p>If everything is OK on the last step and you see a message of successful initiation of API with your GEE username in console, - congratulations, you managed to install and configure <code>rgee</code>!</p>
+
+<p>Pay attention, that <code>rgee</code> uses earthengine_api package, which depends on Python. That&#39;s why we need to setting up local Python environment for using <code>rgee</code>.</p>
+
+<p>Unfortunately, you have to repeat environment setting and re-authorization each time Python gets updates. For actively updated operating systems, like regular versions of Ubuntu, that&#39;s quite annoying. On the other hand, this built-in repairing system protects you from accidentally breaking earthengine Python environment during installation or using any other Python-related tools, which is convenient at least if you are such a weak Python user as me. If you get an error message &ldquo;The current Python PATH: /home/user/.virtualenvs/rgee/bin/python does not have the Python package &quot;earthengine-api&rdquo; installed. Are you restarted/terminated your R session after install miniconda or run ee_install()?&ldquo;, then proceed instruction appeared in R console, which will help you to delete your previous configuration and set up it again.</p>
+
+<h2>Installation of spectralR</h2>
+
+<p><code>spectralR</code> can be installed from <strong>GitHub</strong> sources so far, although we are planning to land it on CRAN soon.</p>
+
+<pre><code class="r">library(remotes)
+install_github(&quot;olehprylutskyi/spectralR&quot;)
+</code></pre>
+
+<hr/>
+
+<p>We offer two use-cases for getting users familiar with the functionality of spectralR. First one is a small-size area in Kharkiv region, Ukraine, where National Park &quot;Homilsha Forests&rdquo; are situated, with 8 polygons for 5 land use classes &ndash; let&#39;s call it &ldquo;small data&rdquo;. The second - a &ldquo;large data&rdquo; - is the 380 hand-drawing polygons of 26 different habitat types (according to EUNIS classification system) of Buzky Gard National Park, Mykolaiv region, Ukraine. End users don&#39;t expect to notice a large differences in workflow, but under the hood we implemented two different algorithms for either &ldquo;small&rdquo; or &ldquo;large&rdquo; spatial data, which will be explained later.</p>
+
+<h2>Use case 1. Basic habitat types of &#39;Homilsha Forests&#39; National Park and neighborhoods.</h2>
+
+<h3>Environment preparation</h3>
+
+<pre><code class="r"># Reset R&#39;s brain before new analysis session started. It will erase all the objects stored in 
+# R memory, while keep loaded libraries.
+rm(list = ls())
+
+# Load required packages
+library(tidyverse)
+#&gt; ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
+#&gt; ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
+#&gt; ✓ tibble  3.1.6     ✓ dplyr   1.0.8
+#&gt; ✓ tidyr   1.2.0     ✓ stringr 1.4.0
+#&gt; ✓ readr   2.1.2     ✓ forcats 0.5.1
+#&gt; ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+#&gt; x dplyr::filter() masks stats::filter()
+#&gt; x dplyr::lag()    masks stats::lag()
+library(rgee)
+library(sf)
+#&gt; Linking to GEOS 3.9.0, GDAL 3.2.2, PROJ 7.2.1; sf_use_s2() is TRUE
+library(geojsonio)
+#&gt; Warning in fun(libname, pkgname): rgeos: versions of GEOS runtime 3.9.0-CAPI-1.16.2
+#&gt; and GEOS at installation 3.8.0-CAPI-1.13.1differ
+#&gt; Registered S3 method overwritten by &#39;geojsonsf&#39;:
+#&gt;   method        from   
+#&gt;   print.geojson geojson
+#&gt; 
+#&gt; Attaching package: &#39;geojsonio&#39;
+#&gt; The following object is masked from &#39;package:base&#39;:
+#&gt; 
+#&gt;     pretty
+library(reshape2)
+#&gt; 
+#&gt; Attaching package: &#39;reshape2&#39;
+#&gt; The following object is masked from &#39;package:tidyr&#39;:
+#&gt; 
+#&gt;     smiths
+library(spectralR)
+</code></pre>
+
+<p>Initialize Google Earth Engine API for current session</p>
+
+<pre><code class="r">ee_Initialize()
+</code></pre>
+
+<h3>Upload and process vector data</h3>
+
+<p>Function <code>prepare.vector.data</code>  takes shapefile with polygons of different classes of surface (habitats, crops, vegetation, etc.), and retrieves ready-for-sampling sf object. One should specify shapefile name (should be within working directory, using absolute paths were not tested), as well as the name of the field which contains class labels. The function extract geometries of all polygons, and marked them by custom labels (&#39;label&#39;) as well as automatically assign integer class ID (&#39;class&#39;) for each entry. The last variable is required because Google Earth Engine sampler respects only numerical class ID - don&#39;t delete any field!  don&#39;t panic: resulting dataframe will be marked according to your custom labels, not hard-to-memorizable numbers.</p>
+
+<p>While preparing a shapefile with custom polygons (e.d., in <a href="https://qgis.org/en/site/">QGIS</a>), try to follow recommendation:</p>
+
+<ul>
+<li>if possible, draw polygons in homogeneous landscapes, avoid class mixture;</li>
+<li>keep geometries simple, if possible. Avoid multipolygons, holes inside polygons, etc.</li>
+<li>tiny polygons (same size as satellite imagery resolution or lesser) resulted in stronger &ldquo;edge effect&rdquo;;</li>
+<li>few big polygons easier to process than a lot of small ones;</li>
+<li>GEE has its own memory limitation, which may result in extended processing time</li>
+</ul>
+
+<pre><code class="r"># Extract polygons from shapefile and prepare sf object with proper structure
+sf_df &lt;- prepare.vector.data(system.file(&quot;shapes/test_shapefile.shp&quot;, package = &quot;spectralR&quot;), &quot;veget_type&quot;)
+#&gt; Error in prepare.vector.data(system.file(&quot;shapes/test_shapefile.shp&quot;, : could not find function &quot;prepare.vector.data&quot;
+</code></pre>
+
+<pre><code class="r"># Explore resulting spatial object 
+head(sf_df)
+#&gt; Error in head(sf_df): object &#39;sf_df&#39; not found
+</code></pre>
+
+<p>Example above uses internal test shapefile. To use your own file, put all the shapefile into your working directory and use followind syntax:</p>
+
+<pre><code class="r"># sf_df &lt;- prepare.vector.data(&quot;your-shapefile-within-working-directory-name.shp&quot;, &quot;name-of-the-field-with-class-labels&quot;)
+</code></pre>
+
+<h3>Obtain pixel values from Sentinel 2A image collection</h3>
+
+<p>Function <code>get.pixel.data</code> is a heart of <code>spectralR</code>. It takes sf polygon object, obtained in the previous step, and retrieves data frame with brightness values for each pixel intersected with polygons, for each optical band of Sentinel-2 sensor, marked according to the label of surface class from the polygons. <code>get.pixel.data</code> firstly converts sf object into GEE feature collection, then prepares satellite image for pixel sampling and performs sampling, and finally exports resulting object back into an R dataframe (non-spatial now).</p>
+
+<p>One of the most tricky and issues-causing step of this procedure is convertation beetween R&#39;s sf object and GEE&#39;s feature collection. <code>rgee</code> implements three way to do so:</p>
+
+<ul>
+<li>through the JSON translator (<code>getInfo</code>, default)</li>
+<li>using Google Drive (<code>getInfo_to_asset</code>)</li>
+<li>using Google Cloud Storage (<code>gcs_to_asset</code>)</li>
+</ul>
+
+<p>First one is the most straightforward and quick, but usable only for small data (less than 15000 entries, or 1.5 MB local files). The other two require mediating storage to store your data between convertations (because Earth Engine is Google service and seamlessly integrated with plenty of Google services).</p>
+
+<p>In <code>spectralR</code>, we use first two. <code>get.pixel.data</code> assesses the size of your either sf object or feature collection, then activates either <code>getInfo</code> or <code>getInfo_to_asset</code> pathway. If you data is considered being &ldquo;small&rdquo;, <code>getInfo</code> will be used and you will notice nothing special. But, if your data is larger than our arbitrary threshold, the method <code>getInfo_to_asset</code> will be activated and you may be prompted to authorize in Google Drive and allow <code>rgee</code> to access GDrive files and folders. In such a case, please follow instructions in the R console and then in your web-browser. You may do it once you perform your first large query, - you credits will be stored into your local earthengine environment.</p>
+
+<p>After authorization and first use, folder <em>rgee_backup</em> will be created into your Google Drive storage, when all the intermediate files will be stored. Though <code>get.pixel.data</code> re-write objects each time it will be launched, we strongly recommend to clean <em>rgee_backup</em> folder in your Drive manually time-to-time. Apparently, if you run out of storage, <code>get.pixel.data</code> won&#39;t be able to use your Google Drive as mediating storage and you will receive an error.</p>
+
+<p>To use <code>get.pixel.data</code>, we need to specify some values:</p>
+
+<ul>
+<li>polygons of surface classes as a sf object, prepared on previous step;</li>
+<li>starting day for Sentinel image collection, as &ldquo;YYYY-MM-DD&rdquo;. See Note 1 below;</li>
+<li>final day for Sentinel image collection, as &ldquo;YYYY-MM-DD&rdquo;;</li>
+<li>cloud threshold (maximum per cent of cloud-covered pixels per image) by which individual 
+satellite imageries will be filtered;</li>
+<li>scale of resulting satellite images in meters (pixel size). See Note 2 below;</li>
+</ul>
+
+<p>Resulting pixel data will be saved within working directory and can be loaded during
+next sessions.</p>
+
+<p>Note 1.
+Particular satellite imagery is typically not ready for instant sampling - it contains clouds, cloud shadows, aerosols, as well as may cover not all the territory you of your interest. Another issue is that each particular pixel slightly differs in reflectance between images taken in different days due to difference in atmospheric conditions and angle of sunlight at the moments images were taken. Google Earth Engine has its own build-in algorithms for image pre-processing, atmospheric corrections and mosaicing, which allows to obtain a ready-to-use, rectified image. Approach used in this script is that to find a median value for each pixel between several images within each of 10 optical band, and thereby make a composite image. To define a set of imageries between which we are going to calculate median, 
+we should set a timespan of image collection. Sentinel-2 apparatus takes picture once a 5 days, so if you set up month-long timesnap, you can expect that each pixel value will be calculated based on 5 to 6 values (remember, some images might appear unsatisfactory cloudy).</p>
+
+<p>Note 2.
+Finest resolution for Sentinel data - 10 m, while using larger scale values decreases required computational resources and size of resulting dataframe. Although sampling satellite data performs in a cloud, there are some limitations for geocalculations placed by GEE itself. If you are about to sample large areas, consider setting higher &#39;scale&#39; value (100, 1000). Read more in GEE <a href="https://developers.google.com/earth-engine/guides/best_practices">best practices</a>.</p>
+
+<pre><code class="r"># Get pixel data
+reflectance = get.pixel.data(sf_df, &quot;2019-05-15&quot;, &quot;2019-06-30&quot;, 10, 100)
+
+# Save pixel data for further sessions
+save(reflectance, file = &quot;reflectance_test_data&quot;)
+</code></pre>
+
+<p>Here we choose 100 m scale (pixel size for resulting imagery is 100x100 m), which resulted in sampling dataset of 2060 rows. Finer pixel size would result in a larger sampling dataset, which would require using moderating storage (see use case 2).  </p>
+
+<p>Let&#39;s have a look at the resulting data:</p>
+
+<pre><code class="r">head(reflectance)
+#&gt;      B11    B12     B2     B3     B4     B5     B6     B7     B8    B8A label
+#&gt; 1 0.2107 0.1113 0.0287 0.0537 0.0390 0.0878 0.2452 0.2887 0.2906 0.3083   S36
+#&gt; 2 0.2300 0.1257 0.0286 0.0563 0.0430 0.0985 0.2557 0.2967 0.3045 0.3144   T19
+#&gt; 3 0.1919 0.0871 0.0147 0.0348 0.0157 0.0596 0.2918 0.3827 0.3811 0.4011   T19
+#&gt; 4 0.1763 0.0779 0.0212 0.0435 0.0240 0.0704 0.2760 0.3506 0.3463 0.3652   T13
+#&gt; 5 0.2118 0.0996 0.0194 0.0442 0.0221 0.0774 0.3078 0.3708 0.3686 0.3935   T19
+#&gt; 6 0.0964 0.0459 0.0196 0.0373 0.0274 0.0544 0.1694 0.2073 0.2071 0.2144   T11
+</code></pre>
+
+<p>We have a dataframe which number of rows equal to the number of sampled &ldquo;pixels&rdquo; of satellite image, as well as 10 variables with reflectance values for each of optical band of Sentinel 2. Each sampled pixel has a label of surface class of user&#39;s polygon it intersected.</p>
+
+<h3>Visualize results</h3>
+
+<p>First of all, one should explore the quality and comprehensiveness of obtained pixel data.</p>
+
+<pre><code class="r">load(file = &quot;./reflectance_test_data&quot;) # restore previously saved pixel data
+
+summary(factor(reflectance$label)) # how many pixels in each class? 
+#&gt; C2.2 C2.3   J1 J3.2 J4.2   J5  Q51  R12  R1A  R1B  R21  S35  S36  T11  T13  T19 
+#&gt;    7   29  109    9    5    1   14    2    1   16    3    8    2    7    4    5 
+#&gt;  T1H  U33  V11  V38  X18 
+#&gt;  137    1  486   47    1
+</code></pre>
+
+<p>For reliable results, it is recommended to keep similar size of each surface class. Classes which represented by few sampled pixels, should be excluded from the further analysis.</p>
+
+<p>Visual overview of pixel data</p>
+
+<pre><code class="r"># Number of spectral values for different classes
+ggplot(reflectance, aes(x=label))+
+  geom_bar()+
+  labs(x = &#39;Classes of surface&#39;, y = &#39;Number of pixels&#39;,
+       title = &quot;Total pixel data for different classes of surface&quot;,
+       caption = &#39;Data: Sentinel-2 Level-2A&#39;)+
+  theme_minimal()
+</code></pre>
+
+<p><img src="data:image/png;base64,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HgCAcQh6AADGIegBABiHoAcAYByCHgCAcQh6AADGIegBABiHoAcAYByCHgCAcQh6AADGIegBABiHoAcAYByCHgCAcQh6AADGIegBABjn5/YM5vR0CghQEX9z56JVJ/SCX+muowbWCnRY9ECpAAAgh7uv6FP2zxux6gwRmY7HHi077OOpk1skx+5KcFwEAABvcesVvZi4e+3BVF0gEVFCXEqFuiUURDExyoNx5oR4u0WKUmUdaDabRVF0PrnVahUEgeM42eUJgmCxWGQPt1XoTgEeacFqtcoe/qQFhUIhbwa0QAy1IHsGBlqwcaeF3EzufIMCa8HPz8/X19dujfwdCrd/WHvt5b4N7/9IRJSeIfj7ExFptdr0DL3DIpFj0PM872J6QRAEwWQyyS9QECwWi8sdOedmAe63YDab3UkZIjKZTLIf3J66F9xswZ3nhiiKbrZgewjJbsH9VwyCIIii6GYLoijKfi4w0IKNmyHrnMvuCqwFtVrtqaDn/9u67n7rka8F/LaNiIh0OoXRQERkNBp1Op3DosPgIkWKuNyByWQym82BgfJP76elpanVarVaLW+4KIopKSlBQUGyCyg8LcgO+kLSQmBgoOwWOI7jOA4tqFQqjUYjbzgDLRBRcnKyOy245DIrvNiC7KA3JRmsiTsWTOfu3bytXrgr4p3okOsXE6lKsUsX+Uo9VKVVdoty9wIAAO6SHfS6OgMm1yGipB8mbIgc064M8b0aLls5ax5ReM8RUaSJtFsEAABvcfvjlWGdZ48hIiLfqHYjp7R7st5hEQAAvARfmAIAYByCHgCAcQh6AADGIegBABiHoAcAYByCHgCAcQh6AADGIegBABiHoAcAYByCHgCAcQh6AADGIegBABiHoAcAYByCHgCAcQh6AADGIegBABiHoAcAYByCHgCAcQh6AADGIegBABiHoAcAYByCHgCAcQh6AADGIegBABiHoAcAYByCHgCAcQh6AADGIegBABiHoAcAYByCHgCAcQh6AADGIegBABiHoAcAYByCHgCAcQh6AADG+Xllr0ajURAE59tYrVZBEPR6vey98DzPcZzVapU9AxG5U4DXWxBFkYj0er1CoZA3AwMt8DzP8zxa4DiO53l5wxlowcZgMLgz3DmX3RVYC0qlUqVSZV3jnaDXarUutzGZTGazWafTyd4Lz/NqtVqtVssbLoqi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" alt="plot of chunk unnamed-chunk-17"/></p>
+
+<p>Function <code>spectral.reflectance.curve</code> transform the data and plot smoother curves for each surface class, using <code>ggplot2</code>&#39;s <code>geom_smooth()</code> aesthetics. For large (thousands of rows) data (and we need large data for reliable conclusions!), <code>ggplot2</code> uses <em>GAM</em> method for drawing a trendline.</p>
+
+<p>Depending on the data size, it may take some time to process.</p>
+
+<pre><code class="r"># Make a ggplot object
+p1 &lt;- spectral.curves.plot(reflectance)
+#&gt; Error in spectral.curves.plot(reflectance): could not find function &quot;spectral.curves.plot&quot;
+
+# Default plot
+p1
+#&gt; Error in eval(expr, envir, enclos): object &#39;p1&#39; not found
+</code></pre>
+
+<p>Since the output of <code>spectral.curves.plot</code> is <code>ggplot</code> object, we can apply any tools provided by <code>ggplot2</code> package to make it more visually pleasant.</p>
+
+<pre><code class="r"># Customized plot
+p1+
+  labs(x = &#39;Wavelength, nm&#39;, y = &#39;Reflectance&#39;,
+       colour = &quot;Surface classes&quot;,
+       fill = &quot;Surface classes&quot;,
+       title = &quot;Spectral reflectance curves for different classes of surface&quot;,
+       caption = &#39;Data: Sentinel-2 Level-2A&#39;)+
+  theme_minimal()
+#&gt; Error in eval(expr, envir, enclos): object &#39;p1&#39; not found
+
+# Save the plot as a *.png file
+ggsave(&quot;Spectral_curves_usecase1.png&quot;, width=16, height=12, unit=&quot;cm&quot;, dpi=300)
+</code></pre>
+
+<p>Function <code>stat.summary.plot</code> make a plot with statistical summary of reflectance values (mean, mean-standard deviation, mean+standard deviation) for defined classes of surface. Giving as input reflectance data, the function returns ggplot2 object with basic visual aesthetics. Default aesthetics are line with statistical summary for each satellite band (<a href="https://ggplot2.tidyverse.org/reference/geom_linerange.html">geom_line</a> + <a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_pointrange</a>).</p>
+
+<p>Wavelengths values (nm) acquired from mean known value for each optical band of <a href="https://en.wikipedia.org/wiki/Sentinel-2">Sentinel 2</a> sensor.</p>
+
+<pre><code class="r"># Make a ggplot object
+p2 &lt;- stat.summary.plot(reflectance)
+#&gt; Error in stat.summary.plot(reflectance): could not find function &quot;stat.summary.plot&quot;
+
+# Default plot
+p2
+#&gt; Error in eval(expr, envir, enclos): object &#39;p2&#39; not found
+</code></pre>
+
+<p>Add a touch of customization and save as a picture.</p>
+
+<pre><code class="r"># Customized plot
+p2 + 
+  labs(x = &#39;Sentinel-2 bands&#39;, y = &#39;Reflectance&#39;,
+       colour = &quot;Surface classes&quot;,
+       title = &quot;Reflectance for different surface classes&quot;,
+       caption=&#39;Data: Sentinel-2 Level-2A\nmean ± standard deviation&#39;)+
+  theme_minimal()
+#&gt; Error in eval(expr, envir, enclos): object &#39;p2&#39; not found
+
+# Save the plot as a *.png file
+ggsave(&quot;Statsummary_usecase1.png&quot;, width=16, height=12, unit=&quot;cm&quot;, dpi=300)
+</code></pre>
+
+<p>Function <code>violin.plot</code> helps to visualize a reflectance as violin plots for each surface class per satellite bands. It gets reflectance data as input and return ggplot2 object with basic visual aesthetics. Default aesthetics is <a href="https://ggplot2.tidyverse.org/reference/geom_violin.html">geom_violin</a>.</p>
+
+<pre><code class="r"># Make a ggplot object
+p3 &lt;- violin.plot(reflectance)
+#&gt; Error in violin.plot(reflectance): could not find function &quot;violin.plot&quot;
+
+# Customized plot
+p3 + 
+  labs(x=&#39;Surface class&#39;,y=&#39;Reflectance&#39;,
+       fill=&quot;Surface classes&quot;,
+       title = &quot;Reflectance for different surface classes&quot;,
+       caption=&#39;Data: Sentinel-2 Level-2A&#39;)+
+  theme_minimal()
+#&gt; Error in eval(expr, envir, enclos): object &#39;p3&#39; not found
+
+# Save the plot as a *.png file
+ggsave(&quot;Violins_usecase1.png&quot;, width=22, height=16, unit=&quot;cm&quot;, dpi=300)
+</code></pre>
+
+<h2>Use case 2. Habitats of Buzky Gard National Park, Mykolaiv region, Ukraine.</h2>
+
+<p>Environment preparation</p>
+
+<pre><code class="r"># Reset R&#39;s brain before new analysis session started. It will erase all the objects stored in 
+# R memory, while keep loaded libraries.
+rm(list = ls())
+
+# Load required packages
+library(tidyverse)
+library(rgee)
+library(sf)
+library(geojsonio)
+library(reshape2)
+library(spectralR)
+
+# Initialize Google Earth Engine API for current session
+ee_Initialize()
+#&gt; ── rgee 1.1.3.9000 ────────────────────────────────── earthengine-api 0.1.305 ── 
+#&gt;  ✓ user: not_defined
+#&gt;  ✓ Initializing Google Earth Engine:
+ ✓ Initializing Google Earth Engine:  DONE!
+#&gt; 
+ ✓ Earth Engine account: users/olegpril12 
+#&gt; ────────────────────────────────────────────────────────────────────────────────
+</code></pre>
+
+<p>Upload and process vector data</p>
+
+<pre><code class="r"># Extract polygons from shapefile and prepare sf object with proper structure
+sf_df &lt;- prepare.vector.data(system.file(&quot;shapes/SouthernBuh-habitats_shapefile.shp&quot;, package = &quot;spectralR&quot;), &quot;eunis_2020&quot;)
+#&gt; Error in prepare.vector.data(system.file(&quot;shapes/SouthernBuh-habitats_shapefile.shp&quot;, : could not find function &quot;prepare.vector.data&quot;
+
+# Explore resulting spatial object 
+head(sf_df)
+#&gt; Error in head(sf_df): object &#39;sf_df&#39; not found
+</code></pre>
+
+<p>Get reflectance values</p>
+
+<pre><code>#&gt; Error in get.pixel.data(sf_df, &quot;2019-05-15&quot;, &quot;2019-06-30&quot;, 10, 10): could not find function &quot;get.pixel.data&quot;
+#&gt; Error in save(reflectance, file = &quot;reflectance_BG_data&quot;): object &#39;reflectance&#39; not found
+</code></pre>
+
+<p>Quantitative overview of pixel data</p>
+
+<pre><code class="r">load(file = &quot;./reflectance_BG_data&quot;) # restore previously saved pixel data
+
+summary(factor(reflectance$label)) # how many pixels in each class?
+#&gt;  C2.2  C2.3    J1  J3.2  J4.2    J5   Q51   Q53   R12   R1A   R1B   R21   R36 
+#&gt;   741  3054 11204   983   447    87  1276     3   659    52  1448   310    49 
+#&gt;   S35   S36   S91   T11   T13   T19   T1E   T1H   U33   V11   V34   V38   X18 
+#&gt;   694   220     4   829   331   294    72 14372   165 48778    18  4717   130
+</code></pre>
+
+<p>Spectral reflectance curves for different habitat types</p>
+
+<pre><code class="r"># Create basic ggplot object
+p1 &lt;- spectral.curves.plot(reflectance)
+#&gt; Error in spectral.curves.plot(reflectance): could not find function &quot;spectral.curves.plot&quot;
+
+# Plotting
+p1+
+  labs(x = &#39;Wavelength, nm&#39;, y = &#39;Reflectance&#39;,
+       colour = &quot;Habitat types&quot;,
+       fill = &quot;Habitat types&quot;,
+       title = &quot;Spectral reflectance curves for different habitat types\nSouthern Buh National park, Ukraine&quot;,
+       caption = &#39;Data: Sentinel-2 Level-2A&#39;)+
+  theme_minimal()
+#&gt; Error in eval(expr, envir, enclos): object &#39;p1&#39; not found
+</code></pre>
+
+<p>Statistical summary for each habitat type</p>
+
+<pre><code class="r"># Create basic ggplot object
+p2 &lt;- stat.summary.plot(reflectance)
+#&gt; Error in stat.summary.plot(reflectance): could not find function &quot;stat.summary.plot&quot;
+
+# Plotting
+p2 + 
+  labs(x = &#39;Sentinel-2 bands&#39;, y = &#39;Reflectance&#39;,
+       colour = &quot;Habitat types&quot;,
+       title = &quot;Reflectance for different habitat types\nSouthern Buh National park, Ukraine&quot;,
+       caption=&#39;Data: Sentinel-2 Level-2A\nmean ± standard deviation&#39;)+
+  theme_minimal()
+#&gt; Error in eval(expr, envir, enclos): object &#39;p2&#39; not found
+</code></pre>
+
+<p>Create violin plots for given habitat types</p>
+
+<pre><code class="r"># Create basic ggplot object
+p3 &lt;- violin.plot(reflectance)
+#&gt; Error in violin.plot(reflectance): could not find function &quot;violin.plot&quot;
+
+# Plotting
+p3 + 
+  labs(x=&#39;Habitat type&#39;, y=&#39;Reflectance&#39;,
+       fill=&quot;Habitat types&quot;,
+       title = &quot;Reflectance for different habitat types\nSouthern Buh National park, Ukraine&quot;,
+       caption=&#39;Data: Sentinel-2 Level-2A&#39;)+
+  theme_minimal()
+#&gt; Error in eval(expr, envir, enclos): object &#39;p3&#39; not found
+</code></pre>
+
+<p>You also can save and/or transform resulting ggplot objects as you wish, using <code>ggplot2</code> and <code>tidyverse</code> syntax.</p>
+
+</body>
+
+</html>
