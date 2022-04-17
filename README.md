@@ -1,7 +1,4 @@
-README
-================
-
-# spectralR <img src="inst/figures/stickers/sticker_lightgray.png" align="right" alt="" width="180">
+# spectralR <img src="inst/figures/stickers/sticker_lightgray.png" align="right" alt="" width="140">
 
 ### Spectral reflectance visualisations for user-defined areas
 
