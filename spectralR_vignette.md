@@ -1,7 +1,7 @@
 ---
 title: "spectralR: Spectral reflectance visualisations for user-defined areas"
 author: "Oleh Prylutskyi"
-date: "2022-04-15"
+date: "2022-04-17"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{spectralR: Spectral reflectance visualisations for user-defined areas}
@@ -13,9 +13,11 @@ vignette: >
 
 ## Introduction
 
-`spectralR` is aimed to obtain, process, and visualize spectral reflectance data for the user-defined earth surface classes (it might be different habitat or vegetation types, crops, land uses, landscapes, of any other types of territories or water areas), for visual exploring in which wavelengths the classes differ. Input should be a shapefile with polygons of surface classes (it might be different habitat types, crops, any other things). The single source of spectral data are [Sentinel 2 Level 2A](https://sentinels.copernicus.eu/web/sentinel/missions/sentinel-2) satellite mission optical bands pixel data so far, obtained through [Google Earth Engine](https://earthengine.google.com/) service.
+`spectralR` [homepage and source code](https://github.com/olehprylutskyi/spectralR) is aimed to obtain, process, and visualize spectral reflectance data for the user-defined earth surface classes (it might be different habitat or vegetation types, crops, land uses, landscapes, of any other types of territories or water areas), for visual exploring in which wavelengths the classes differ. Input should be a shapefile with polygons of surface classes (it might be different habitat types, crops, any other things). The single source of spectral data are [Sentinel 2 Level 2A](https://sentinels.copernicus.eu/web/sentinel/missions/sentinel-2) satellite mission optical bands pixel data so far, obtained through [Google Earth Engine](https://earthengine.google.com/) service.
 
-The workflow depends on [rgee](https://r-spatial.github.io/rgee/) R package, which provides a bridge between R and Python API for Google Earth Engine. All the operations with satellite imageries run in a cloud, and afterwards obtained pixel data visualize locally. Therefore, despite of extent of input data, the most resource hungry operations do not overload your local machine. But that means that you need a stable Internet connection for using API.
+Initial purpose of `spectralR` development was to quickly explore visually the differences in spectral reflectance patterns for supervised vegetation (and, widely, habitat) mapping. While machine learning classification methods, such as [RandomForests](https://en.wikipedia.org/wiki/Random_forest), typically utilize the full set of available spectral data (satellite bands), we observed that highly similar habitat types (e.g. different types of grasslands, floodplain habitats) may have similar reflectance values during one season and different for another, so time-series reflectance data are also needed. Without the preliminary selection of the most discriminating satellite bands for given habitat types in given conditions, the models became overfitted and required extensive machine resources for calculation.
+
+The [first version](https://github.com/olehprylutskyi/habitat-spectral-reflectance) of our product was a three different codes, two written for R (shapefile preparation and visualization of the results) and one for Google Earth Engine, for satellite image preparation and spectral data sampling itself. That approach, though, required a bunch of manual operations, as well as downloading big files on a local machine. So we moved to the recent [rgee](https://r-spatial.github.io/rgee/) R package, which provides a bridge between R and Python API for Google Earth Engine. All the operations with satellite images now run in a cloud, and afterwards obtained pixel data visualize locally. Therefore, despite of extent of input data, the most resource hungry operations do not overload your local machine. But that means that you need a stable Internet connection for using API.
 
 For using `rgee` you should have a Google Earth Engine account. If you don't, first [register](https://earthengine.google.com/new_signup/) using your Google account.
 
@@ -24,6 +26,7 @@ Depends on operating system you use and your current Python configuration, it ma
 We strongly encourage you to follow official `rgee` installation guide and messages arrived during installation process.
 
 The overall workflow is following:
+
 1. Load user's ESRI shapefile containing polygons for user-defined surface classes,
 as well as the text or numerical field with classes names (labels).
 2. Apply `rgee` functionality to retrieve multi-band pixel data for classes polygons from 
@@ -31,9 +34,12 @@ Google Earth Engine service.
 3. Visualize retrieved pixel data locally, using `ggplot2` approach.
 
 Essential requirements:
-- stable Internet connection (for using API)
-- Installed and correctly pre-configured Python environment (v. 3.5 or above)
-- active Google Earth Engine account
+
+* stable Internet connection (for using API)
+
+* Installed and correctly pre-configured Python environment (v. 3.5 or above)
+
+* active Google Earth Engine account
 
 
 ## Essential preparations. Install and set up `rgee`
@@ -54,7 +60,7 @@ It is necessary just once to complete installation necessary dependencies
 ee_install()
 ```
 
-If something went wrong in this step, see https://r-spatial.github.io/rgee/index.html#installation
+If something went wrong in this step, see `rgee`'s [installation guide](https://r-spatial.github.io/rgee/index.html#installation)
 
 Check non-R dependencies
 
@@ -80,7 +86,11 @@ If everything is OK on the last step and you see a message of successful initiat
 
 Pay attention, that `rgee` uses earthengine_api package, which depends on Python. That's why we need to setting up local Python environment for using `rgee`.
 
-Unfortunately, you have to repeat environment setting and re-authorization each time Python gets updates. For actively updated operating systems, like regular versions of Ubuntu, that's quite annoying. On the other hand, this built-in repairing system protects you from accidentally breaking earthengine Python environment during installation or using any other Python-related tools, which is convenient at least if you are such a weak Python user as me. If you get an error message "The current Python PATH: /home/user/.virtualenvs/rgee/bin/python does not have the Python package "earthengine-api" installed. Are you restarted/terminated your R session after install miniconda or run ee_install()?", then proceed instruction appeared in R console, which will help you to delete your previous configuration and set up it again.
+Unfortunately, you have to repeat environment setting and re-authorization each time Python gets updates. For actively updated operating systems, like regular versions of Ubuntu, that's quite annoying. On the other hand, this built-in repairing system protects you from accidentally breaking earthengine Python environment during installation or using any other Python-related tools, which is convenient at least if you are such a weak Python user as me. If you get an error message 
+
+> "The current Python PATH: /home/user/.virtualenvs/rgee/bin/python does not have the Python package "earthengine-api" installed. Are you restarted/terminated your R session after install miniconda or run ee_install()?"
+
+then proceed instruction appeared in R console, which will help you to delete your previous configuration and set up it again.
 
 ## Installation of spectralR
 
@@ -106,41 +116,11 @@ rm(list = ls())
 
 # Load required packages
 library(tidyverse)
-#> ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
-#> ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
-#> ✓ tibble  3.1.6     ✓ dplyr   1.0.8
-#> ✓ tidyr   1.2.0     ✓ stringr 1.4.0
-#> ✓ readr   2.1.2     ✓ forcats 0.5.1
-#> ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-#> x dplyr::filter() masks stats::filter()
-#> x dplyr::lag()    masks stats::lag()
 library(rgee)
 library(sf)
-#> Linking to GEOS 3.9.0, GDAL 3.2.2, PROJ 7.2.1; sf_use_s2() is TRUE
 library(geojsonio)
-#> Warning in fun(libname, pkgname): rgeos: versions of GEOS runtime 3.9.0-CAPI-1.16.2
-#> and GEOS at installation 3.8.0-CAPI-1.13.1differ
-#> Registered S3 method overwritten by 'geojsonsf':
-#>   method        from   
-#>   print.geojson geojson
-#> 
-#> Attaching package: 'geojsonio'
-#> The following object is masked from 'package:base':
-#> 
-#>     pretty
 library(reshape2)
-#> 
-#> Attaching package: 'reshape2'
-#> The following object is masked from 'package:tidyr':
-#> 
-#>     smiths
 library(spectralR)
-```
-
-Initialize Google Earth Engine API for current session
-
-```r
-ee_Initialize()
 ```
 
 ### Upload and process vector data
@@ -148,315 +128,63 @@ ee_Initialize()
 Function `prepare.vector.data`  takes shapefile with polygons of different classes of surface (habitats, crops, vegetation, etc.), and retrieves ready-for-sampling sf object. One should specify shapefile name (should be within working directory, using absolute paths were not tested), as well as the name of the field which contains class labels. The function extract geometries of all polygons, and marked them by custom labels ('label') as well as automatically assign integer class ID ('class') for each entry. The last variable is required because Google Earth Engine sampler respects only numerical class ID - don't delete any field!  don't panic: resulting dataframe will be marked according to your custom labels, not hard-to-memorizable numbers.
 
 While preparing a shapefile with custom polygons (e.d., in [QGIS](https://qgis.org/en/site/)), try to follow recommendation:
-- if possible, draw polygons in homogeneous landscapes, avoid class mixture;
-- keep geometries simple, if possible. Avoid multipolygons, holes inside polygons, etc.
-- tiny polygons (same size as satellite imagery resolution or lesser) resulted in stronger "edge effect";
-- few big polygons easier to process than a lot of small ones;
-- GEE has its own memory limitation, which may result in extended processing time
+* if possible, draw polygons in homogeneous landscapes, avoid class mixture;
+* keep geometries simple, if possible. Avoid multipolygons, holes inside polygons, etc.
+* tiny polygons (same size as satellite imagery resolution or lesser) resulted in stronger "edge effect";
+* few big polygons easier to process than a lot of small ones;
+* GEE has its own memory limitation, which may result in extended processing time
 
 
 ```r
 # Extract polygons from shapefile and prepare sf object with proper structure
 sf_df <- prepare.vector.data(system.file("shapes/test_shapefile.shp", package = "spectralR"), "veget_type")
-#> Error in prepare.vector.data(system.file("shapes/test_shapefile.shp", : could not find function "prepare.vector.data"
 ```
 
 
-```r
-# Explore resulting spatial object 
-head(sf_df)
-#> Error in head(sf_df): object 'sf_df' not found
-```
 
-Example above uses internal test shapefile. To use your own file, put all the shapefile into your working directory and use followind syntax:
 
-```r
-# sf_df <- prepare.vector.data("your-shapefile-within-working-directory-name.shp", "name-of-the-field-with-class-labels")
-```
 
-### Obtain pixel values from Sentinel 2A image collection
 
-Function `get.pixel.data` is a heart of `spectralR`. It takes sf polygon object, obtained in the previous step, and retrieves data frame with brightness values for each pixel intersected with polygons, for each optical band of Sentinel-2 sensor, marked according to the label of surface class from the polygons. `get.pixel.data` firstly converts sf object into GEE feature collection, then prepares satellite image for pixel sampling and performs sampling, and finally exports resulting object back into an R dataframe (non-spatial now).
 
-One of the most tricky and issues-causing step of this procedure is convertation beetween R's sf object and GEE's feature collection. `rgee` implements three way to do so:
-- through the JSON translator (`getInfo`, default)
-- using Google Drive (`getInfo_to_asset`)
-- using Google Cloud Storage (`gcs_to_asset`)
 
-First one is the most straightforward and quick, but usable only for small data (less than 15000 entries, or 1.5 MB local files). The other two require mediating storage to store your data between convertations (because Earth Engine is Google service and seamlessly integrated with plenty of Google services).
 
-In `spectralR`, we use first two. `get.pixel.data` assesses the size of your either sf object or feature collection, then activates either `getInfo` or `getInfo_to_asset` pathway. If you data is considered being "small", `getInfo` will be used and you will notice nothing special. But, if your data is larger than our arbitrary threshold, the method `getInfo_to_asset` will be activated and you may be prompted to authorize in Google Drive and allow `rgee` to access GDrive files and folders. In such a case, please follow instructions in the R console and then in your web-browser. You may do it once you perform your first large query, - you credits will be stored into your local earthengine environment.
 
-After authorization and first use, folder *rgee_backup* will be created into your Google Drive storage, when all the intermediate files will be stored. Though `get.pixel.data` re-write objects each time it will be launched, we strongly recommend to clean *rgee_backup* folder in your Drive manually time-to-time. Apparently, if you run out of storage, `get.pixel.data` won't be able to use your Google Drive as mediating storage and you will receive an error.
 
 
-To use `get.pixel.data`, we need to specify some values:
-- polygons of surface classes as a sf object, prepared on previous step;
-- starting day for Sentinel image collection, as "YYYY-MM-DD". See Note 1 below;
-- final day for Sentinel image collection, as "YYYY-MM-DD";
-- cloud threshold (maximum per cent of cloud-covered pixels per image) by which individual 
-satellite imageries will be filtered;
-- scale of resulting satellite images in meters (pixel size). See Note 2 below;
 
-Resulting pixel data will be saved within working directory and can be loaded during
-next sessions.
 
-Note 1.
-Particular satellite imagery is typically not ready for instant sampling - it contains clouds, cloud shadows, aerosols, as well as may cover not all the territory you of your interest. Another issue is that each particular pixel slightly differs in reflectance between images taken in different days due to difference in atmospheric conditions and angle of sunlight at the moments images were taken. Google Earth Engine has its own build-in algorithms for image pre-processing, atmospheric corrections and mosaicing, which allows to obtain a ready-to-use, rectified image. Approach used in this script is that to find a median value for each pixel between several images within each of 10 optical band, and thereby make a composite image. To define a set of imageries between which we are going to calculate median, 
-we should set a timespan of image collection. Sentinel-2 apparatus takes picture once a 5 days, so if you set up month-long timesnap, you can expect that each pixel value will be calculated based on 5 to 6 values (remember, some images might appear unsatisfactory cloudy).
 
-Note 2.
-Finest resolution for Sentinel data - 10 m, while using larger scale values decreases required computational resources and size of resulting dataframe. Although sampling satellite data performs in a cloud, there are some limitations for geocalculations placed by GEE itself. If you are about to sample large areas, consider setting higher 'scale' value (100, 1000). Read more in GEE [best practices](https://developers.google.com/earth-engine/guides/best_practices).
 
 
-```r
-# Get pixel data
-reflectance = get.pixel.data(sf_df, "2019-05-15", "2019-06-30", 10, 100)
 
-# Save pixel data for further sessions
-save(reflectance, file = "reflectance_test_data")
-```
 
-Here we choose 100 m scale (pixel size for resulting imagery is 100x100 m), which resulted in sampling dataset of 2060 rows. Finer pixel size would result in a larger sampling dataset, which would require using moderating storage (see use case 2).  
 
 
 
-Let's have a look at the resulting data:
 
-```r
-head(reflectance)
-#>      B11    B12     B2     B3     B4     B5     B6     B7     B8    B8A label
-#> 1 0.2107 0.1113 0.0287 0.0537 0.0390 0.0878 0.2452 0.2887 0.2906 0.3083   S36
-#> 2 0.2300 0.1257 0.0286 0.0563 0.0430 0.0985 0.2557 0.2967 0.3045 0.3144   T19
-#> 3 0.1919 0.0871 0.0147 0.0348 0.0157 0.0596 0.2918 0.3827 0.3811 0.4011   T19
-#> 4 0.1763 0.0779 0.0212 0.0435 0.0240 0.0704 0.2760 0.3506 0.3463 0.3652   T13
-#> 5 0.2118 0.0996 0.0194 0.0442 0.0221 0.0774 0.3078 0.3708 0.3686 0.3935   T19
-#> 6 0.0964 0.0459 0.0196 0.0373 0.0274 0.0544 0.1694 0.2073 0.2071 0.2144   T11
-```
 
-We have a dataframe which number of rows equal to the number of sampled "pixels" of satellite image, as well as 10 variables with reflectance values for each of optical band of Sentinel 2. Each sampled pixel has a label of surface class of user's polygon it intersected.
 
-### Visualize results
 
-First of all, one should explore the quality and comprehensiveness of obtained pixel data.
 
-```r
-load(file = "./reflectance_test_data") # restore previously saved pixel data
 
-summary(factor(reflectance$label)) # how many pixels in each class? 
-#> C2.2 C2.3   J1 J3.2 J4.2   J5  Q51  R12  R1A  R1B  R21  S35  S36  T11  T13  T19 
-#>    7   29  109    9    5    1   14    2    1   16    3    8    2    7    4    5 
-#>  T1H  U33  V11  V38  X18 
-#>  137    1  486   47    1
-```
 
-For reliable results, it is recommended to keep similar size of each surface class. Classes which represented by few sampled pixels, should be excluded from the further analysis.
 
-Visual overview of pixel data
 
-```r
-# Number of spectral values for different classes
-ggplot(reflectance, aes(x=label))+
-  geom_bar()+
-  labs(x = 'Classes of surface', y = 'Number of pixels',
-       title = "Total pixel data for different classes of surface",
-       caption = 'Data: Sentinel-2 Level-2A')+
-  theme_minimal()
-```
 
-![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-17-1.png)
 
-Function `spectral.reflectance.curve` transform the data and plot smoother curves for each surface class, using `ggplot2`'s `geom_smooth()` aesthetics. For large (thousands of rows) data (and we need large data for reliable conclusions!), `ggplot2` uses *GAM* method for drawing a trendline.
 
-Depending on the data size, it may take some time to process.
 
-```r
-# Make a ggplot object
-p1 <- spectral.curves.plot(reflectance)
-#> Error in spectral.curves.plot(reflectance): could not find function "spectral.curves.plot"
-
-# Default plot
-p1
-#> Error in eval(expr, envir, enclos): object 'p1' not found
-```
-
-Since the output of `spectral.curves.plot` is `ggplot` object, we can apply any tools provided by `ggplot2` package to make it more visually pleasant.
-
-```r
-# Customized plot
-p1+
-  labs(x = 'Wavelength, nm', y = 'Reflectance',
-       colour = "Surface classes",
-       fill = "Surface classes",
-       title = "Spectral reflectance curves for different classes of surface",
-       caption = 'Data: Sentinel-2 Level-2A')+
-  theme_minimal()
-#> Error in eval(expr, envir, enclos): object 'p1' not found
-
-# Save the plot as a *.png file
-ggsave("Spectral_curves_usecase1.png", width=16, height=12, unit="cm", dpi=300)
-```
-
 
-Function `stat.summary.plot` make a plot with statistical summary of reflectance values (mean, mean-standard deviation, mean+standard deviation) for defined classes of surface. Giving as input reflectance data, the function returns ggplot2 object with basic visual aesthetics. Default aesthetics are line with statistical summary for each satellite band ([geom_line](https://ggplot2.tidyverse.org/reference/geom_linerange.html) + [geom_pointrange](https://ggplot2.tidyverse.org/reference/geom_path.html)).
-
-Wavelengths values (nm) acquired from mean known value for each optical band of [Sentinel 2](https://en.wikipedia.org/wiki/Sentinel-2) sensor.
 
 
-```r
-# Make a ggplot object
-p2 <- stat.summary.plot(reflectance)
-#> Error in stat.summary.plot(reflectance): could not find function "stat.summary.plot"
-
-# Default plot
-p2
-#> Error in eval(expr, envir, enclos): object 'p2' not found
-```
-
-Add a touch of customization and save as a picture.
 
-```r
-# Customized plot
-p2 + 
-  labs(x = 'Sentinel-2 bands', y = 'Reflectance',
-       colour = "Surface classes",
-       title = "Reflectance for different surface classes",
-       caption='Data: Sentinel-2 Level-2A\nmean ± standard deviation')+
-  theme_minimal()
-#> Error in eval(expr, envir, enclos): object 'p2' not found
-
-# Save the plot as a *.png file
-ggsave("Statsummary_usecase1.png", width=16, height=12, unit="cm", dpi=300)
-```
-
-Function `violin.plot` helps to visualize a reflectance as violin plots for each surface class per satellite bands. It gets reflectance data as input and return ggplot2 object with basic visual aesthetics. Default aesthetics is [geom_violin](https://ggplot2.tidyverse.org/reference/geom_violin.html).
-
-
-```r
-# Make a ggplot object
-p3 <- violin.plot(reflectance)
-#> Error in violin.plot(reflectance): could not find function "violin.plot"
-
-# Customized plot
-p3 + 
-  labs(x='Surface class',y='Reflectance',
-       fill="Surface classes",
-       title = "Reflectance for different surface classes",
-       caption='Data: Sentinel-2 Level-2A')+
-  theme_minimal()
-#> Error in eval(expr, envir, enclos): object 'p3' not found
-
-# Save the plot as a *.png file
-ggsave("Violins_usecase1.png", width=22, height=16, unit="cm", dpi=300)
-```
-
-## Use case 2. Habitats of Buzky Gard National Park, Mykolaiv region, Ukraine.
-
-Environment preparation
-
-```r
-# Reset R's brain before new analysis session started. It will erase all the objects stored in 
-# R memory, while keep loaded libraries.
-rm(list = ls())
-
-# Load required packages
-library(tidyverse)
-library(rgee)
-library(sf)
-library(geojsonio)
-library(reshape2)
-library(spectralR)
-
-# Initialize Google Earth Engine API for current session
-ee_Initialize()
-#> ── rgee 1.1.3.9000 ────────────────────────────────── earthengine-api 0.1.305 ── 
-#>  ✓ user: not_defined
-#>  ✓ Initializing Google Earth Engine: ✓ Initializing Google Earth Engine:  DONE!
-#>  ✓ Earth Engine account: users/olegpril12 
-#> ────────────────────────────────────────────────────────────────────────────────
-```
-
-Upload and process vector data
-
-```r
-# Extract polygons from shapefile and prepare sf object with proper structure
-sf_df <- prepare.vector.data(system.file("shapes/SouthernBuh-habitats_shapefile.shp", package = "spectralR"), "eunis_2020")
-#> Error in prepare.vector.data(system.file("shapes/SouthernBuh-habitats_shapefile.shp", : could not find function "prepare.vector.data"
-
-# Explore resulting spatial object 
-head(sf_df)
-#> Error in head(sf_df): object 'sf_df' not found
-```
-
-Get reflectance values
-
-```
-#> Error in get.pixel.data(sf_df, "2019-05-15", "2019-06-30", 10, 10): could not find function "get.pixel.data"
-#> Error in save(reflectance, file = "reflectance_BG_data"): object 'reflectance' not found
-```
-
-Quantitative overview of pixel data
-
-```r
-load(file = "./reflectance_BG_data") # restore previously saved pixel data
-
-summary(factor(reflectance$label)) # how many pixels in each class?
-#>  C2.2  C2.3    J1  J3.2  J4.2    J5   Q51   Q53   R12   R1A   R1B   R21   R36 
-#>   741  3054 11204   983   447    87  1276     3   659    52  1448   310    49 
-#>   S35   S36   S91   T11   T13   T19   T1E   T1H   U33   V11   V34   V38   X18 
-#>   694   220     4   829   331   294    72 14372   165 48778    18  4717   130
-```
-
-Spectral reflectance curves for different habitat types
-
-```r
-# Create basic ggplot object
-p1 <- spectral.curves.plot(reflectance)
-#> Error in spectral.curves.plot(reflectance): could not find function "spectral.curves.plot"
-
-# Plotting
-p1+
-  labs(x = 'Wavelength, nm', y = 'Reflectance',
-       colour = "Habitat types",
-       fill = "Habitat types",
-       title = "Spectral reflectance curves for different habitat types\nSouthern Buh National park, Ukraine",
-       caption = 'Data: Sentinel-2 Level-2A')+
-  theme_minimal()
-#> Error in eval(expr, envir, enclos): object 'p1' not found
-```
-
-Statistical summary for each habitat type
-
-```r
-# Create basic ggplot object
-p2 <- stat.summary.plot(reflectance)
-#> Error in stat.summary.plot(reflectance): could not find function "stat.summary.plot"
-
-# Plotting
-p2 + 
-  labs(x = 'Sentinel-2 bands', y = 'Reflectance',
-       colour = "Habitat types",
-       title = "Reflectance for different habitat types\nSouthern Buh National park, Ukraine",
-       caption='Data: Sentinel-2 Level-2A\nmean ± standard deviation')+
-  theme_minimal()
-#> Error in eval(expr, envir, enclos): object 'p2' not found
-```
-
-Create violin plots for given habitat types
-
-```r
-# Create basic ggplot object
-p3 <- violin.plot(reflectance)
-#> Error in violin.plot(reflectance): could not find function "violin.plot"
-
-# Plotting
-p3 + 
-  labs(x='Habitat type', y='Reflectance',
-       fill="Habitat types",
-       title = "Reflectance for different habitat types\nSouthern Buh National park, Ukraine",
-       caption='Data: Sentinel-2 Level-2A')+
-  theme_minimal()
-#> Error in eval(expr, envir, enclos): object 'p3' not found
-```
-
-You also can save and/or transform resulting ggplot objects as you wish, using `ggplot2` and `tidyverse` syntax.
+
+
+
+
+
+
+
+
+
+
