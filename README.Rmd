@@ -1,14 +1,12 @@
----
-title: "README"
-output: github_document
----
+<!-- README.md is generated from README.Rmd. Please edit that file and knit -->
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, eval=FALSE)
 ```
 
-# spectralR <img src="inst/figures/stickers/sticker_lightgray.png" align="right" alt="" width="180">
-### Spectral reflectance visualisations for user-defined areas
+# spectralR <img src="inst/figures/stickers/sticker_lightgray.png" align="right" alt="" width="120">
+## Spectral reflectance visualisations for user-defined areas
 
 See our [vignette](https://olehprylutskyi.github.io/spectralR) for detailed usage examples.
 
