@@ -1,7 +1,7 @@
 README
 ================
 
-# spectralR: <img src="inst/figures/stickers/sticker_lightgray.png" align="right" alt="" width="120">
+# spectralR <img src="inst/figures/stickers/sticker_lightgray.png" align="right" alt="" width="180">
 
 ### Spectral reflectance visualisations for user-defined areas
 
@@ -11,27 +11,33 @@ detailed usage examples.
 ## Description
 
 This package provides tools for obtaining, processing, and visualization
-of spectral reflectance data for the user-defined polygons of earth
-surface classes, allowing to explore visually in which wavelengths the
-classes differ. Input should be a shapefile with polygons of surface
-classes (it might be polygons of different habitat types, crops, any
-other things). As a source of spectral reflectance data we use Sentinel2
-L2A satellite mission (only optical bands), obtained through Google
-Earth Engine service.
+of satellite-derived spectral reflectance data for the user-defined
+polygons of earth surface classes, allowing to explore visually in which
+wavelengths the classes differ. Input should be a shapefile with
+polygons of surface classes (it might be polygons of different habitat
+types, crops, any other things). As a source of spectral reflectance
+data we use **Sentinel2 L2A** satellite mission (only optical bands),
+obtained through **Google Earth Engine** service.
 
-The workflow depends on rgee R package, which provides a bridge between
-R and Python API for Google Earth Engine. All the operations with
-satellite images run in a cloud, and afterwards obtained pixel data
-visualize locally. Therefore, despite of extent of input data, the most
-resource hungry operations do not overload your local machine. But that
-means that you need a stable Internet connection for using API.
+The workflow depends on `rgee` R package, which provides a bridge
+between **R** and **Python** API for **Google Earth Engine**. All the
+operations with satellite images run in a cloud, and afterwards obtained
+pixel data visualize locally. Therefore, despite of extent of input
+data, the most resource hungry operations do not overload your local
+machine. But that means that you need a stable Internet connection for
+using API.
 
-The overall workflow is following: 1. Load user’s ESRI shapefile
-containing polygons for user-defined surface classes, as well as the
-text or numerical field with classes names (labels). 2. Apply rgee
-functionality to retrieve multi-band pixel data for classes polygons
-from Google Earth Engine service. 3. Visualize retrieved pixel data
-locally, mainly using ggplot2 approach.
+The overall workflow is following:
+
+1.  Load user’s ESRI shapefile containing polygons for user-defined
+    surface classes, as well as the text or numerical field with classes
+    names (labels).
+
+2.  Apply rgee functionality to retrieve multi-band pixel data for
+    classes polygons from Google Earth Engine service.
+
+3.  Visualize retrieved pixel data locally, mainly using ggplot2
+    approach.
 
 Essential requirements:
 
