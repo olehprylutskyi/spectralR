@@ -47,7 +47,9 @@ Essential requirements:
 * active Google Earth Engine account
 
 
-## Essential preparations. Install and set up `rgee`
+## Essential preparations
+
+### Install and set up `rgee`
 ```{r, eval = FALSE}
 remotes::install_github("r-spatial/rgee")
 ```
@@ -91,7 +93,13 @@ Unfortunately, you have to repeat environment setting and re-authorization each 
 
 then proceed instruction appeared in R console, which will help you to delete your previous configuration and set up it again.
 
-## Installation of spectralR
+### Installation of the other dependencies
+
+```{r, eval = FALSE}
+install.packages("geojsonio")
+```
+
+### Installation of spectralR
 
 `spectralR` can be installed from **GitHub** sources so far, although we are planning to land it on CRAN soon.
 ```{r, eval = FALSE}
