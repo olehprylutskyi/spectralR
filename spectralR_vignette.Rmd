@@ -18,51 +18,52 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
-`spectralR` [homepage and source code](https://github.com/olehprylutskyi/spectralR) is aimed to obtain, process, and visualize spectral reflectance data for the user-defined earth surface classes (it might be different habitat or vegetation types, crops, land uses, landscapes, of any other types of territories or water areas), for visual exploring in which wavelengths the classes differ. Input should be a shapefile with polygons of surface classes (it might be different habitat types, crops, any other things). The single source of spectral data are [Sentinel 2 Level 2A](https://sentinels.copernicus.eu/web/sentinel/missions/sentinel-2) satellite mission optical bands pixel data so far, obtained through [Google Earth Engine](https://earthengine.google.com/) service.
+The `spectralR` package ([homepage and source code](https://github.com/olehprylutskyi/spectralR)) is aimed to obtain, process, and visualize spectral reflectance data for the user-defined earth surface classes for visual exploring in which wavelengths the classes differ. User-defined classes might represent different habitat or vegetation types, crops, land uses, landscapes, or other types of territories or water areas. Input should be a shapefile with polygons of surface classes (it might be different habitat types, crops, or other things). So far, the single source of spectral data is [Sentinel 2 Level 2A](https://sentinels.copernicus.eu/web/sentinel/missions/sentinel-2) satellite mission optical bands pixel data so far, obtained through the [Google Earth Engine](https://earthengine.google.com/) service.
 
-Initial purpose of `spectralR` development was to quickly explore visually the differences in spectral reflectance patterns for supervised vegetation (and, widely, habitat) mapping. While machine learning classification methods, such as [RandomForests](https://en.wikipedia.org/wiki/Random_forest), typically utilize the full set of available spectral data (satellite bands), we observed that highly similar habitat types (e.g. different types of grasslands, floodplain habitats) may have similar reflectance values during one season and different for another, so time-series reflectance data are also needed. Without the preliminary selection of the most discriminating satellite bands for given habitat types in given conditions, the models became overfitted and required extensive machine resources for calculation.
+The initial purpose of `spectralR` development was to quickly and visually explore the differences in spectral reflectance patterns for supervised vegetation (and, widely, habitat) mapping. While machine learning classification methods, such as [RandomForest](https://en.wikipedia.org/wiki/Random_forest), typically utilize the full set of available spectral data (satellite bands), we observed that highly similar habitat types (e.g., different types of grasslands, floodplain habitats) may have similar reflectance values during one season and different for another, so time-series reflectance data are also needed. Without the preliminary selection of the most discriminating satellite bands for given habitat types in given conditions, the models became overfitted and required extensive machine resources for calculation.
 
-The [first version](https://github.com/olehprylutskyi/habitat-spectral-reflectance) of our product was a three different codes, two written for R (shapefile preparation and visualization of the results) and one for Google Earth Engine, for satellite image preparation and spectral data sampling itself. That approach, though, required a bunch of manual operations, as well as downloading big files on a local machine. So we moved to the recent [rgee](https://r-spatial.github.io/rgee/) R package, which provides a bridge between R and Python API for Google Earth Engine. All the operations with satellite images now run in a cloud, and afterwards obtained pixel data visualize locally. Therefore, despite of extent of input data, the most resource hungry operations do not overload your local machine. But that means that you need a stable Internet connection for using API.
+The [first version](https://github.com/olehprylutskyi/habitat-spectral-reflectance) of our product was based on three code snippets, two written for R (shapefile preparation and visualization of the results) and one for Google Earth Engine for satellite image preparation and spectral data sampling itself. That approach, though, required a bunch of manual operations, as well as downloading big files on a local machine. So we moved to the recent [rgee](https://r-spatial.github.io/rgee/) R package, which provides a bridge between R and Python API for Google Earth Engine. All the operations with satellite images now run in a cloud, and the obtained pixel data is visualized locally afterward. Therefore, the most resource-hungry operations do not overload your local machine even despite the large extent of input data. However, a stable Internet connection is required for using the API.
 
 For using `rgee` you should have a Google Earth Engine account. If you don't, first [register](https://earthengine.google.com/new_signup/) using your Google account.
 
-Depends on operating system you use and your current Python configuration, it may require some additional R and Python packages for running `rgee`. See the following links for instructions. See also [Quick Start User's Guide](https://www.rdocumentation.org/packages/rgee/versions/1.0.7), [Official documentation](https://r-spatial.github.io/rgee/index.html), and the [source code](https://github.com/r-spatial/rgee) of rgee for solving issues arises during installation and setting up.
+Depending on the operating system you use and your current Python configuration, it may require the installation of additional R and Python packages for running `rgee`. See the following links for instructions. See also [Quick Start User's Guide](https://www.rdocumentation.org/packages/rgee/versions/1.0.7), [Official documentation](https://r-spatial.github.io/rgee/index.html), and the [source code](https://github.com/r-spatial/rgee) of rgee for solving issues that arise during installation and setting up.
 
-We strongly encourage you to follow official `rgee` installation guide and messages arrived during installation process.
+We strongly encourage you to follow the official `rgee` installation guide and pay attention to the messages that arrive during installation.
 
 The overall workflow is following:
 
 1. Load user's ESRI shapefile containing polygons for user-defined surface classes,
 as well as the text or numerical field with classes names (labels).
-2. Apply `rgee` functionality to retrieve multi-band pixel data for classes polygons from 
-Google Earth Engine service.
+2. Apply `rgee` functionality to retrieve multi-band pixel data for classes polygons from the Google Earth Engine service.
 3. Visualize retrieved pixel data locally, using `ggplot2` approach.
 
 Essential requirements:
 
-* stable Internet connection (for using API)
+* Stable Internet connection (for using API)
 
 * Installed and correctly pre-configured Python environment (v. 3.5 or above)
 
-* active Google Earth Engine account
+* Active Google Earth Engine account
 
 
-## Essential preparations. Install and set up `rgee`
+## Essential preparations
+
+### Install and set up `rgee`
 ```{r, eval = FALSE}
 remotes::install_github("r-spatial/rgee")
 ```
 
-Load the library
+Load the library:
 ```{r}
 library(rgee)
 ```
 
-It is necessary just once to complete installation necessary dependencies
+It is necessary just once to complete the installation of the dependencies:
 ```{r, eval = FALSE}
 ee_install()
 ```
 
-If something went wrong in this step, see `rgee`'s [installation guide](https://r-spatial.github.io/rgee/index.html#installation)
+If something went wrong at this step, see `rgee`'s [installation guide](https://r-spatial.github.io/rgee/index.html#installation)
 
 Check non-R dependencies
 ```{r, eval = FALSE}
@@ -74,24 +75,30 @@ ee_check()
 ee_install_upgrade()
 ```
 
-Initialize Google Earth Engine API for current session.
+Initialize the Google Earth Engine API for current session:
 ```{r, eval = FALSE}
 ee_Initialize()
 ```
 
-On this or one of previous step you would be prompted to link your Google earth Engine account with `rgee`. Follow instructions in R console, and you will be re-directered to web browser for logging into your Google Earth Engine account and confirm access rights. An authorization code generated during this step should be pasted into R console to finalize authentification.
+At this step, you would be prompted to link your Google Earth Engine account with `rgee`. Follow instructions in the R console, and you will be redirected to a web browser for logging into your Google Earth Engine account to confirm access rights. An authorization code generated during this step should be pasted into R console to finalize authentification.
 
-If everything is OK on the last step and you see a message of successful initiation of API with your GEE username in console, - congratulations, you managed to install and configure `rgee`!
+If everything is OK at the last step and you see a message of successful initiation of API with your GEE username in the console, - congratulations, you managed to install and configure rgee`rgee`!
 
-Pay attention, that `rgee` uses earthengine_api package, which depends on Python. That's why we need to setting up local Python environment for using `rgee`.
+Pay attention that `rgee` uses `earthengine_api` package, which depends on Python. That's why we need to set up a local Python environment for using `rgee`.
 
-Unfortunately, you have to repeat environment setting and re-authorization each time Python gets updates. For actively updated operating systems, like regular versions of Ubuntu, that's quite annoying. On the other hand, this built-in repairing system protects you from accidentally breaking earthengine Python environment during installation or using any other Python-related tools, which is convenient at least if you are such a weak Python user as me. If you get an error message 
+Unfortunately, you have to repeat environment setting and re-authorization each time Python gets updates. For actively updated operating systems, like regular versions of Ubuntu, that's quite annoying. On the other hand, this built-in repairing system protects you from accidentally breaking the `earthengine` Python environment during installation or using any other Python-related tools, which is convenient at least if you are such a weak Python user as me. If you get an error message 
 
 > "The current Python PATH: /home/user/.virtualenvs/rgee/bin/python does not have the Python package "earthengine-api" installed. Are you restarted/terminated your R session after install miniconda or run ee_install()?"
 
 then proceed instruction appeared in R console, which will help you to delete your previous configuration and set up it again.
 
-## Installation of spectralR
+### Installation of the other dependencies
+
+```{r, eval = FALSE}
+install.packages("geojsonio")
+```
+
+### Installation of spectralR
 
 `spectralR` can be installed from **GitHub** sources so far, although we are planning to land it on CRAN soon.
 ```{r, eval = FALSE}
@@ -101,7 +108,7 @@ install_github("olehprylutskyi/spectralR")
 
 --------------------------------------------------------
 
-We offer two use-cases for getting users familiar with the functionality of spectralR. First one is a small-size area in Kharkiv region, Ukraine, where National Park "Homilsha Forests" are situated, with 8 polygons for 5 land use classes -- let's call it "small data". The second - a "large data" - is the 380 hand-drawing polygons of 26 different habitat types (according to EUNIS classification system) of Buzky Gard National Park, Mykolaiv region, Ukraine. End users don't expect to notice a large differences in workflow, but under the hood we implemented two different algorithms for either "small" or "large" spatial data, which will be explained later.
+We offer two use-cases for getting users familiar with the functionality of spectralR. The first one is a small-size area in the Kharkiv region, Ukraine, where National Park "Homilsha Forests" is situated, with 8 polygons for 5 land use classes -- let's call it "small data". The second - a "large data" - is the 380 hand-drawing polygons of 26 different habitat types (according to the EUNIS classification system) of Buzky Gard National Park, Mykolaiv region, Ukraine. End users don't expect to notice large differences in workflow, but under the hood we implemented two different algorithms for either "small" or "large" spatial data, which will be explained later.
 
 ## Use case 1. Basic habitat types of 'Homilsha Forests' National Park and neighborhoods.
 
@@ -122,14 +129,14 @@ library(spectralR)
 
 ### Upload and process vector data
 
-Function `prepare.vector.data`  takes shapefile with polygons of different classes of surface (habitats, crops, vegetation, etc.), and retrieves ready-for-sampling sf object. One should specify shapefile name (should be within working directory, using absolute paths were not tested), as well as the name of the field which contains class labels. The function extract geometries of all polygons, and marked them by custom labels ('label') as well as automatically assign integer class ID ('class') for each entry. The last variable is required because Google Earth Engine sampler respects only numerical class ID - don't delete any field!  don't panic: resulting dataframe will be marked according to your custom labels, not hard-to-memorizable numbers.
+Function `prepare.vector.data`  takes shapefile with polygons of different classes of surface (habitats, crops, vegetation, etc.) and retrieves ready-for-sampling `sf` object. One should specify shapefile name (should be within working directory, using absolute paths were not tested) and the name of the field that contains class labels. The function extracts geometries of all polygons, marks them with custom labels ('label'), and automatically assigns integer class ID ('class') for each entry. The last variable is required because the Google Earth Engine sampler respects only numerical class ID - don't delete any field! Don't panic, the resulting dataframe will be marked according to your custom labels, not hard-to-memorizable numbers.
 
-While preparing a shapefile with custom polygons (e.d., in [QGIS](https://qgis.org/en/site/)), try to follow recommendation:
+While preparing a shapefile with custom polygons (e.d., in [QGIS](https://qgis.org/en/site/)), try to follow recommendations:
 * if possible, draw polygons in homogeneous landscapes, avoid class mixture;
-* keep geometries simple, if possible. Avoid multipolygons, holes inside polygons, etc.
-* tiny polygons (same size as satellite imagery resolution or lesser) resulted in stronger "edge effect";
-* few big polygons easier to process than a lot of small ones;
-* GEE has its own memory limitation, which may result in extended processing time
+* keep geometries simple, if possible. Avoid multipolygons, holes inside polygons, etc.;
+* tiny polygons (same size as satellite imagery resolution or lesser) tend to prodice a stronger "edge effect";
+* few big polygons are easier to process than a lot of small ones;
+* GEE has its own memory limitation, which may result in extended processing time.
 
 ```{r, eval = FALSE}
 # Extract polygons from shapefile and prepare sf object with proper structure
@@ -145,47 +152,45 @@ Explore resulting spatial object:
 head(sf_df)
 ```
 
-Example above uses internal test shapefile. To use your own file, put all the shapefile into your working directory and use followind syntax:
+The example above uses an internal test shapefile. To use your own file, put all the shapefile into your working directory and use following syntax:
 ```{r}
 # sf_df <- prepare.vector.data("your-shapefile-within-working-directory-name.shp", "name-of-the-field-with-class-labels")
 ```
 
 ### Obtain pixel values from Sentinel 2A image collection
 
-Function `get.pixel.data` is a heart of `spectralR`. It takes sf polygon object, obtained in the previous step, and retrieves data frame with brightness values for each pixel intersected with polygons, for each optical band of Sentinel-2 sensor, marked according to the label of surface class from the polygons. `get.pixel.data` firstly converts sf object into GEE feature collection, then prepares satellite image for pixel sampling and performs sampling, and finally exports resulting object back into an R dataframe (non-spatial now).
+Function `get.pixel.data` is the heart of `spectralR`. It takes `sf` polygon object obtained at the previous step and retrieves a data frame with brightness values for each pixel intersected with polygons for each optical band of Sentinel-2 sensor, marked according to the label of surface class from the polygons. `get.pixel.data` firstly converts `sf` object into GEE feature collection, then prepares satellite image for pixel sampling and performs sampling, and finally exports resulting object back into an R data frame (non-spatial now).
 
-One of the most tricky and issues-causing step of this procedure is convertation beetween R's sf object and GEE's feature collection. `rgee` implements three way to do so:
+One of the most tricky and issues-causing steps of this procedure is the conversion between R's `sf` object and GEE's feature collection. `rgee` implements three way to do so:
 - through the JSON translator (`getInfo`, default)
 - using Google Drive (`getInfo_to_asset`)
 - using Google Cloud Storage (`gcs_to_asset`)
 
-First one is the most straightforward and quick, but usable only for small data (less than 15000 entries, or 1.5 MB local files). The other two require mediating storage to store your data between convertations (because Earth Engine is Google service and seamlessly integrated with plenty of Google services).
+The first one is the most straightforward and quick, but usable only for small data (less than 15000 entries, or 1.5 MB local files). The other two require transient storage to store your data between conversions (because Earth Engine is Google's service and seamlessly integrated with plenty of Google services).
 
-In `spectralR`, we use first two. `get.pixel.data` assesses the size of your either sf object or feature collection, then activates either `getInfo` or `getInfo_to_asset` pathway. If you data is considered being "small", `getInfo` will be used and you will notice nothing special. But, if your data is larger than our arbitrary threshold, the method `getInfo_to_asset` will be activated and you may be prompted to authorize in Google Drive and allow `rgee` to access GDrive files and folders. In such a case, please follow instructions in the R console and then in your web-browser. You may do it once you perform your first large query, - you credits will be stored into your local earthengine environment.
+In `spectralR`, we use the first two methods. `get.pixel.data` assesses the size of your `sf` object or feature collection, then activates either `getInfo` or `getInfo_to_asset` pathway. If you data is considered being "small", `getInfo` will be used and you will notice nothing special. But, if your data is larger than our arbitrary threshold, the method `getInfo_to_asset` will be activated, and you may be prompted to authorize in Google Drive and allow `rgee` to access GDrive files and folders. In such a case, please follow instructions in the R console and then in your web-browser. You may do it once you perform your first large query, - you credits will be stored in your local `earthengine` environment.
 
-After authorization and first use, folder *rgee_backup* will be created into your Google Drive storage, when all the intermediate files will be stored. Though `get.pixel.data` re-write objects each time it will be launched, we strongly recommend to clean *rgee_backup* folder in your Drive manually time-to-time. Apparently, if you run out of storage, `get.pixel.data` won't be able to use your Google Drive as mediating storage and you will receive an error.
+After authorization and first use, folder *rgee_backup* will be created in your Google Drive storage, when all the intermediate files will be stored. Though `get.pixel.data` re-write objects each time it will be launched, we strongly recommend cleaning *rgee_backup* folder in your Drive manually from time to time. Apparently, if you run out of storage, `get.pixel.data` won't be able to use your Google Drive as mediating storage, and you will receive an error.
 
 
 To use `get.pixel.data`, we need to specify some values:
 
-* polygons of surface classes as a sf object, prepared on previous step;
+* polygons of surface classes as an `sf` object, prepared at the previous step;
 
-* starting day for Sentinel image collection, as "YYYY-MM-DD". See Note 1 below;
+* starting day for Sentinel image collection, in "YYYY-MM-DD" format. See Note 1 below;
 
-* final day for Sentinel image collection, as "YYYY-MM-DD";
+* final day for Sentinel image collection, in "YYYY-MM-DD" format;
 
-* cloud threshold (maximum per cent of cloud-covered pixels per image) by which individual 
+* cloud threshold (maximum percent of cloud-covered pixels per image) by which individual 
 satellite imageries will be filtered;
 
 * scale of resulting satellite images in meters (pixel size). See Note 2 below;
 
-Resulting pixel data will be saved within working directory and can be loaded during
-next sessions.
+The Resulting pixel data will be saved within a working directory and can be loaded during the next sessions.
 
-**Note 1**. Particular satellite imagery is typically not ready for instant sampling - it contains clouds, cloud shadows, aerosols, as well as may cover not all the territory you of your interest. Another issue is that each particular pixel slightly differs in reflectance between images taken in different days due to difference in atmospheric conditions and angle of sunlight at the moments images were taken. Google Earth Engine has its own build-in algorithms for image pre-processing, atmospheric corrections and mosaicing, which allows to obtain a ready-to-use, rectified image. Approach used in this script is that to find a median value for each pixel between several images within each of 10 optical band, and thereby make a composite image. To define a set of imageries between which we are going to calculate median, 
-we should set a timespan of image collection. Sentinel-2 apparatus takes picture once a 5 days, so if you set up month-long timesnap, you can expect that each pixel value will be calculated based on 5 to 6 values (remember, some images might appear unsatisfactory cloudy).
+**Note 1**. Particular satellite imagery is typically not ready for instant sampling - it contains clouds, cloud shadows, aerosols, and may cover not all the territory of your interest. Another issue is that each particular pixel slightly differs in reflectance between images taken on different days due to differences in atmospheric conditions and angle of sunlight at the moments images were taken. The Google Earth Engine has its own build-in algorithms for image pre-processing, atmospheric corrections and mosaicing, which allows to obtain a ready-to-use, rectified image. The approach used in `spectralR` is to find a median value for each pixel between several images within each of 10 optical bands, thereby making a composite image. To define a set of imageries between which we are going to calculate the median, we should set a timespan of image collection. Sentinel-2 apparatus takes picture once a 5 days, so if you set up month-long timesnap, you can expect that each pixel value will be calculated based on 5 to 6 values (remember, some images might appear unsatisfactory cloudy).
 
-**Note 2**. Finest resolution for Sentinel data - 10 m, while using larger scale values decreases required computational resources and size of resulting dataframe. Although sampling satellite data performs in a cloud, there are some limitations for geocalculations placed by GEE itself. If you are about to sample large areas, consider setting higher 'scale' value (100, 1000). Read more in GEE [best practices](https://developers.google.com/earth-engine/guides/best_practices).
+**Note 2**. The finest resolution for Sentinel data is 10 m, while using larger-scale values decreases the required computational resources and size of the resulting data frame. Although sampling satellite data performs in a cloud, there are some limitations for geocalculations placed by GEE itself. If you are about to sample large areas, consider setting a higher 'scale' value (e.g., 100, 1000). Read more in GEE [best practices](https://developers.google.com/earth-engine/guides/best_practices).
 
 ```{r, collapse = TRUE, eval = FALSE}
 # Get pixel data
@@ -195,7 +200,7 @@ reflectance = get.pixel.data(sf_df, "2019-05-15", "2019-06-30", 10, 100)
 save(reflectance, file = "reflectance_test_data")
 ```
 
-Here we choose 100 m scale (pixel size for resulting imagery is 100x100 m), which resulted in sampling dataset of 2060 rows. Finer pixel size would result in a larger sampling dataset, which would require using moderating storage (see use case 2).  
+Here we choose the 100 m scale (pixel size for resulting imagery is 100x100 m), which resulted in sampling dataset of 2060 rows. Finer pixel size would result in a larger sampling dataset, which would require using moderating storage (see use case 2).  
 
 ```{r, echo = FALSE}
 load(file = "./reflectance_test_data") # restore previously saved pixel data
@@ -206,7 +211,7 @@ Let's have a look at the resulting data:
 head(reflectance)
 ```
 
-We have a dataframe which number of rows equal to the number of sampled "pixels" of satellite image, as well as 10 variables with reflectance values for each of optical band of Sentinel 2. Each sampled pixel has a label of surface class of user's polygon it intersected.
+We have a data frame with the number of rows equal to the number of sampled "pixels" of satellite image and 10 variables with reflectance values for each optical band of Sentinel 2. Each sampled pixel has a label of a surface class of the user's polygon it intersected.
 
 ### Visualize results
 
