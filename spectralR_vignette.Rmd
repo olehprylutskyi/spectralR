@@ -324,13 +324,9 @@ library(spectralR)
 ```
 
 Upload and process vector data
-```{r, eval = FALSE}
+```{r}
 # Extract polygons from shapefile and prepare sf object with proper structure
-sf_df <- prepare.vector.data(system.file("shapes/SouthernBuh-habitats_shapefile.shp", package = "spectralR"), "eunis_2020")
-```
-
-```{r, include=FALSE}
-sf_df <- prepare.vector.data("./shapes/SouthernBuh-habitats_shapefile.shp", "eunis_2020")
+sf_df <- prepare.vector.data(system.file("data/SouthernBuh-habitats_shapefile.shp", package = "spectralR"), "eunis_2020")
 ```
 
 Explore resulting spatial object:
