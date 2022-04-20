@@ -12,7 +12,7 @@
 
 <meta name="author" content="Oleh Prylutskyi" />
 
-<meta name="date" content="2022-04-19" />
+<meta name="date" content="2022-04-20" />
 
 <title>spectralR: Spectral reflectance visualisations for user-defined areas</title>
 
@@ -141,7 +141,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <h1 class="title toc-ignore">spectralR: Spectral reflectance visualisations for user-defined areas</h1>
 <h4 class="author">Oleh Prylutskyi</h4>
-<h4 class="date">2022-04-19</h4>
+<h4 class="date">2022-04-20</h4>
 
 
 
@@ -225,7 +225,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Function <code>prepare.vector.data</code> takes shapefile with polygons of different classes of surface (habitats, crops, vegetation, etc.) and retrieves ready-for-sampling <code>sf</code> object. One should specify shapefile name (should be within working directory, using absolute paths were not tested) and the name of the field that contains class labels. The function extracts geometries of all polygons, marks them with custom labels (‘label’), and automatically assigns integer class ID (‘class’) for each entry. The last variable is required because the Google Earth Engine sampler respects only numerical class ID - don’t delete any field! Don’t panic, the resulting dataframe will be marked according to your custom labels, not hard-to-memorizable numbers.</p>
 <p>While preparing a shapefile with custom polygons (e.d., in <a href="https://qgis.org/en/site/">QGIS</a>), try to follow recommendations: * if possible, draw polygons in homogeneous landscapes, avoid class mixture; * keep geometries simple, if possible. Avoid multipolygons, holes inside polygons, etc.; * tiny polygons (same size as satellite imagery resolution or lesser) tend to prodice a stronger “edge effect”; * few big polygons are easier to process than a lot of small ones; * GEE has its own memory limitation, which may result in extended processing time.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract polygons from shapefile and prepare sf object with proper structure</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>sf_df <span class="ot">&lt;-</span> <span class="fu">prepare.vector.data</span>(<span class="fu">system.file</span>(<span class="st">&quot;shapes/test_shapefile.shp&quot;</span>, <span class="at">package =</span> <span class="st">&quot;spectralR&quot;</span>), <span class="st">&quot;veget_type&quot;</span>)</span></code></pre></div>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>sf_df <span class="ot">&lt;-</span> <span class="fu">prepare.vector.data</span>(<span class="fu">system.file</span>(<span class="st">&quot;data/test_shapefile.shp&quot;</span>, <span class="at">package =</span> <span class="st">&quot;spectralR&quot;</span>), <span class="st">&quot;veget_type&quot;</span>)</span></code></pre></div>
 <p>Explore resulting spatial object:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sf_df)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Simple feature collection with 6 features and 2 fields</span></span>
@@ -384,7 +384,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spectralR)</span></code></pre></div>
 <p>Upload and process vector data</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract polygons from shapefile and prepare sf object with proper structure</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>sf_df <span class="ot">&lt;-</span> <span class="fu">prepare.vector.data</span>(<span class="fu">system.file</span>(<span class="st">&quot;shapes/SouthernBuh-habitats_shapefile.shp&quot;</span>, <span class="at">package =</span> <span class="st">&quot;spectralR&quot;</span>), <span class="st">&quot;eunis_2020&quot;</span>)</span></code></pre></div>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>sf_df <span class="ot">&lt;-</span> <span class="fu">prepare.vector.data</span>(<span class="fu">system.file</span>(<span class="st">&quot;data/SouthernBuh-habitats_shapefile.shp&quot;</span>, <span class="at">package =</span> <span class="st">&quot;spectralR&quot;</span>), <span class="st">&quot;eunis_2020&quot;</span>)</span></code></pre></div>
 <p>Explore resulting spatial object:</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sf_df)</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Simple feature collection with 6 features and 2 fields</span></span>

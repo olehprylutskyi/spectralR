@@ -1,6 +1,6 @@
 ---
 title: "spectralR: Spectral reflectance visualisations for user-defined areas"
-author: "Oleh Prylutskyi"
+author: "Oleh Prylutskyi, Vladimir Mikryukov"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
