@@ -138,13 +138,9 @@ While preparing a shapefile with custom polygons (e.d., in [QGIS](https://qgis.o
 * few big polygons are easier to process than a lot of small ones;
 * GEE has its own memory limitation, which may result in extended processing time.
 
-```{r, eval = FALSE}
+```{r}
 # Extract polygons from shapefile and prepare sf object with proper structure
-sf_df <- prepare.vector.data(system.file("shapes/test_shapefile.shp", package = "spectralR"), "veget_type")
-```
-
-```{r, include=FALSE}
-sf_df <- prepare.vector.data("./shapes/test_shapefile.shp", "veget_type")
+sf_df <- prepare.vector.data(system.file("data/test_shapefile.shp", package = "spectralR"), "veget_type")
 ```
 
 Explore resulting spatial object:
@@ -153,7 +149,7 @@ head(sf_df)
 ```
 
 The example above uses an internal test shapefile. To use your own file, put all the shapefile into your working directory and use following syntax:
-```{r}
+```{r, eval = FALSE}
 # sf_df <- prepare.vector.data("your-shapefile-within-working-directory-name.shp", "name-of-the-field-with-class-labels")
 ```
 
@@ -328,13 +324,9 @@ library(spectralR)
 ```
 
 Upload and process vector data
-```{r, eval = FALSE}
+```{r}
 # Extract polygons from shapefile and prepare sf object with proper structure
-sf_df <- prepare.vector.data(system.file("shapes/SouthernBuh-habitats_shapefile.shp", package = "spectralR"), "eunis_2020")
-```
-
-```{r, include=FALSE}
-sf_df <- prepare.vector.data("./shapes/SouthernBuh-habitats_shapefile.shp", "eunis_2020")
+sf_df <- prepare.vector.data(system.file("data/SouthernBuh-habitats_shapefile.shp", package = "spectralR"), "eunis_2020")
 ```
 
 Explore resulting spatial object:
