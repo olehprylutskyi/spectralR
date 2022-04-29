@@ -49,16 +49,19 @@ Essential requirements:
 ## Essential preparations
 
 ### Install and set up `rgee`
+
 ```{r, eval = FALSE}
 remotes::install_github("r-spatial/rgee")
 ```
 
 Load the library:
+
 ```{r}
 library(rgee)
 ```
 
 It is necessary just once to complete the installation of the dependencies:
+
 ```{r, eval = FALSE}
 ee_install()
 ```
@@ -66,16 +69,19 @@ ee_install()
 If something went wrong at this step, see `rgee`'s [installation guide](https://r-spatial.github.io/rgee/index.html#installation)
 
 Check non-R dependencies
+
 ```{r, eval = FALSE}
 ee_check() 
 ```
 
 `rgee` developers recommend installing the version of the Earth Engine Python API which `rgee` was tested with, using the following command. Despite it calls "upgrade", it might actually downgrade your version of `earthengine_api`.
+
 ```{r, eval = FALSE}
 ee_install_upgrade()
 ```
 
 Initialize the Google Earth Engine API for current session:
+
 ```{r, eval = FALSE}
 ee_Initialize()
 ```
@@ -108,7 +114,7 @@ install_github("olehprylutskyi/spectralR")
 
 --------------------------------------------------------
 
-We offer two use-cases for getting users familiar with the functionality of spectralR. The first one is a small-size area in the Kharkiv region, Ukraine, where National Park "Homilsha Forests" is situated, with 8 polygons for 5 land use classes -- let's call it "small data". The second - a "large data" - is the 380 hand-drawing polygons of 26 different habitat types (according to the EUNIS classification system) of Buzky Gard National Park, Mykolaiv region, Ukraine. End users don't expect to notice large differences in workflow, but under the hood we implemented two different algorithms for either "small" or "large" spatial data, which will be explained later.
+We offer two use-cases for getting users familiar with the functionality of `spectralR`. The first one is a small-size area in the Kharkiv region, Ukraine, where National Park "Homilsha Forests" is situated, with 8 polygons for 5 land use classes -- let's call it "small data". The second - a "large data" - is the 380 hand-drawing polygons of 26 different habitat types (according to the EUNIS classification system) of Buzkyi Gard National Park, Mykolaiv region, Ukraine. End users don't expect to notice large differences in workflow, but under the hood we implemented two different algorithms for either "small" or "large" spatial data, which will be explained later.
 
 ## Use case 1. Basic habitat types of 'Homilsha Forests' National Park and neighborhoods.
 
@@ -148,7 +154,8 @@ Explore resulting spatial object:
 head(sf_df)
 ```
 
-The example above uses an internal test shapefile. To use your own file, put all the shapefile into your working directory and use following syntax:
+The example above uses an internal test shapefile. To use your own file, put all the shapefile into your working directory and use following syntax (uncomment the row and change file names before executing):
+
 ```{r, eval = FALSE}
 # sf_df <- prepare.vector.data("your-shapefile-within-working-directory-name.shp", "name-of-the-field-with-class-labels")
 ```
@@ -162,7 +169,7 @@ One of the most tricky and issues-causing steps of this procedure is the convers
 - using Google Drive (`getInfo_to_asset`)
 - using Google Cloud Storage (`gcs_to_asset`)
 
-The first one is the most straightforward and quick, but usable only for small data (less than 15000 entries, or 1.5 MB local files). The other two require transient storage to store your data between conversions (because Earth Engine is Google's service and seamlessly integrated with plenty of Google services).
+The first one is the most straightforward and quick, but usable only for small data (less than 15000 entries, or 1.5 MB size local files). The other two require transient storage to store your data between conversions (because Earth Engine is Google's service and seamlessly integrated with plenty of Google services).
 
 In `spectralR`, we use the first two methods. `get.pixel.data` assesses the size of your `sf` object or feature collection, then activates either `getInfo` or `getInfo_to_asset` pathway. If you data is considered being "small", `getInfo` will be used and you will notice nothing special. But, if your data is larger than our arbitrary threshold, the method `getInfo_to_asset` will be activated, and you may be prompted to authorize in Google Drive and allow `rgee` to access GDrive files and folders. In such a case, please follow instructions in the R console and then in your web-browser. You may do it once you perform your first large query, - you credits will be stored in your local `earthengine` environment.
 
@@ -184,9 +191,9 @@ satellite imageries will be filtered;
 
 The Resulting pixel data will be saved within a working directory and can be loaded during the next sessions.
 
-**Note 1**. Particular satellite imagery is typically not ready for instant sampling - it contains clouds, cloud shadows, aerosols, and may cover not all the territory of your interest. Another issue is that each particular pixel slightly differs in reflectance between images taken on different days due to differences in atmospheric conditions and angle of sunlight at the moments images were taken. The Google Earth Engine has its own build-in algorithms for image pre-processing, atmospheric corrections and mosaicing, which allows to obtain a ready-to-use, rectified image. The approach used in `spectralR` is to find a median value for each pixel between several images within each of 10 optical bands, thereby making a composite image. To define a set of imageries between which we are going to calculate the median, we should set a timespan of image collection. Sentinel-2 apparatus takes picture once a 5 days, so if you set up month-long timesnap, you can expect that each pixel value will be calculated based on 5 to 6 values (remember, some images might appear unsatisfactory cloudy).
+**Note 1**. Particular satellite imagery is usually not ready for instant sampling -- it contains clouds, cloud shadows, aerosols, and may cover not all the territory of your interest. Another issue is that each particular pixel slightly differs in reflectance between images taken on different days due to differences in atmospheric conditions and angle of sunlight at the moments images were taken. The Google Earth Engine has its own build-in algorithms for image pre-processing, atmospheric corrections and mosaicing, which allows one to obtain a ready-to-use, rectified image. The approach used in `spectralR` is to find a median value for each pixel between several images within each of 10 optical bands, thereby making a composite image. To define a set of imageries between which we are going to calculate the median, we should set a timespan of image collection. Sentinel-2 apparatus takes picture once a 5 days, so if you set up month-long timesnap, you can expect that each pixel value will be calculated based on 5 to 6 values (remember, some images might appear unsatisfactory cloudy).
 
-**Note 2**. The finest resolution for Sentinel data is 10 m, while using larger-scale values decreases the required computational resources and size of the resulting data frame. Although sampling satellite data performs in a cloud, there are some limitations for geocalculations placed by GEE itself. If you are about to sample large areas, consider setting a higher 'scale' value (e.g., 100, 1000). Read more in GEE [best practices](https://developers.google.com/earth-engine/guides/best_practices).
+**Note 2**. The finest resolution for Sentinel data is 10 m, while using larger-scale values decreases the required computational resources and size of the resulting data frame. Although sampling satellite data is performed in a cloud, there are some limitations for geocalculations placed by GEE itself. If you are about to sample large areas, consider setting a higher 'scale' value (e.g., 100, 1000). Read more in GEE [best practices](https://developers.google.com/earth-engine/guides/best_practices).
 
 ```{r, collapse = TRUE, eval = FALSE}
 # Get pixel data
@@ -203,17 +210,21 @@ load(file = "./reflectance_test_data") # restore previously saved pixel data
 ```
 
 Let's have a look at the resulting data:
+
 ```{r}
 head(reflectance)
 ```
 
 We have a data frame with the number of rows equal to the number of sampled "pixels" of satellite image and 10 variables with reflectance values for each optical band of Sentinel 2. Each sampled pixel has a label of a surface class of the user's polygon it intersected.
 
+Note: `spectralR` receive true values of reflectance (between 0 and 1), transforming **GEE**'s own values (multiplied by 10000 for calculation convenience).
+
 ### Visualize results
 
 First of all, one should explore the quality and comprehensiveness of obtained pixel data.
+
 ```{r}
-load(file = "./reflectance_test_data") # restore previously saved pixel data
+# load(file = "./reflectance_test_data") # restore previously saved pixel data
 
 summary(factor(reflectance$label)) # how many pixels in each class? 
 ```
@@ -221,6 +232,7 @@ summary(factor(reflectance$label)) # how many pixels in each class?
 For reliable results, it is recommended to keep similar size of each surface class. Classes which represented by few sampled pixels, should be excluded from the further analysis.
 
 Visual overview of pixel data
+
 ```{r, fig.align='center', fig.width=7, fig.height=5}
 # Number of spectral values for different classes
 ggplot(reflectance, aes(x=label))+
@@ -234,6 +246,7 @@ ggplot(reflectance, aes(x=label))+
 Function `spectral.reflectance.curve` transform the data and plot smoother curves for each surface class, using `ggplot2`'s `geom_smooth()` aesthetics. For large (thousands of rows) data (and we need large data for reliable conclusions!), `ggplot2` uses *GAM* method for drawing a trendline.
 
 Depending on the data size, it may take some time to process.
+
 ```{r, fig.align='center', fig.width=7, fig.height=5}
 # Make a ggplot object
 p1 <- spectral.curves.plot(reflectance)
@@ -243,6 +256,7 @@ p1
 ```
 
 Since the output of `spectral.curves.plot` is `ggplot` object, we can apply any tools provided by `ggplot2` package to make it more visually pleasant.
+
 ```{r, fig.align='center', fig.width=7, fig.height=5}
 # Customized plot
 p1+
@@ -255,6 +269,7 @@ p1+
 ```
 
 You can save the plot as a *.png (or other common graphical formats) file using `ggsave` or `png()` functions
+
 ```{r}
 ggsave("Spectral_curves_usecase1.png", width=16, height=12, unit="cm", dpi=300)
 ```
@@ -272,7 +287,8 @@ p2 <- stat.summary.plot(reflectance)
 p2
 ```
 
-Add a touch of customization and save as a picture.
+Add a touch of customization.
+
 ```{r, , fig.align='center', fig.width=7, fig.height=5}
 # Customized plot
 p2 + 
@@ -284,11 +300,12 @@ p2 +
 ```
 
 Save the plot as a *.png file
+
 ```{r}
 ggsave("Statsummary_usecase1.png", width=16, height=12, unit="cm", dpi=300)
 ```
 
-Function `violin.plot` helps to visualize a reflectance as violin plots for each surface class per satellite bands. It gets reflectance data as input and return ggplot2 object with basic visual aesthetics. Default aesthetics is [geom_violin](https://ggplot2.tidyverse.org/reference/geom_violin.html).
+Function `violin.plot` helps to visualize a reflectance as violin plots for each surface class per satellite bands. It gets reflectance data as input and return *ggplot2* object with basic visual aesthetics. Default aesthetics is [geom_violin](https://ggplot2.tidyverse.org/reference/geom_violin.html).
 
 ```{r, error=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.width=7, fig.height=5}
 # Make a ggplot object
@@ -306,9 +323,12 @@ p3 +
 ggsave("Violins_usecase1.png", width=22, height=16, unit="cm", dpi=300)
 ```
 
-## Use case 2. Habitats of Buzky Gard National Park, Mykolaiv region, Ukraine.
+## Use case 2. Habitats of Buzkyi Gard National Park, Mykolaiv region, Ukraine.
+
+[**Buzkyi Gard National Park**](https://en.wikipedia.org/wiki/Buzk%27s_Gard_National_Nature_Park) locates in Southern Bug valley (south-western Ukraine, 31.08325,47.90720). Field inventory allowed to reveal 26 different habitat types (according to the EUNIS classification system) in the territory of the Park and in the vicinity, i.e. a wide range of gry grasslands, rocky outcrops, steppe forests. Artificial habitat types, like croplands or human settlements, are also included. Ground truth data contains 380 polygons with known habitat type.
 
 Environment preparation
+
 ```{r, error=FALSE, warning=FALSE, message=FALSE}
 # Reset R's brain before new analysis session started. It will erase all the objects stored in 
 # R memory, while keep loaded libraries.
@@ -323,18 +343,21 @@ library(reshape2)
 library(spectralR)
 ```
 
-Upload and process vector data
+Upload and process vector data.
+
 ```{r}
 # Extract polygons from shapefile and prepare sf object with proper structure
 sf_df <- prepare.vector.data(system.file("data/SouthernBuh-habitats_shapefile.shp", package = "spectralR"), "eunis_2020")
 ```
 
 Explore resulting spatial object:
+
 ```{r}
 head(sf_df)
 ```
 
 Get reflectance values
+
 ```{r, eval = FALSE}
 reflectance = get.pixel.data(sf_df, "2019-05-15", "2019-06-30", 10, 10)
 
@@ -342,14 +365,20 @@ reflectance = get.pixel.data(sf_df, "2019-05-15", "2019-06-30", 10, 10)
 save(reflectance, file = "reflectance_BG_data") 
 ```
 
+Habitats of the Southern Bug valley often cover a small area (especiealy rocky outcrops, grasslands, etc.). Therefore, lots of polygons a quite small -- up to 1 ha -- and have an irregular shape. In such cases we recommend decrease scale values (pixel size), approaching minimum value (10 m). That will, on the other hand, require more computational power and processing time.
+
 Quantitative overview of pixel data
+
 ```{r}
 load(file = "./reflectance_BG_data") # restore previously saved pixel data
 
 summary(factor(reflectance$label)) # how many pixels in each class?
 ```
 
+With "big data", `spectralR` uses your Google Drive as an intermittent storage between **R** and **GEE**. Please take care about having enough storage in the Drive and purge *rgee_backup* diectory in your Drive manually time-to-time.
+
 Spectral reflectance curves for different habitat types
+
 ```{r, fig.align='center', fig.width=7, fig.height=5}
 # Create basic ggplot object
 p1 <- spectral.curves.plot(reflectance)
@@ -365,6 +394,7 @@ p1+
 ```
 
 Statistical summary for each habitat type
+
 ```{r, fig.align='center', fig.width=7, fig.height=5}
 # Create basic ggplot object
 p2 <- stat.summary.plot(reflectance)
@@ -379,6 +409,7 @@ p2 +
 ```
 
 Create violin plots for given habitat types
+
 ```{r, error=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.width=7, fig.height=5}
 # Create basic ggplot object
 p3 <- violin.plot(reflectance)
@@ -393,3 +424,9 @@ p3 +
 ```
 
 You also can save and/or transform resulting ggplot objects as you wish, using `ggplot2` and `tidyverse` syntax.
+
+***
+
+If you have any feedback, please let us know via [GitHub Issues](https://github.com/olehprylutskyi/spectralR/issues) or [e-mail](oleh.prylutskyi@gmail.com).
+
+`spectralR` development team. GPL-3.0 License. Updated 2022-04
