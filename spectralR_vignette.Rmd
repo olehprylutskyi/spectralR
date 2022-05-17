@@ -54,7 +54,8 @@ Essential requirements:
 ### Install and set up `rgee`
 
 ```{r, eval = FALSE}
-remotes::install_github("r-spatial/rgee")
+install.packages('rgee') # install regular version from CRAN, more stable
+# remotes::install_github("r-spatial/rgee") # to install development version, more recent
 ```
 
 Load the library:
@@ -517,6 +518,6 @@ using `ggplot2` and `tidyverse` syntax.
 
 If you have any feedback, please let us know via [GitHub
 Issues](https://github.com/olehprylutskyi/spectralR/issues) or
-[e-mail](oleh.prylutskyi@gmail.com).
+[e-mail](mailto:oleh.prylutskyi@gmail.com).
 
 `spectralR` development team. GPL-3.0 License. Updated 2022-04
