@@ -44,5 +44,7 @@ spectral.curves.plot <- function(data){
                              levels = c("B2","B3","B4","B5","B6","B7","B8","B8A","B11","B12"))) %>%
     na.omit() %>%
     ggplot(aes(x=dummy_wavelength, y= value, colour = label))+
-    geom_smooth(aes(fill = label), method = 'gam', formula = 'y ~ s(x, bs = "cs")', se = TRUE)
+    geom_smooth(aes(fill = label), method = 'gam', formula = y ~ s(x, bs = "cs"), se = TRUE)
+
+  return(p)
 }
