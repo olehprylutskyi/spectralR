@@ -18,4 +18,4 @@ BugReports: https://github.com/olehprylutskyi/spectralR/issues
 URL: https://github.com/olehprylutskyi/spectralR/
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0
