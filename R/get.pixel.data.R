@@ -127,8 +127,8 @@ get.pixel.data <- function(sf_data, startday, endday, cloud_threshold, scale_val
   }
 
   # make a list of label values (types of surface) and its numerical IDs
-  classes_cheatsheet <- as.data.frame(levels(factor(sf_df$label)))
-  classes_cheatsheet$class <- rownames(as.data.frame(levels(factor(sf_df$label))))
+  classes_cheatsheet <- as.data.frame(levels(factor(sf_data$label)))
+  classes_cheatsheet$class <- rownames(as.data.frame(levels(factor(sf_data$label))))
   colnames(classes_cheatsheet) <- c("label", "class")
   classes_cheatsheet <-  classes_cheatsheet %>%
     mutate(across(label, as.factor)) %>%
