@@ -1,4 +1,4 @@
-#' Reflectance per bands as violin plots for each surface class
+#' Create violin plots of reflectance per band for each surface class
 #'
 #' @param data reflectance data as dataframe with pixel values for Sentinel optical bands
 #' B2, B3, B4, B5, B6, B7, B8, B8A, B11, B12

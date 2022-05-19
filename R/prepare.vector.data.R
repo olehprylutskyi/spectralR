@@ -1,7 +1,7 @@
 #' Prepare vector data for further reflectance data sampling
 #'
-#'Function takes shapefile with polygons of different classes of surface (habitats, crops,
-#'vegetation, etc.), and retrieves ready-for-sampling sf object.
+#' The function takes shapefile with polygons of different surface classes (habitats, crops,
+#' vegetation, etc.), and retrieves ready-for-sampling sf object.
 
 #' @param shapefile_name shapefile name (should be within working directory, using absolute
 #' paths were not tested)
