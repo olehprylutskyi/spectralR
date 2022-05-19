@@ -12,7 +12,9 @@ Imports:
     geojsonio (>= 0.9.4),
     sf (>= 1.0-7),
     tidyverse (>= 1.3.1),
-    ggplot2 (>= 3.3.5)
+    ggplot2 (>= 3.3.5),
+    reshape2 (>= 1.4.0),
+    tibble (>= 3.1.0)
 License: GPL-3 + file LICENSE
 BugReports: https://github.com/olehprylutskyi/spectralR/issues
 URL: https://github.com/olehprylutskyi/spectralR/
