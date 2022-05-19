@@ -10,6 +10,7 @@
 #' @return sf object with label (characters) and class (integer) variables, as well as geometry of each polygon,
 #' ready to further processing by rgee.
 #' @export
+#' @import sf dplyr
 #'
 #' @examples
 #' sf_df <- prepare.vector.data(

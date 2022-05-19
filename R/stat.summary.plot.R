@@ -12,6 +12,7 @@
 #' https://en.wikipedia.org/wiki/Sentinel-2
 #'
 #' @export
+#' @import tibble reshape2 dplyr ggplot2 stats
 #'
 #' @examples
 #' p2 <- stat.summary.plot(

@@ -18,7 +18,7 @@
 #'
 #' Note 1.
 #' Particular satellite imagery is typically not ready for instant analysis - it contains clouds,
-#' cloud shadows, aerosols, and may cover not all the territory of your interest. 
+#' cloud shadows, aerosols, and may cover not all the territory of your interest.
 #' Another issue is that each particular pixel slightly differs in reflectance
 #' between images taken on different days due to differences in atmospheric conditions and angle
 #' of sunlight at the moments images were taken. Google Earth Engine has its own build-in
@@ -27,7 +27,7 @@
 #' value for each pixel between several images within each of 10 optical bands and thereby make a
 #' composite image. To define a set of imageries between which we will calculate the median,
 #' we should set a timespan defining starting and final days. Sentinel-2 apparatus takes a picture
-#' once a 5 days, so if you set up a month-long timesnap, you can expect each pixel value to be 
+#' once a 5 days, so if you set up a month-long timesnap, you can expect each pixel value to be
 #' calculated based on 5 to 6 values.
 #'
 #' Note 2.
@@ -41,6 +41,7 @@
 #' More about GEE best practices: https://developers.google.com/earth-engine/guides/best_practices
 #'
 #' @export
+#' @import sf rgee dplyr
 #'
 #' @examples
 #' reflectance <-  get.pixel.data(

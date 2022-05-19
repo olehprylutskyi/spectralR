@@ -7,7 +7,9 @@
 #' intervals for each surface class. Default aesthetic is smoother curve (geom_smooth).
 #' May be time-consuming depending on input dataframe size.
 #' See https://ggplot2.tidyverse.org/reference/geom_smooth.html for more details.
+#'
 #' @export
+#' @import tibble reshape2 dplyr ggplot2
 #'
 #' @examples
 #' p1 <- spectral.curves.plot(

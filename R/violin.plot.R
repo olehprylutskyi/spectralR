@@ -6,7 +6,9 @@
 #' @return ggplot2 object with basic visual aesthetics. Default aesthetics is
 #' violin plot for each satellite band (geom_violin).
 #' See https://ggplot2.tidyverse.org/reference/geom_violin.html for more details.
+#'
 #' @export
+#' @import tibble reshape2 dplyr ggplot2 stats
 #'
 #' @examples
 #' p3 <- violin.plot(
