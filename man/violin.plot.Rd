@@ -2,7 +2,7 @@
 % Please edit documentation in R/violin.plot.R
 \name{violin.plot}
 \alias{violin.plot}
-\title{Reflectance per bands as violin plots for each surface class}
+\title{Create violin plots of reflectance per band for each surface class}
 \usage{
 violin.plot(data)
 }
@@ -16,7 +16,7 @@ violin plot for each satellite band (geom_violin).
 See https://ggplot2.tidyverse.org/reference/geom_violin.html for more details.
 }
 \description{
-Reflectance per bands as violin plots for each surface class
+Create violin plots of reflectance per band for each surface class
 }
 \examples{
 p3 <- violin.plot(

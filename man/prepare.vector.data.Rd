@@ -17,7 +17,7 @@ sf object with label (characters) and class (integer) variables, as well as geom
 ready to further processing by rgee.
 }
 \description{
-Function takes shapefile with polygons of different classes of surface (habitats, crops,
+The function takes shapefile with polygons of different surface classes (habitats, crops,
 vegetation, etc.), and retrieves ready-for-sampling sf object.
 }
 \examples{
