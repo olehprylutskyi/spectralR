@@ -12,6 +12,7 @@
 #' @import tibble reshape2 dplyr ggplot2
 #'
 #' @examples
+#' \dontrun{
 #' p1 <- spectral.curves.plot(
 #'   data = reflectance
 #'   )
@@ -25,6 +26,7 @@
 #'       title = "Spectral reflectance curves for different classes of surface",
 #'       caption = 'Data: Sentinel-2 Level-2A')+
 #'  theme_minimal()
+#'  }
 spectral.curves.plot <- function(data){
   # Create "dummy" wavelength object, containing mean wavelengths (nm) for Sentinel 2A
   # (https://en.wikipedia.org/wiki/Sentinel-2), for bands 2-12

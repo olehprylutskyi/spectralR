@@ -44,6 +44,7 @@
 #' @import sf rgee dplyr geojsonio
 #'
 #' @examples
+#' \dontrun{
 #' reflectance <-  get.pixel.data(
 #'   sf_data = sf_df,
 #'   startday = "2019-05-15",
@@ -52,6 +53,7 @@
 #'   scale_value = 100)
 #'
 #' head(reflectance)
+#' }
 get.pixel.data <- function(sf_data, startday, endday, cloud_threshold, scale_value){
   ee_Initialize()
   ee_df <-  sf_as_ee(sf_data) # convert sf to ee featureCollection object

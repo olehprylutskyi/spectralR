@@ -17,6 +17,7 @@
 #' @importFrom stats sd
 #'
 #' @examples
+#' \dontrun{
 #' p2 <- stat.summary.plot(
 #'   data = reflectance
 #'   )
@@ -29,6 +30,7 @@
 #'       title = "Reflectance for different surface classes",
 #'       caption='Data: Sentinel-2 Level-2A\nmean ± standard deviation')+
 #'    theme_minimal()
+#' }
 stat.summary.plot <- function(data){
   # Create "dummy" wavelength object, containing mean wavelengths (nm) for Sentinel 2A
   # (https://en.wikipedia.org/wiki/Sentinel-2), for bands 2-12
