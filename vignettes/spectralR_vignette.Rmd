@@ -162,7 +162,7 @@ While preparing a shapefile with custom polygons (e.d., in [QGIS](https://qgis.o
 
 ```{r}
 # Extract polygons from shapefile and prepare sf object with proper structure
-sf_df <- prepare.vector.data(system.file("data/test_shapefile.shp", package = "spectralR"), "veget_type")
+sf_df <- prepare.vector.data(system.file("extdata/test_shapefile.shp", package = "spectralR"), "veget_type")
 ```
 
 Explore resulting spatial object:
@@ -428,7 +428,7 @@ Upload and process vector data.
 
 ```{r}
 # Extract polygons from shapefile and prepare sf object with proper structure
-sf_df <- prepare.vector.data(system.file("data/SouthernBuh-habitats_shapefile.shp", package = "spectralR"), "eunis_2020")
+sf_df <- prepare.vector.data(system.file("extdata/SouthernBuh-habitats_shapefile.shp", package = "spectralR"), "eunis_2020")
 ```
 
 Explore the resulting spatial object:
