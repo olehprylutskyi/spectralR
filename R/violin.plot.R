@@ -8,7 +8,7 @@
 #' See https://ggplot2.tidyverse.org/reference/geom_violin.html for more details.
 #'
 #' @export
-#' @import tibble reshape2 dplyr ggplot2 stats
+#' @import tibble reshape2 dplyr tidyr ggplot2
 #' @importFrom stats na.omit
 #'
 #' @examples
