@@ -90,7 +90,7 @@ Initialize the Google Earth Engine API for current session:
 ee_Initialize()
 ```
 
-At this step, you would be prompted to link your Google Earth Engine account with `rgee`. Follow instructions in the R console, and you will be redirected to a web browser for logging into your Google Earth Engine account to confirm access rights. An authorization code generated during this step should be pasted into R console to finalize authentification.
+At this step, you would be prompted to link your Google Earth Engine account with `rgee`. Follow instructions in the R console, and you will be redirected to a web browser for logging into your Google Earth Engine account to confirm access rights. An authorization code generated during this step should be pasted into R console to finalize authentication.
 
 If everything is OK at the last step and you see a message of successful initiation of API with your GEE username in the console, - congratulations, you managed to install and configure `rgee`!
 
