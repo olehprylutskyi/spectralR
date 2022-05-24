@@ -9,6 +9,7 @@
 #'
 #' @export
 #' @import tibble reshape2 dplyr ggplot2 stats
+#' @importFrom stats na.omit
 #'
 #' @examples
 #' p3 <- violin.plot(
