@@ -24,7 +24,7 @@ the polygons.
 
 Note 1.
 Particular satellite imagery is typically not ready for instant analysis - it contains clouds,
-cloud shadows, aerosols, and may cover not all the territory of your interest. 
+cloud shadows, aerosols, and may cover not all the territory of your interest.
 Another issue is that each particular pixel slightly differs in reflectance
 between images taken on different days due to differences in atmospheric conditions and angle
 of sunlight at the moments images were taken. Google Earth Engine has its own build-in
@@ -33,7 +33,7 @@ obtain a ready-to-use, rectified image. The approach used in this script is to f
 value for each pixel between several images within each of 10 optical bands and thereby make a
 composite image. To define a set of imageries between which we will calculate the median,
 we should set a timespan defining starting and final days. Sentinel-2 apparatus takes a picture
-once a 5 days, so if you set up a month-long timesnap, you can expect each pixel value to be 
+once a 5 days, so if you set up a month-long timesnap, you can expect each pixel value to be
 calculated based on 5 to 6 values.
 
 Note 2.
@@ -53,6 +53,7 @@ for each optical band of Sentinel-2 sensor, marked according to the label of sur
 class from the polygons.
 }
 \examples{
+\dontrun{
 reflectance <-  get.pixel.data(
   sf_data = sf_df,
   startday = "2019-05-15",
@@ -61,4 +62,5 @@ reflectance <-  get.pixel.data(
   scale_value = 100)
 
 head(reflectance)
+}
 }

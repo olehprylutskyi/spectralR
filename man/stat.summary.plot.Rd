@@ -24,6 +24,7 @@ Make a plot with statistical summary of reflectance values (mean, mean-standard 
 mean+standard deviation) for defined classes of surface
 }
 \examples{
+\dontrun{
 p2 <- stat.summary.plot(
   data = reflectance
   )
@@ -36,4 +37,5 @@ p2 +
       title = "Reflectance for different surface classes",
       caption='Data: Sentinel-2 Level-2A\nmean ± standard deviation')+
    theme_minimal()
+}
 }

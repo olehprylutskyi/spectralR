@@ -20,6 +20,7 @@ See https://ggplot2.tidyverse.org/reference/geom_smooth.html for more details.
 Make spectral reflectance curves for defined classes of surface
 }
 \examples{
+\dontrun{
 p1 <- spectral.curves.plot(
   data = reflectance
   )
@@ -33,4 +34,5 @@ p1+
       title = "Spectral reflectance curves for different classes of surface",
       caption = 'Data: Sentinel-2 Level-2A')+
  theme_minimal()
+ }
 }

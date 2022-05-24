@@ -21,9 +21,11 @@ The function takes shapefile with polygons of different surface classes (habitat
 vegetation, etc.), and retrieves ready-for-sampling sf object.
 }
 \examples{
+\dontrun{
 sf_df <- prepare.vector.data(
   shapefile_name = "test_shapefile.shp",
   label_field = "veget_type")
 
 head(sf_df)
+}
 }

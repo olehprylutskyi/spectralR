@@ -19,6 +19,7 @@ See https://ggplot2.tidyverse.org/reference/geom_violin.html for more details.
 Create violin plots of reflectance per band for each surface class
 }
 \examples{
+\dontrun{
 p3 <- violin.plot(
   data = reflectance
   )
@@ -31,4 +32,5 @@ p3 +
       title = "Reflectance for different surface classes",
       caption='Data: Sentinel-2 Level-2A')+
    theme_minimal()
+}
 }
