@@ -41,7 +41,7 @@
 #' More about GEE best practices: https://developers.google.com/earth-engine/guides/best_practices
 #'
 #' @export
-#' @import sf rgee dplyr
+#' @import sf rgee dplyr geojsonio
 #'
 #' @examples
 #' reflectance <-  get.pixel.data(
