@@ -108,9 +108,7 @@ then proceed instruction appeared in R console, which will help you to delete yo
 
 ### Installation of the other dependencies
 
-```{r, eval = FALSE}
-install.packages("geojsonio")
-```
+`spectralR` was designed on top of `rgee`, `sf`, and `ggplot2` R packages, which are you should install and set up before using `spectralR`. Whilst the other dependencies may be installed automatically during `spectralR` installation process, it is strongly recommended to check also if packages `geojsonio`, `dplyr`, `reshape2`, `tibble`, and `tidyr` are installed and work properly.
 
 ### Installation of spectralR
 
