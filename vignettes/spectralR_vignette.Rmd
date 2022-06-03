@@ -254,7 +254,7 @@ Here we choose the 100 m scale (pixel size for resulting imagery is
 size would result in a larger sampling dataset, which would require
 using moderating storage (see use case 2).
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, eval = FALSE}
 load(file = "./reflectance_test_data") # restore previously saved pixel data
 ```
 
@@ -462,8 +462,6 @@ and processing time.
 Quantitative overview of pixel data
 
 ```{r}
-load(file = "./reflectance_BG_data") # restore previously saved pixel data
-
 summary(factor(reflectance$label)) # how many pixels in each class?
 ```
 
