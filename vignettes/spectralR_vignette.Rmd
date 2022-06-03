@@ -247,6 +247,10 @@ reflectance = get.pixel.data(sf_df, "2019-05-15", "2019-06-30", 10, 100)
 save(reflectance, file = "reflectance_test_data")
 ```
 
+```{r, include = FALSE}
+load(file = "../inst/testdata/reflectance_test_data.RData")
+```
+
 Here we choose the 100 m scale (pixel size for resulting imagery is
 100x100 m), which resulted in a sampling dataset of 2060 rows. Finer pixel
 size would result in a larger sampling dataset, which would require
@@ -444,6 +448,10 @@ reflectance = get.pixel.data(sf_df, "2019-05-15", "2019-06-30", 10, 10)
 
 # save pixel data for further sessions
 save(reflectance, file = "reflectance_BG_data") 
+```
+
+```{r, include = FALSE}
+load(file = "../inst/testdata/reflectance_BG_data.RData")
 ```
 
 The Southern Bug valley habitats often cover a small area (especially
