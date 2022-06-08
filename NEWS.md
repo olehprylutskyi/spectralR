@@ -1,5 +1,5 @@
 
-# spectralR 0.1.0
+# spectralR 0.1.1
 
 * Initial release version
 
