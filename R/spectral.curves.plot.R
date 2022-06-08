@@ -3,6 +3,9 @@
 #' @param data reflectance data as dataframe with pixel values for Sentinel optical bands
 #' B2, B3, B4, B5, B6, B7, B8, B8A, B11, B12
 #'
+#' @param target_classes list of the classes of surface which should be highlighted, others
+#' will be turned in gray, as a background. Defaults is NULL.
+#'
 #' @return ggplot2 object with basic visual aesthetics, represents smoother lines with confidence
 #' intervals for each surface class. Default aesthetic is smoother curve (geom_smooth).
 #' May be time-consuming depending on input dataframe size.
@@ -13,21 +16,28 @@
 #'
 #' @examples
 #' \dontrun{
-#' p1 <- spectral.curves.plot(
+#' p <- spectral.curves.plot(
 #'   data = reflectance
 #'   )
 #'
-#' p1
+#' p
 #'
-#' p1+
+#' p +
 #'  labs(x = 'Wavelength, nm', y = 'Reflectance',
 #'       colour = "Surface classes",
 #'       fill = "Surface classes",
 #'       title = "Spectral reflectance curves for different classes of surface",
 #'       caption = 'Data: Sentinel-2 Level-2A')+
 #'  theme_minimal()
+#'
+#'  p <- spectral.curves.plot(
+#'   data = reflectance,
+#'   target_classes = list("C2.2", "C2.3", "J5")
+#'   )
+#'
+#'  p
 #'  }
-spectral.curves.plot <- function(data){
+spectral.curves.plot <- function(data, target_classes = NULL){
   # Create "dummy" wavelength object, containing mean wavelengths (nm) for Sentinel 2A
   # (https://en.wikipedia.org/wiki/Sentinel-2), for bands 2-12
 
@@ -37,7 +47,7 @@ spectral.curves.plot <- function(data){
   colnames(waves)[1] <-  "variable"
 
   # Reshape the dataframe to make it appropriate to ggplot2 syntax
-  p <- tibble::as_tibble(data) %>%
+  df <- tibble::as_tibble(data) %>%
     reshape2::melt(id = "label") %>%
     left_join(as.data.frame(waves)) %>%
     mutate(across(label, as.factor)) %>%
@@ -46,9 +56,32 @@ spectral.curves.plot <- function(data){
     mutate(across(value, as.numeric)) %>%
     mutate(variable = factor(variable,
                              levels = c("B2","B3","B4","B5","B6","B7","B8","B8A","B11","B12"))) %>%
-    na.omit() %>%
-    ggplot(aes(x=dummy_wavelength, y= value, colour = label))+
-    geom_smooth(aes(fill = label), method = 'gam', formula = y ~ s(x, bs = "cs"), se = TRUE)
+    na.omit()
+
+  if (is.null(target_classes)) {
+    target_classes = as.list(levels(df$label))
+  } else {
+    target_classes = target_classes
+  }
+
+  if (length(target_classes) < length(levels(df$label))) {
+    # Create a subset for target classes only
+    target <- df %>%
+      filter(label %in% target_classes)
+    # Create a subset for the rest of the classes
+    background <- df %>%
+      filter(!label %in% target_classes)
+    # Make a plot
+    p <- ggplot()+
+      geom_smooth(data = background, aes(x = dummy_wavelength, y = value, group = label),
+                  colour = "gray", fill = "gray",
+                  method = 'gam', formula = y ~ s(x, bs = "cs"), se = TRUE) +
+      geom_smooth(data = target, aes(x=dummy_wavelength, y= value, colour = label, fill=label),
+                  method = 'gam', formula = y ~ s(x, bs = "cs"), se = TRUE)
+  } else {
+    p <- ggplot(df, aes(x=dummy_wavelength, y= value, colour = label))+
+      geom_smooth(aes(fill = label), method = 'gam', formula = y ~ s(x, bs = "cs"), se = TRUE)
+  }
 
   return(p)
 }
