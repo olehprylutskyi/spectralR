@@ -476,7 +476,7 @@ Spectral reflectance curves for different habitat types
 p1 <- spectral.curves.plot(reflectance)
 
 # Plotting
-p1+
+p1 +
   labs(x = 'Wavelength, nm', y = 'Reflectance',
        colour = "Habitat types",
        fill = "Habitat types",
@@ -484,6 +484,49 @@ p1+
        caption = 'Data: Sentinel-2 Level-2A')+
   theme_minimal()
 ```
+
+Plot above, unlike the one from use-case 1, looks messy and hard to read, because of large number of surface classes (habitat types). To make the resulting plot easier to comprehend, both functions `spectral.curves.plot` and `stat.summary.plot` have an argument *target_classes*, which takes as an input the list of the classes of surface which should be highlighted, while others will be turned in gray, as a background. Defaults value is NULL - all the classes would be colorized, as above. Let's give it a try.
+
+```{r, fig.align='center', fig.width=7, fig.height=5}
+p1_1 <- spectral.curves.plot(
+  data = reflectance, 
+  target_classes = list("C2.2", "C2.3", "J5")
+  )
+
+# Plotting
+p1_1 +
+  labs(x = 'Wavelength, nm', y = 'Reflectance',
+       colour = "Habitat types",
+       fill = "Habitat types",
+       title = "Spectral reflectance curves for different habitat types\nSouthern Bug National park, Ukraine",
+       caption = 'Data: Sentinel-2 Level-2A')+
+  theme_minimal()
+```
+
+Not to mention, that the user is able to filter input data to obtain what they want. 
+Suppose we need only grasslands in our reflectance plot (habitats which code started from R), and want to highlight the differences/similarity in spectral reflectance of Continental dry grasslands (true steppe, type R1B).
+
+```{r, fig.align='center', fig.width=7, fig.height=5}
+# Filter reflectance data
+grasslands <- reflectance %>%
+  filter(label == c("R12", "R1A", "R1B", "R21", "R36"))
+
+# Construct a ggplot object with basic aestetics 
+p1_2 <- spectral.curves.plot(
+  data = grasslands, 
+  target_classes = list("R1B")
+  )
+
+# Plotting
+p1_2 +
+  labs(x = 'Wavelength, nm', y = 'Reflectance',
+       colour = "Habitat types",
+       fill = "Habitat types",
+       title = "Spectral reflectance curves for different types of\ngrassland habitats, Southern Bug National park, Ukraine",
+       caption = 'Data: Sentinel-2 Level-2A')+
+  theme_minimal()
+```
+
 
 Statistical summary for each habitat type
 
@@ -500,6 +543,28 @@ p2 +
   theme_minimal()
 ```
 
+Same way, create a plot highlighted only tall-helophyte beds (type Q51), compared to two common other floodplain habitat types (R21 Mesic lowland pasture, T11 Riparian foretst).
+
+```{r, fig.align='center', fig.width=7, fig.height=5}
+# Filter reflectance data
+floodplain <- reflectance %>%
+  filter(label == c("Q51", "R21", "T11"))
+
+# Create basic ggplot object
+p2_1 <- stat.summary.plot(
+  data = floodplain, 
+  target_classes = list("Q51")
+)
+
+# Plotting
+p2_1 + 
+  labs(x = 'Sentinel-2 bands', y = 'Reflectance',
+       colour = "Habitat types",
+       title = "Reflectance of tall-helophyte beds,\nSouthern Bug National park, Ukraine",
+       caption='Data: Sentinel-2 Level-2A\nmean ± standard deviation')+
+  theme_minimal()
+```
+
 Create violin plots for given habitat types
 
 ```{r, error=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.width=7, fig.height=5}
@@ -508,10 +573,10 @@ p3 <- violin.plot(reflectance)
 
 # Plotting
 p3 + 
-  labs(x='Habitat type', y='Reflectance',
-       fill="Habitat types",
+  labs(x = "Habitat type", y = "Reflectance",
+       fill = "Habitat types",
        title = "Reflectance for different habitat types\nSouthern Bug National park, Ukraine",
-       caption='Data: Sentinel-2 Level-2A')+
+       caption ='Data: Sentinel-2 Level-2A')+
   theme_minimal()
 ```
 
