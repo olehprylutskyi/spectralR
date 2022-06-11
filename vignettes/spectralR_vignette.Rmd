@@ -78,7 +78,7 @@ Check non-R dependencies
 ee_check() 
 ```
 
-`rgee` developers recommend installing the version of the Earth Engine Python API which `rgee` was tested with, using the following command. Although it calls "upgrade", it might actually downgrade your version of `earthengine_api`.
+`rgee` developers recommend installing the version of the Earth Engine Python API which `rgee` was tested with, using the following command. Although it calls "upgrade", it might actually downgrade your version of `earthengine_api`. You may up(down)grade or not, but in our tests, newer versions of `earthengine_api` worked flawlessly as well.
 
 ```{r, eval = FALSE}
 ee_install_upgrade()
@@ -212,30 +212,9 @@ To use the `get.pixel.data` function, we need to specify some values:
 
 The Resulting pixel data will be saved within a working directory and can be loaded during the next sessions.
 
-**Note 1**. Particular satellite imagery is usually not ready for
-instant sampling -- it contains clouds, cloud shadows, aerosols, and may
-cover not all the territory of your interest. Another issue is that each
-particular pixel slightly differs in reflectance between images taken on
-different days due to differences in atmospheric conditions and angle of
-sunlight at the moments images were taken. The Google Earth Engine has
-its own build-in algorithms for image pre-processing, atmospheric
-corrections and mosaicing, which allows one to obtain a ready-to-use,
-rectified image. The approach used in `spectralR` is to find a median
-value for each pixel between several images within each of 10 optical
-bands, thereby making a composite image. To define a set of imageries
-between which we are going to calculate the median, we should set a
-timespan of image collection. Sentinel-2 apparatus takes a picture once every
-5 days, so if you set up a month-long timesnap, you can expect that each
-pixel value will be calculated based on 5 to 6 values (remember, some
-images might appear unsatisfactory cloudy).
+**Note 1**. Particular satellite imagery is usually not ready for instant sampling -- it contains clouds, cloud shadows, aerosols, and may cover not all the territory of your interest. Another issue is that each particular pixel slightly differs in reflectance between images taken on different days due to differences in atmospheric conditions and angle of sunlight at the moments images were taken. The Google Earth Engine has its own build-in algorithms for image pre-processing, atmospheric corrections and mosaicing, which allows one to obtain a ready-to-use, rectified image. The approach used in `spectralR` is to find a median value for each pixel between several images within each of 10 optical bands, thereby making a composite image. To define a set of imageries between which we are going to calculate the median, we should set a timespan of image collection. Sentinel-2 apparatus takes a picture once every 5 days, so if you set up a month-long timesnap, you can expect that each pixel value will be calculated based on 5 to 6 values (remember, some images might appear unsatisfactory cloudy).
 
-**Note 2**. The finest resolution for Sentinel data is 10 m, while using
-larger-scale values decreases the required computational resources and
-size of the resulting data frame. Although sampling satellite data is
-performed in a cloud, there are some limitations for geocalculations
-placed by GEE itself. If you are about to sample large areas, consider
-setting a higher 'scale' value (e.g., 100, 1000). Read more in GEE [best
-practices](https://developers.google.com/earth-engine/guides/best_practices).
+**Note 2**. The finest resolution for Sentinel data is 10 m, while using larger-scale values decreases the required computational resources and size of the resulting data frame. Although sampling satellite data is performed in a cloud, there are some limitations for geocalculations placed by GEE itself. If you are about to sample large areas, consider setting a higher 'scale' value (e.g., 100, 1000). Read more in GEE [best practices](https://developers.google.com/earth-engine/guides/best_practices).
 
 ```{r, collapse = TRUE, eval = FALSE}
 # Get pixel data
@@ -249,10 +228,7 @@ save(reflectance, file = "reflectance_test_data")
 load(file = "../inst/testdata/reflectance_test_data.RData")
 ```
 
-Here we choose the 100 m scale (pixel size for resulting imagery is
-100x100 m), which resulted in a sampling dataset of 2060 rows. Finer pixel
-size would result in a larger sampling dataset, which would require
-using moderating storage (see use case 2).
+Here we choose the 100 m scale (pixel size for resulting imagery is 100x100 m), which resulted in a sampling dataset of 2060 rows. Finer pixel size would result in a larger sampling dataset, which would require using moderating storage (see use case 2).
 
 ```{r, echo = FALSE, eval = FALSE}
 load(file = "./reflectance_test_data") # restore previously saved pixel data
@@ -264,19 +240,13 @@ Let's have a look at the resulting data:
 head(reflectance)
 ```
 
-We have a data frame with the number of rows equal to the number of
-sampled "pixels" of satellite image and 10 variables with reflectance
-values for each optical band of Sentinel 2. Each sampled pixel has a
-label of a surface class of the user's polygon it intersected.
+We have a data frame with the number of rows equal to the number of sampled "pixels" of satellite image and 10 variables with reflectance values for each optical band of Sentinel 2. Each sampled pixel has a label of a surface class of the user's polygon it intersected.
 
-Note: `spectralR` receives true reflectance values (between 0 and 1),
-transforming **GEE**'s values (multiplied by 10000 for calculation
-convenience).
+Note: `spectralR` receives true reflectance values (between 0 and 1), transforming **GEE**'s values (multiplied by 10000 for calculation convenience).
 
 ### Visualize results
 
-First of all, one should explore the quality and comprehensiveness of
-obtained pixel data.
+First of all, one should explore the quality and comprehensiveness of obtained pixel data.
 
 ```{r}
 # load(file = "./reflectance_test_data") # restore previously saved pixel data
@@ -284,9 +254,7 @@ obtained pixel data.
 summary(factor(reflectance$label)) # how many pixels in each class? 
 ```
 
-For reliable results, it is recommended to keep the similar size of each
-surface class. Classes represented by a few sampled pixels should
-be excluded from the further analysis.
+For reliable results, it is recommended to keep the similar size of each surface class. Classes represented by a few sampled pixels should be excluded from the further analysis.
 
 Visual overview of pixel data
 
@@ -300,11 +268,7 @@ ggplot(reflectance, aes(x=label))+
   theme_minimal()
 ```
 
-Function `spectral.reflectance.curve` transform the data and plot
-smoother curves for each surface class, using `ggplot2`'s
-`geom_smooth()` aesthetics. For large (thousands of rows) data (and we
-need large data for reliable conclusions!), `ggplot2` uses *GAM* method
-for drawing a trendline.
+Function `spectral.reflectance.curve` transform the data and plot smoother curves for each surface class, using `ggplot2`'s `geom_smooth()` aesthetics. For large (thousands of rows) data (and we need large data for reliable conclusions!), `ggplot2` uses *GAM* method for drawing a trendline.
 
 Depending on the data size, it may take some time to process.
 
@@ -316,9 +280,7 @@ p1 <- spectral.curves.plot(reflectance)
 p1
 ```
 
-Since the output of `spectral.curves.plot` is `ggplot` object, we can
-apply any tools provided by `ggplot2` package to make it more visually
-pleasing.
+Since the output of `spectral.curves.plot` is `ggplot` object, we can apply any tools provided by `ggplot2` package to make it more visually pleasing.
 
 ```{r, fig.align='center', fig.width=7, fig.height=5}
 # Customized plot
@@ -331,24 +293,15 @@ p1+
   theme_minimal()
 ```
 
-You can save the plot as a \*.png (or other standard graphical formats)
-file using `ggsave` or `png()` functions
+You can save the plot as a \*.png (or other standard graphical formats) file using `ggsave` or `png()` functions.
 
 ```{r}
 ggsave("Spectral_curves_usecase1.png", width=16, height=12, unit="cm", dpi=300)
 ```
 
-Function `stat.summary.plot` make a plot with a statistical summary of
-reflectance values (mean, mean-standard deviation, mean+standard
-deviation) for defined classes of the surface. Given reflectance data as input, 
-the function returns ggplot2 object with basic visual aesthetics.
-Default aesthetics are line with a statistical summary for each satellite
-band
-([geom_line](https://ggplot2.tidyverse.org/reference/geom_linerange.html) +
-[geom_pointrange](https://ggplot2.tidyverse.org/reference/geom_path.html)).
+Function `stat.summary.plot` make a plot with a statistical summary of reflectance values (mean, mean-standard deviation, mean+standard deviation) for defined classes of the surface. Given reflectance data as input, the function returns ggplot2 object with basic visual aesthetics. Default aesthetics are line with a statistical summary for each satellite band ([geom_line](https://ggplot2.tidyverse.org/reference/geom_linerange.html) + [geom_pointrange](https://ggplot2.tidyverse.org/reference/geom_path.html)).
 
-Wavelength values (nm) are acquired from the mean known value for each optical
-band of the [Sentinel 2](https://en.wikipedia.org/wiki/Sentinel-2) sensor.
+Wavelength values (nm) are acquired from the mean known value for each optical band of the [Sentinel 2](https://en.wikipedia.org/wiki/Sentinel-2) sensor.
 
 ```{r, fig.align='center', fig.width=7, fig.height=5}
 # Make a ggplot object
@@ -376,11 +329,7 @@ Save the plot as a \*.png file
 ggsave("Statsummary_usecase1.png", width=16, height=12, unit="cm", dpi=300)
 ```
 
-Function `violin.plot` helps to visualize a reflectance as violin plots
-for each surface class per satellite bands. It gets reflectance data as
-input and returns *ggplot2* object with basic visual aesthetics. The default
-aesthetics is
-[geom_violin](https://ggplot2.tidyverse.org/reference/geom_violin.html).
+Function `violin.plot` helps to visualize a reflectance as violin plots for each surface class per satellite bands. It gets reflectance data as input and returns *ggplot2* object with basic visual aesthetics. The default aesthetics is [geom_violin](https://ggplot2.tidyverse.org/reference/geom_violin.html).
 
 ```{r, error=FALSE, warning=FALSE, message=FALSE, fig.align='center', fig.width=7, fig.height=5}
 # Make a ggplot object
@@ -400,15 +349,7 @@ ggsave("Violins_usecase1.png", width=22, height=16, unit="cm", dpi=300)
 
 ## Use case 2. Habitats of Buzkyi Gard National Park, Mykolaiv region, Ukraine.
 
-[**Buzkyi Gard National
-Park**](https://en.wikipedia.org/wiki/Buzk%27s_Gard_National_Nature_Park)
-locates in Southern Bug valley (south-western Ukraine,
-31.08325,47.90720). Field inventory allowed to reveal 26 different
-habitat types (according to the EUNIS classification system) in the
-territory of the Park and its vicinity, i.e., a wide range of dry
-grasslands, rocky outcrops, and steppe forests. Artificial habitat types,
-like croplands or human settlements, are also included. Ground truth
-data contains 380 polygons with known habitat types.
+[**Buzkyi Gard National Park**](https://en.wikipedia.org/wiki/Buzk%27s_Gard_National_Nature_Park) locates in Southern Bug valley (south-western Ukraine, 31.08325,47.90720). Field inventory allowed to reveal 26 different habitat types (according to the EUNIS classification system) in the territory of the Park and its vicinity, i.e., a wide range of dry grasslands, rocky outcrops, and steppe forests. Artificial habitat types, like croplands or human settlements, are also included. Ground truth data contains 380 polygons with known habitat types.
 
 Environment preparation
 
@@ -452,12 +393,7 @@ save(reflectance, file = "reflectance_BG_data")
 load(file = "../inst/testdata/reflectance_BG_data.RData")
 ```
 
-The Southern Bug valley habitats often cover a small area (especially
-rocky outcrops, grasslands, etc.). Therefore, many polygons are relatively
-small -- up to 1 ha -- and have an irregular shape.  We recommend decreasing scale 
-values (pixel size) in such cases, approaching the minimum value
-(10 m). On the other hand, that will require more computational power
-and processing time.
+The Southern Bug valley habitats often cover a small area (especially rocky outcrops, grasslands, etc.). Therefore, many polygons are relatively small -- up to 1 ha -- and have an irregular shape.  We recommend decreasing scale values (pixel size) in such cases, approaching the minimum value (10 m). On the other hand, that will require more computational power and processing time.
 
 Quantitative overview of pixel data
 
@@ -465,9 +401,7 @@ Quantitative overview of pixel data
 summary(factor(reflectance$label)) # how many pixels in each class?
 ```
 
-With "big data", `spectralR` uses your Google Drive as intermittent
-storage between **R** and **GEE**. Please take care of having enough
-storage in the Drive and purge *rgee_backup* directory manually from time to time.
+With "big data", `spectralR` uses your Google Drive as intermittent storage between **R** and **GEE**. Please take care of having enough storage in the Drive and purge *rgee_backup* directory manually from time to time.
 
 Spectral reflectance curves for different habitat types
 
@@ -503,7 +437,8 @@ p1_1 +
   theme_minimal()
 ```
 
-Not to mention, that the user is able to filter input data to obtain what they want. 
+Not to mention, that the user is able to filter input data to obtain what they want.
+
 Suppose we need only grasslands in our reflectance plot (habitats which code started from R), and want to highlight the differences/similarity in spectral reflectance of Continental dry grasslands (true steppe, type R1B).
 
 ```{r, fig.align='center', fig.width=7, fig.height=5}
@@ -580,13 +515,10 @@ p3 +
   theme_minimal()
 ```
 
-You also can save and/or transform resulting ggplot objects as you wish,
-using `ggplot2` and `tidyverse` syntax.
+You also can save and/or transform resulting ggplot objects as you wish, using `ggplot2` and `tidyverse` syntax.
 
 ------------------------------------------------------------------------
 
-If you have any feedback, please let us know via [GitHub
-Issues](https://github.com/olehprylutskyi/spectralR/issues) or
-[e-mail](mailto:oleh.prylutskyi@gmail.com).
+If you have any feedback, please let us know via [GitHub Issues](https://github.com/olehprylutskyi/spectralR/issues) or [e-mail](mailto:oleh.prylutskyi@gmail.com).
 
-`spectralR` development team. GPL-3.0 License. Updated 2022-04
+`spectralR` development team. GPL-3.0 License. Updated 2022-06
