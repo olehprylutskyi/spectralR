@@ -193,7 +193,7 @@ In `spectralR`, we use the first two methods. `get.pixel.data` assesses the size
 
 After authorization and first use, folder *rgee_backup* will be created in your Google Drive storage, when all the intermediate files will be stored. Apparently, if you run out of storage, `get.pixel.data` won't be able to use your Google Drive as mediating storage, and you will receive an error. Though `get.pixel.data` re-write objects each time it will be launched, we strongly recommend cleaning *rgee_backup* folder in your Drive from time to time manually or using the following command from the `rgee` package:
 
-```{r}
+```{r, collapse = TRUE, eval = FALSE}
 ee_clean_container(name = "rgee_backup", type = "drive", quiet = FALSE)
 ```
 
