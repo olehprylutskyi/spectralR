@@ -18,7 +18,7 @@
 #'
 #' Note 1.
 #' Particular satellite imagery is typically not ready for instant analysis - it contains clouds,
-#' cloud shadows, aerosols, and may cover not all the territory of your interest.
+#' cloud shadows, athmospheric aerosols, and may cover not all the territory of your interest.
 #' Another issue is that each particular pixel slightly differs in reflectance
 #' between images taken on different days due to differences in atmospheric conditions and angle
 #' of sunlight at the moments images were taken. Google Earth Engine has its own build-in
@@ -33,7 +33,7 @@
 #' Note 2.
 #' You may set up any image resolution (pixel size) for satellite imagery with GEE, but this is
 #' hardly reasonable to set the finer resolution than the finest for satellite source.
-#' The finest resolution for Sentinel data is 10 m, while using larger-scale values requires less
+#' The finest resolution for Sentinel data is 10 m, while using higher scale_value requires less
 #' computational resources and returns a smaller resulting dataframe. Although sampling
 #' satellite data performs in a cloud, there are some memory limitations placed
 #' by GEE itself. If you are about to sample really large areas, consider setting a higher 'scale'
@@ -97,13 +97,12 @@ get.pixel.data <- function(sf_data, startday, endday, cloud_threshold, scale_val
     scale = scale_value
   )
 
-  # rgee uses three different approach to upload and download data from and to the server. For small
-  # dataset () default value "getInfo" is recommended, while for large vector objects / outputs
-  # using intermediate container (Google Drive or Google Cloud Storage) is required. We tested
+  # rgee uses three different approach to download data from and the server. For small
+  # dataset (less than 5 MB) default value "getInfo" is recommended, while for large vector
+  # objects/outputs using intermediate container (Google Drive or Google Cloud Storage) is required. We tested
   # Google Drive approach and it showed good performance with downloading of ca. 90K pixel values.
-  # function "get.pixel.data" estimates the size of input data / GEE object to be downloaded, and then
-  # pick more appropriate method on their own, based on both total area of vector polygons and user defined scale
-  # value (pixel size).
+  # function "get.pixel.data" estimates the size of GEE object to be downloaded, and then
+  # picks more appropriate method.
 
   if(as.numeric(sum(st_area(sf_data) / scale_value^2)) < 15000){
     # Convert training to the sf object directly

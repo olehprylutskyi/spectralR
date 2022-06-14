@@ -179,7 +179,7 @@ The example above uses an internal test shapefile. To use your own file, put all
 
 Function `get.pixel.data` is the heart of `spectralR`. It takes `sf` polygon object obtained at the previous step and retrieves a data frame with brightness values for each pixel intersected with polygons for each optical band of Sentinel-2 sensor, marked according to the label of surface class from the polygons. `get.pixel.data` starts with the conversion of the `sf` object into GEE feature collection. Then it prepares a satellite image for pixel sampling, performs sampling, and finally exports the resulting object back into an R data frame (non-spatial now).
 
-One of the most tricky and issues-causing steps of this procedure is the conversion between R's `sf` object and GEE's feature collection. `rgee` implements three way to do so:
+One of the most tricky and issues-causing steps of this procedure is the conversion between GEE feature collection and R `sf` object. `rgee` implements three way to do so:
 
 * through the JSON translator (`getInfo`, default) 
 
@@ -187,12 +187,15 @@ One of the most tricky and issues-causing steps of this procedure is the convers
 
 * using Google Cloud Storage (`gcs_to_asset`)
 
-The first one is the most straightforward and quick, but usable only for small data (less than 15000 entries, or 1.5 MB size local files). The other two require transient storage to store your data between conversions (because Earth Engine is Google's service and seamlessly integrated with plenty of Google services).
+The first one is the most straightforward and quick, but usable only for small data (less than 15000 entries, or 1.5 MB size local files). The other two require transient storage to store your data between conversions (because Earth Engine is Google's service and seamlessly integrated with both Google Drive and Google Cloud Storage).
 
 In `spectralR`, we use the first two methods. `get.pixel.data` assesses the size of your `sf` object or a feature collection, then activates either `getInfo` or `getInfo_to_asset` pathway. If your data is considered being "small", `getInfo` will be used, and you will notice nothing special. But, if your data is larger than our arbitrary threshold, the method `getInfo_to_asset` will be activated, and you may be prompted to authorize in Google Drive and allow `rgee` to access GDrive files and folders. In such a case, please follow instructions in the R console and then in your web-browser. You may do it once you perform your first large query - your credits will be stored in your local `earthengine` environment.
 
-After authorization and first use, folder *rgee_backup* will be created in your Google Drive storage, when all the intermediate files will be stored. Though `get.pixel.data` re-write objects each time it will be launched, we strongly recommend cleaning *rgee_backup* folder in your Drive manually from time to time. Apparently, if you run out of storage,
-`get.pixel.data` won't be able to use your Google Drive as mediating storage, and you will receive an error.
+After authorization and first use, folder *rgee_backup* will be created in your Google Drive storage, when all the intermediate files will be stored. Apparently, if you run out of storage, `get.pixel.data` won't be able to use your Google Drive as mediating storage, and you will receive an error. Though `get.pixel.data` re-write objects each time it will be launched, we strongly recommend cleaning *rgee_backup* folder in your Drive from time to time manually or using the following command from the `rgee` package:
+
+```{r}
+ee_clean_container(name = "rgee_backup", type = "drive", quiet = FALSE)
+```
 
 To use the `get.pixel.data` function, we need to specify some values:
 
@@ -214,7 +217,7 @@ The Resulting pixel data will be saved within a working directory and can be loa
 
 **Note 1**. Particular satellite imagery is usually not ready for instant sampling -- it contains clouds, cloud shadows, aerosols, and may cover not all the territory of your interest. Another issue is that each particular pixel slightly differs in reflectance between images taken on different days due to differences in atmospheric conditions and angle of sunlight at the moments images were taken. The Google Earth Engine has its own build-in algorithms for image pre-processing, atmospheric corrections and mosaicing, which allows one to obtain a ready-to-use, rectified image. The approach used in `spectralR` is to find a median value for each pixel between several images within each of 10 optical bands, thereby making a composite image. To define a set of imageries between which we are going to calculate the median, we should set a timespan of image collection. Sentinel-2 apparatus takes a picture once every 5 days, so if you set up a month-long timesnap, you can expect that each pixel value will be calculated based on 5 to 6 values (remember, some images might appear unsatisfactory cloudy).
 
-**Note 2**. The finest resolution for Sentinel data is 10 m, while using larger-scale values decreases the required computational resources and size of the resulting data frame. Although sampling satellite data is performed in a cloud, there are some limitations for geocalculations placed by GEE itself. If you are about to sample large areas, consider setting a higher 'scale' value (e.g., 100, 1000). Read more in GEE [best practices](https://developers.google.com/earth-engine/guides/best_practices).
+**Note 2**. The finest resolution for Sentinel data is 10 m, while using higher *scale_value* decreases the required computational resources and size of the resulting data frame. Although sampling satellite data is performed in a cloud, there are some limitations for geocalculations placed by GEE itself. If you are about to sample large areas, consider setting a higher 'scale' value (e.g., 100, 1000). Read more in GEE [best practices](https://developers.google.com/earth-engine/guides/best_practices).
 
 ```{r, collapse = TRUE, eval = FALSE}
 # Get pixel data
