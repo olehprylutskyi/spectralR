@@ -11,36 +11,26 @@ expect_silent(
   p1 <- stat.summary.plot(reflectance, target_classes = NULL)
   )
 
-
-
-
-
-/////////////////////////
-
-
-
-//////////////////////////////spectral
-
-
 ## Test the output data class
 expect_inherits(p1, c("gg", "ggplot"))
 
 ## The plot should not be empty
 expect_true( nrow(p1$data) > 0 )
 
-## Any smoothers present?
-expect_inherits( p1$layers[[1]]$geom, "GeomSmooth" )
+## Check if all the neccesary components of the plot are present
+expect_inherits( p1$layers[[1]]$geom, "GeomLine" )
+expect_inherits( p1$layers[[2]]$geom, "GeomPointrange" )
 
 ## Function should fail if no input data is specified
 # Expected error:   argument "data" is missing, with no default
-expect_error( spectral.curves.plot() )
+expect_error( stat.summary.plot() )
 
 
 ###### Test `target_classes` argument
 
 ## Non-existent target classes
-p2 <- spectral.curves.plot(reflectance, target_classes = list("Q", "W", "Z"))
-expect_true( nrow(p2$layers[[2]]$data) == 0 )
+p2 <- stat.summary.plot(reflectance, target_classes = list("Q", "W", "Z"))
+expect_true( nrow(p2$layers[[4]]$data) == 0 )
 
 
 ## Correctness of background and target classes
