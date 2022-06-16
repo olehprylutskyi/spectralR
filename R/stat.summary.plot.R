@@ -39,7 +39,8 @@
 #'    target_classes = list("C2.2", "C2.3", "J5")
 #'   )
 #' }
-stat.summary.plot <- function(data, target_classes = NULL){
+stat.summary.plot <- function(data, target_classes = NULL,
+  point_size = 0.6, fatten = 4, x_dodge = 0.2){
   # Create "dummy" wavelength object, containing mean wavelengths (nm) for Sentinel 2A
   # (https://en.wikipedia.org/wiki/Sentinel-2), for bands 2-12
 
@@ -77,24 +78,41 @@ stat.summary.plot <- function(data, target_classes = NULL){
     # Create a subset for target classes only
     target <- df %>%
       filter(label %in% target_classes)
+
     # Create a subset for the rest of the classes
     background <- df %>%
       filter(!label %in% target_classes)
+
     # Make a plot
     p <- ggplot()+
-      geom_line(data = background, aes(x=band, y=mean_refl,
-                                       group = label), colour = "gray")+
-      geom_pointrange(data = background, aes(x=band, y=mean_refl,
-                                             ymin = min_refl, ymax = max_refl),
-                      colour = "gray", width = 0.2) +
-      geom_line(data = target, aes(x=band, y=mean_refl, colour = label,
-                                   group = label))+
-      geom_pointrange(data = target, aes(x=band, y=mean_refl, colour = label,
-                                         ymin = min_refl, ymax = max_refl), width = 0.2)
+      geom_line(
+        data = background,
+        aes(x=band, y=mean_refl, group = label),
+        colour = "gray",
+        position = position_dodge(width = x_dodge))+
+      geom_pointrange(
+        data = background,
+        aes(x=band, y=mean_refl, ymin = min_refl, ymax = max_refl),
+        colour = "gray",
+        size = point_size, fatten = fatten,
+        position = position_dodge(width = x_dodge)) +
+      geom_line(
+        data = target,
+        aes(x=band, y=mean_refl, colour = label, group = label),
+        position = position_dodge(width = x_dodge))+
+      geom_pointrange(
+        data = target,
+        aes(x=band, y=mean_refl, colour = label, ymin = min_refl, ymax = max_refl),
+        size = point_size, fatten = fatten,
+        position = position_dodge(width = x_dodge))
+
   } else {
     p <- ggplot(df, aes(x=band, y=mean_refl, colour = label))+
-      geom_line(aes(group = label))+
-      geom_pointrange(aes(ymin = min_refl, ymax = max_refl), width = 0.2)
+      geom_line(aes(group = label), position = position_dodge(width = x_dodge))+
+      geom_pointrange(
+        aes(ymin = min_refl, ymax = max_refl),
+        size = point_size, fatten = fatten,
+        position = position_dodge(width = x_dodge))
   }
 
   return(p)
