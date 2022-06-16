@@ -1,5 +1,7 @@
-#' Make a plot with statistical summary of reflectance values (mean, mean-standard deviation,
-#' mean+standard deviation) for defined classes of surface
+#' Statistical summary plot of reflectance values
+#'
+#' @description Make a plot with statistical summary of reflectance values (mean, mean-standard deviation,
+#' mean+standard deviation) for defined classes of surface.
 #'
 #' @param data reflectance data as dataframe with pixel values for Sentinel optical bands
 #' B2, B3, B4, B5, B6, B7, B8, B8A, B11, B12
@@ -7,10 +9,17 @@
 #' @param target_classes list of the classes of surface which should be highlighted, others
 #' will be turned in gray, as a background. Defaults is NULL.
 #'
-#' @return ggplot2 object with basic visual aesthetics. Default aesthetics are
-#' line with statistical summary for each satellite band (geom_line + geom_pointrange),
-#' See https://ggplot2.tidyverse.org/reference/geom_linerange.html
-#' https://ggplot2.tidyverse.org/reference/geom_path.html for more details.
+#' @param point_size Size of points on a plot
+#' @param fatten A multiplicative factor used to increase the size of points in comparison with standard deviation lines
+#' @param x_dodge Position adjustment of points along the X-axis
+#'
+#' @return ggplot2 object with basic visual aesthetics.
+#' Default aesthetics are line with statistical summary for each satellite band
+#' ([geom_line()] + [geom_pointrange()]).
+#' See [geom_linerange](https://ggplot2.tidyverse.org/reference/geom_linerange.html) and
+#' [geom_path](https://ggplot2.tidyverse.org/reference/geom_path.html) documentation
+#' for more details.
+#'
 #' Wavelengths values (nm) acquired from mean known value for each optical band of Sentinel 2 sensor
 #' https://en.wikipedia.org/wiki/Sentinel-2
 #'
