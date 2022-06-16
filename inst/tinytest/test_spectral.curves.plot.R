@@ -25,6 +25,10 @@ expect_inherits( p1$layers[[1]]$geom, "GeomSmooth" )
 # Expected error:   argument "data" is missing, with no default
 expect_error( spectral.curves.plot() )
 
+## Function should fail if incorrect data is provided
+# Expected error:   id variables not found in data: label
+expect_error( spectral.curves.plot(rnorm(10)) )
+
 
 ###### Test `target_classes` argument
 
