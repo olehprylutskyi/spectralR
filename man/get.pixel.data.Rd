@@ -24,7 +24,7 @@ the polygons.
 
 Note 1.
 Particular satellite imagery is typically not ready for instant analysis - it contains clouds,
-cloud shadows, aerosols, and may cover not all the territory of your interest.
+cloud shadows, athmospheric aerosols, and may cover not all the territory of your interest.
 Another issue is that each particular pixel slightly differs in reflectance
 between images taken on different days due to differences in atmospheric conditions and angle
 of sunlight at the moments images were taken. Google Earth Engine has its own build-in
@@ -39,7 +39,7 @@ calculated based on 5 to 6 values.
 Note 2.
 You may set up any image resolution (pixel size) for satellite imagery with GEE, but this is
 hardly reasonable to set the finer resolution than the finest for satellite source.
-The finest resolution for Sentinel data is 10 m, while using larger-scale values requires less
+The finest resolution for Sentinel data is 10 m, while using higher scale_value requires less
 computational resources and returns a smaller resulting dataframe. Although sampling
 satellite data performs in a cloud, there are some memory limitations placed
 by GEE itself. If you are about to sample really large areas, consider setting a higher 'scale'

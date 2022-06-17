@@ -2,40 +2,62 @@
 % Please edit documentation in R/stat.summary.plot.R
 \name{stat.summary.plot}
 \alias{stat.summary.plot}
-\title{Make a plot with statistical summary of reflectance values (mean, mean-standard deviation,
-mean+standard deviation) for defined classes of surface}
+\title{Statistical summary plot of reflectance values}
 \usage{
-stat.summary.plot(data)
+stat.summary.plot(
+  data,
+  target_classes = NULL,
+  point_size = 0.6,
+  fatten = 4,
+  x_dodge = 0.2
+)
 }
 \arguments{
 \item{data}{reflectance data as dataframe with pixel values for Sentinel optical bands
 B2, B3, B4, B5, B6, B7, B8, B8A, B11, B12}
+
+\item{target_classes}{list of the classes of surface which should be highlighted, others
+will be turned in gray, as a background. Defaults is NULL.}
+
+\item{point_size}{Size of points on a plot}
+
+\item{fatten}{A multiplicative factor used to increase the size of points in comparison with standard deviation lines}
+
+\item{x_dodge}{Position adjustment of points along the X-axis}
 }
 \value{
-ggplot2 object with basic visual aesthetics. Default aesthetics are
-line with statistical summary for each satellite band (geom_line + geom_pointrange),
-See https://ggplot2.tidyverse.org/reference/geom_linerange.html
-https://ggplot2.tidyverse.org/reference/geom_path.html for more details.
+ggplot2 object with basic visual aesthetics.
+Default aesthetics are line with statistical summary for each satellite band
+([geom_line()] + [geom_pointrange()]).
+See [geom_linerange](https://ggplot2.tidyverse.org/reference/geom_linerange.html) and
+[geom_path](https://ggplot2.tidyverse.org/reference/geom_path.html) documentation
+for more details.
+
 Wavelengths values (nm) acquired from mean known value for each optical band of Sentinel 2 sensor
 https://en.wikipedia.org/wiki/Sentinel-2
 }
 \description{
 Make a plot with statistical summary of reflectance values (mean, mean-standard deviation,
-mean+standard deviation) for defined classes of surface
+mean+standard deviation) for defined classes of surface.
 }
 \examples{
 \dontrun{
-p2 <- stat.summary.plot(
+p <- stat.summary.plot(
   data = reflectance
   )
 
-p2
+p
 
-p2 +
+p +
   labs(x = 'Sentinel-2 bands', y = 'Reflectance',
       colour = "Surface classes",
       title = "Reflectance for different surface classes",
       caption='Data: Sentinel-2 Level-2A\nmean ± standard deviation')+
    theme_minimal()
+
+ p <- stat.summary.plot(
+   data = reflectance,
+   target_classes = list("C2.2", "C2.3", "J5")
+  )
 }
 }

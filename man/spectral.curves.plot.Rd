@@ -4,11 +4,14 @@
 \alias{spectral.curves.plot}
 \title{Make spectral reflectance curves for defined classes of surface}
 \usage{
-spectral.curves.plot(data)
+spectral.curves.plot(data, target_classes = NULL)
 }
 \arguments{
 \item{data}{reflectance data as dataframe with pixel values for Sentinel optical bands
 B2, B3, B4, B5, B6, B7, B8, B8A, B11, B12}
+
+\item{target_classes}{list of the classes of surface which should be highlighted, others
+will be turned in gray, as a background. Defaults is NULL.}
 }
 \value{
 ggplot2 object with basic visual aesthetics, represents smoother lines with confidence
@@ -21,18 +24,25 @@ Make spectral reflectance curves for defined classes of surface
 }
 \examples{
 \dontrun{
-p1 <- spectral.curves.plot(
+p <- spectral.curves.plot(
   data = reflectance
   )
 
-p1
+p
 
-p1+
+p +
  labs(x = 'Wavelength, nm', y = 'Reflectance',
       colour = "Surface classes",
       fill = "Surface classes",
       title = "Spectral reflectance curves for different classes of surface",
       caption = 'Data: Sentinel-2 Level-2A')+
  theme_minimal()
+
+ p <- spectral.curves.plot(
+  data = reflectance,
+  target_classes = list("C2.2", "C2.3", "J5")
+  )
+
+ p
  }
 }
