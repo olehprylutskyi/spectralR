@@ -1,7 +1,7 @@
 Package: spectralR
 Type: Package
 Title: Obtain and Visualize Spectral Reflectance Data for Earth Surface Polygons
-Version: 0.1.1
+Version: 0.1.2
 Authors@R: c(person("Oleh", "Prylutskyi", role=c("aut","cre"), email="oleh.prylutskyi@gmail.com"),
              person("Dariia", "Shyriaieva", role="ctb", email="darshyr@gmail.com"),
              person("Vladimir", "Mikryukov", role="ctb", email="vladimir.mikryukov@ut.ee"))
