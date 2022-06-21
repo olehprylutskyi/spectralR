@@ -3,3 +3,4 @@
 ^inst/figures$
 ^docs$
 ^figure$
+^vignettes/spectralR_vignette.Rmd$
