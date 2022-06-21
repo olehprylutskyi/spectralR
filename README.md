@@ -2,7 +2,7 @@
 
 ### Spectral reflectance visualisations for user-defined areas
 
-See our [vignette](https://olehprylutskyi.github.io/spectralR) for
+See our [vignette](https://olehprylutskyi.github.io/spectralR/) for
 detailed usage examples.
 
 ## Description
@@ -53,7 +53,7 @@ install_github("olehprylutskyi/spectralR")
 
 `spectralR` is strongly depends on `rgee` and `sf` packages, so install
 and configure them before installing `spectralR`. More details in the
-[vignette](https://olehprylutskyi.github.io/spectralR).
+[vignette](https://olehprylutskyi.github.io/spectralR/).
 
 ## Output examples
 
