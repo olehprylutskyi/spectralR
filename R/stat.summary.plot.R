@@ -27,6 +27,7 @@
 #' @import tibble reshape2 dplyr ggplot2
 #' @importFrom stats na.omit
 #' @importFrom stats sd
+#' @importFrom rlang .data
 #'
 #' @examples
 #' \dontrun{
@@ -56,25 +57,28 @@ stat.summary.plot <- function(data, target_classes = NULL,
   dummy_wavelength <-  c(492.4, 559.8, 664.6, 704.1, 740.5, 782.8, 832.8, 864.7, 1613.7, 2202.4)
   bands <-  c("B2", "B3", "B4", "B5", "B6", "B7", "B8", "B8A", "B11", "B12")
   waves <-  cbind(bands, dummy_wavelength)
-  colnames(waves)[1] <-  "variable"
+  colnames(waves)[1] <- "variable"
 
   # Reshape the dataframe to make it appropriate to ggplot2 syntax
   df <- tibble::as_tibble(data) %>%
     reshape2::melt(id = "label") %>%
     left_join(as.data.frame(waves)) %>%
-    mutate(across(label, as.factor)) %>%
-    mutate(across(dummy_wavelength, as.numeric)) %>%
-    mutate(across(variable, as.factor)) %>%
-    mutate(across(value, as.numeric)) %>%
+    mutate(across(.data$label, as.factor)) %>%
+    mutate(across(.data$dummy_wavelength, as.numeric)) %>%
+    mutate(across(.data$variable, as.factor)) %>%
+    mutate(across(.data$value, as.numeric)) %>%
     na.omit() %>%
-    mutate(variable = factor(variable, ordered = TRUE,
+    mutate(variable = factor(.data$variable, ordered = TRUE,
                              levels = c("B2","B3","B4","B5","B6","B7","B8","B8A","B11","B12"))) %>%
-    group_by(variable, label) %>%
-    summarise(mean_refl = mean(value), min_refl = mean(value)-sd(value), max_refl = mean(value)+sd(value)) %>%
+    group_by(.data$variable, .data$label) %>%
+    summarise(
+      mean_refl = mean(.data$value),
+      min_refl = mean(.data$value)-sd(.data$value),
+      max_refl = mean(.data$value)+sd(.data$value)) %>%
     left_join(as.data.frame(waves)) %>%
-    mutate(across(dummy_wavelength, as.numeric)) %>%
-    rename(band = variable, wavelength = dummy_wavelength) %>%
-    mutate(band = factor(band,
+    mutate(across(.data$dummy_wavelength, as.numeric)) %>%
+    rename(band = .data$variable, wavelength = .data$dummy_wavelength) %>%
+    mutate(band = factor(.data$band,
                          levels = c("B2","B3","B4","B5","B6","B7","B8","B8A","B11","B12")))
 
   if (is.null(target_classes)) {
@@ -86,11 +90,11 @@ stat.summary.plot <- function(data, target_classes = NULL,
   if (length(target_classes) < length(levels(df$label))) {
     # Create a subset for target classes only
     target <- df %>%
-      filter(label %in% target_classes)
+      filter(.data$label %in% target_classes)
 
     # Create a subset for the rest of the classes
     background <- df %>%
-      filter(!label %in% target_classes)
+      filter(!.data$label %in% target_classes)
 
     # Make a plot
     p <- ggplot()+

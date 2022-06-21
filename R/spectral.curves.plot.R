@@ -13,6 +13,7 @@
 #'
 #' @export
 #' @import tibble reshape2 dplyr ggplot2
+#' @importFrom rlang .data
 #'
 #' @examples
 #' \dontrun{
@@ -50,11 +51,11 @@ spectral.curves.plot <- function(data, target_classes = NULL){
   df <- tibble::as_tibble(data) %>%
     reshape2::melt(id = "label") %>%
     left_join(as.data.frame(waves)) %>%
-    mutate(across(label, as.factor)) %>%
+    mutate(across(.data$label, as.factor)) %>%
     mutate(across(dummy_wavelength, as.numeric)) %>%
-    mutate(across(variable, as.factor)) %>%
-    mutate(across(value, as.numeric)) %>%
-    mutate(variable = factor(variable,
+    mutate(across(.data$variable, as.factor)) %>%
+    mutate(across(.data$value, as.numeric)) %>%
+    mutate(variable = factor(.data$variable,
                              levels = c("B2","B3","B4","B5","B6","B7","B8","B8A","B11","B12"))) %>%
     na.omit()
 
@@ -67,10 +68,10 @@ spectral.curves.plot <- function(data, target_classes = NULL){
   if (length(target_classes) < length(levels(df$label))) {
     # Create a subset for target classes only
     target <- df %>%
-      filter(label %in% target_classes)
+      filter(.data$label %in% target_classes)
     # Create a subset for the rest of the classes
     background <- df %>%
-      filter(!label %in% target_classes)
+      filter(!.data$label %in% target_classes)
     # Make a plot
     p <- ggplot()+
       geom_smooth(data = background, aes(x = dummy_wavelength, y = value, group = label),
