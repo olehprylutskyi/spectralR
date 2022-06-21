@@ -5,7 +5,7 @@ Version: 0.1.1
 Authors@R: c(person("Oleh", "Prylutskyi", role=c("aut","cre"), email="oleh.prylutskyi@gmail.com"),
              person("Dariia", "Shyriaieva", role="ctb", email="darshyr@gmail.com"),
              person("Vladimir", "Mikryukov", role="ctb", email="vladimir.mikryukov@ut.ee"))
-Description: This package aims to obtain, process, and visualize spectral reflectance data for the user-defined land or water surface classes for visual exploring in which wavelength the classes differ. Input should be a shapefile with polygons of surface classes (it might be different habitat types, crops, vegetation, etc.). The Sentinel-2 L2A satellite mission optical bands pixel data are obtained through the Google Earth Engine service and used as a source of spectral data.
+Description: Tools for obtaining, processing, and visualizing spectral reflectance data for the user-defined land or water surface classes for visual exploring in which wavelength the classes differ. Input should be a shapefile with polygons of surface classes (it might be different habitat types, crops, vegetation, etc.). The Sentinel-2 L2A satellite mission optical bands pixel data are obtained through the Google Earth Engine service and used as a source of spectral data.
 Depends: R (>= 4.1.0)
 Imports:
     rgee (>= 1.1.3),
