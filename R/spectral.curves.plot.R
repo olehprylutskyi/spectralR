@@ -74,14 +74,17 @@ spectral.curves.plot <- function(data, target_classes = NULL){
       filter(!.data$label %in% target_classes)
     # Make a plot
     p <- ggplot()+
-      geom_smooth(data = background, aes(x = dummy_wavelength, y = value, group = label),
-                  colour = "gray", fill = "gray",
-                  method = 'gam', formula = y ~ s(x, bs = "cs"), se = TRUE) +
-      geom_smooth(data = target, aes(x=dummy_wavelength, y= value, colour = label, fill=label),
-                  method = 'gam', formula = y ~ s(x, bs = "cs"), se = TRUE)
+      geom_smooth(data = background,
+        aes_string(x = "dummy_wavelength", y = "value", group = "label"),
+        colour = "gray", fill = "gray",
+        method = 'gam', formula = y ~ s(x, bs = "cs"), se = TRUE) +
+      geom_smooth(data = target,
+        aes_string(x = "dummy_wavelength", y = "value", colour = "label", fill = "label"),
+        method = 'gam', formula = y ~ s(x, bs = "cs"), se = TRUE)
   } else {
-    p <- ggplot(df, aes(x=dummy_wavelength, y= value, colour = label))+
-      geom_smooth(aes(fill = label), method = 'gam', formula = y ~ s(x, bs = "cs"), se = TRUE)
+    p <- ggplot(data = df, aes_string(x = "dummy_wavelength", y = "value", colour = "label"))+
+      geom_smooth(aes_string(fill = "label"),
+        method = 'gam', formula = y ~ s(x, bs = "cs"), se = TRUE)
   }
 
   return(p)

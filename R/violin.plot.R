@@ -47,9 +47,11 @@ violin.plot <- function(data){
     mutate(variable = factor(.data$variable,
                              levels = c("B2","B3","B4","B5","B6","B7","B8","B8A","B11","B12"))) %>%
     na.omit() %>%
-    ggplot(aes(x=label, y= value, fill = label))+
+    ggplot(aes_string(x = "label", y = "value", fill = "label"))+
     geom_violin(trim = FALSE)+
     facet_wrap( ~ variable,
                 ncol = 2,
                 scales = "free")
+
+  return(p)
 }

@@ -100,30 +100,30 @@ stat.summary.plot <- function(data, target_classes = NULL,
     p <- ggplot()+
       geom_line(
         data = background,
-        aes(x=band, y=mean_refl, group = label),
+        aes_string(x = "band", y = "mean_refl", group = "label"),
         colour = "gray",
         position = position_dodge(width = x_dodge))+
       geom_pointrange(
         data = background,
-        aes(x=band, y=mean_refl, ymin = min_refl, ymax = max_refl),
+        aes_string(x = "band", y = "mean_refl", ymin = "min_refl", ymax = "max_refl"),
         colour = "gray",
         size = point_size, fatten = fatten,
         position = position_dodge(width = x_dodge)) +
       geom_line(
         data = target,
-        aes(x=band, y=mean_refl, colour = label, group = label),
+        aes_string(x = "band", y = "mean_refl", colour = "label", group = "label"),
         position = position_dodge(width = x_dodge))+
       geom_pointrange(
         data = target,
-        aes(x=band, y=mean_refl, colour = label, ymin = min_refl, ymax = max_refl),
+        aes_string(x = "band", y = "mean_refl", colour = "label", ymin = "min_refl", ymax = "max_refl"),
         size = point_size, fatten = fatten,
         position = position_dodge(width = x_dodge))
 
   } else {
-    p <- ggplot(df, aes(x=band, y=mean_refl, colour = label))+
-      geom_line(aes(group = label), position = position_dodge(width = x_dodge))+
+    p <- ggplot(data = df, aes_string(x = "band", y = "mean_refl", colour = "label"))+
+      geom_line(aes_string(group = "label"), position = position_dodge(width = x_dodge))+
       geom_pointrange(
-        aes(ymin = min_refl, ymax = max_refl),
+        aes_string(ymin = "min_refl", ymax = "max_refl"),
         size = point_size, fatten = fatten,
         position = position_dodge(width = x_dodge))
   }
