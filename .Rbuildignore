@@ -1,6 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^inst/figures$
+^inst/Dockerfile_spectralR$
 ^docs$
 ^figure$
 ^vignettes/spectralR_vignette.Rmd$
