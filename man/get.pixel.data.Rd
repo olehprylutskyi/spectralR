@@ -53,7 +53,9 @@ for each optical band of Sentinel-2 sensor, marked according to the label of sur
 class from the polygons.
 }
 \examples{
+\donttest{
 \dontrun{
+# Downlad spectral reflectance data
 reflectance <-  get.pixel.data(
   sf_data = sf_df,
   startday = "2019-05-15",
@@ -62,5 +64,5 @@ reflectance <-  get.pixel.data(
   scale_value = 100)
 
 head(reflectance)
-}
+}}
 }

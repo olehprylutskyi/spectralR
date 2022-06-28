@@ -41,23 +41,24 @@ Make a plot with statistical summary of reflectance values (mean, mean-standard 
 mean+standard deviation) for defined classes of surface.
 }
 \examples{
-\dontrun{
-p <- stat.summary.plot(
-  data = reflectance
-  )
+# Load example data
+load(system.file("testdata/reflectance_test_data.RData", package = "spectralR"))
 
-p
+# Create a summary plot
+p <- stat.summary.plot(data = reflectance)
 
+# Customize a plot
 p +
-  labs(x = 'Sentinel-2 bands', y = 'Reflectance',
+  ggplot2::labs(x = 'Sentinel-2 bands', y = 'Reflectance',
       colour = "Surface classes",
       title = "Reflectance for different surface classes",
       caption='Data: Sentinel-2 Level-2A\nmean ± standard deviation')+
-   theme_minimal()
+  ggplot2::theme_minimal()
 
- p <- stat.summary.plot(
+# Highlight only specific target classes
+stat.summary.plot(
    data = reflectance,
-   target_classes = list("C2.2", "C2.3", "J5")
+   target_classes = list("meadow", "coniferous_forest")
   )
-}
+
 }

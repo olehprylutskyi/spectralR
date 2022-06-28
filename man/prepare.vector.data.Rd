@@ -21,11 +21,14 @@ The function takes shapefile with polygons of different surface classes (habitat
 vegetation, etc.), and retrieves ready-for-sampling sf object.
 }
 \examples{
-\dontrun{
+# Load example data
+load(system.file("testdata/reflectance_test_data.RData", package = "spectralR"))
+
+# Prepare vector data
 sf_df <- prepare.vector.data(
-  shapefile_name = "test_shapefile.shp",
+  shapefile_name = system.file("extdata/test_shapefile.shp", package = "spectralR"),
   label_field = "veget_type")
 
 head(sf_df)
-}
+
 }
