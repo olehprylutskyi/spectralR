@@ -14,13 +14,16 @@
 #' @importFrom rlang .data
 #' 
 #' @examples
-#' \dontrun{
+#' # Load example data
+#' load(system.file("testdata/reflectance_test_data.RData", package = "spectralR"))
+#' 
+#' # Prepare vector data
 #' sf_df <- prepare.vector.data(
-#'   shapefile_name = "test_shapefile.shp",
+#'   shapefile_name = system.file("extdata/test_shapefile.shp", package = "spectralR"),
 #'   label_field = "veget_type")
 #'
 #' head(sf_df)
-#' }
+#'
 prepare.vector.data <- function(shapefile_name, label_field){
   # Upload a shapefile with polygons of knowing surface classes.
   # The shapefile must contain a text field with classes labels

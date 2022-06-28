@@ -16,28 +16,27 @@
 #' @importFrom rlang .data
 #'
 #' @examples
-#' \dontrun{
-#' p <- spectral.curves.plot(
-#'   data = reflectance
-#'   )
+#' # Load example data
+#' load(system.file("testdata/reflectance_test_data.RData", package = "spectralR"))
+#' 
+#' # Create a plot
+#' p <- spectral.curves.plot(data = reflectance)
 #'
-#' p
-#'
+#' # Customize a plot
 #' p +
-#'  labs(x = 'Wavelength, nm', y = 'Reflectance',
+#'   ggplot2::labs(x = 'Wavelength, nm', y = 'Reflectance',
 #'       colour = "Surface classes",
 #'       fill = "Surface classes",
 #'       title = "Spectral reflectance curves for different classes of surface",
 #'       caption = 'Data: Sentinel-2 Level-2A')+
-#'  theme_minimal()
+#'   ggplot2::theme_minimal()
 #'
-#'  p <- spectral.curves.plot(
+#' # Highlight only specific target classes
+#' spectral.curves.plot(
 #'   data = reflectance,
-#'   target_classes = list("C2.2", "C2.3", "J5")
+#'   target_classes = list("meadow", "coniferous_forest")
 #'   )
 #'
-#'  p
-#'  }
 spectral.curves.plot <- function(data, target_classes = NULL){
   # Create "dummy" wavelength object, containing mean wavelengths (nm) for Sentinel 2A
   # (https://en.wikipedia.org/wiki/Sentinel-2), for bands 2-12

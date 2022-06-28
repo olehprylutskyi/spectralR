@@ -30,25 +30,26 @@
 #' @importFrom rlang .data
 #'
 #' @examples
-#' \dontrun{
-#' p <- stat.summary.plot(
-#'   data = reflectance
-#'   )
-#'
-#' p
-#'
+#' # Load example data
+#' load(system.file("testdata/reflectance_test_data.RData", package = "spectralR"))
+#' 
+#' # Create a summary plot
+#' p <- stat.summary.plot(data = reflectance)
+#' 
+#' # Customize a plot
 #' p +
-#'   labs(x = 'Sentinel-2 bands', y = 'Reflectance',
+#'   ggplot2::labs(x = 'Sentinel-2 bands', y = 'Reflectance',
 #'       colour = "Surface classes",
 #'       title = "Reflectance for different surface classes",
 #'       caption='Data: Sentinel-2 Level-2A\nmean ± standard deviation')+
-#'    theme_minimal()
-#'
-#'  p <- stat.summary.plot(
+#'   ggplot2::theme_minimal()
+#' 
+#' # Highlight only specific target classes
+#' stat.summary.plot(
 #'    data = reflectance,
-#'    target_classes = list("C2.2", "C2.3", "J5")
+#'    target_classes = list("meadow", "coniferous_forest")
 #'   )
-#' }
+#'
 stat.summary.plot <- function(data, target_classes = NULL,
   point_size = 0.6, fatten = 4, x_dodge = 0.2){
   # Create "dummy" wavelength object, containing mean wavelengths (nm) for Sentinel 2A

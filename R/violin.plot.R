@@ -13,20 +13,20 @@
 #' @importFrom rlang .data
 #'
 #' @examples
-#' \dontrun{
-#' p3 <- violin.plot(
-#'   data = reflectance
-#'   )
-#'
-#' p3
-#'
+#' # Load example data
+#' load(system.file("testdata/reflectance_test_data.RData", package = "spectralR"))
+#' 
+#' # Create a plot
+#' p3 <- violin.plot(data = reflectance)
+#' 
+#' # Customize a plot
 #' p3 +
-#'   labs(x='Surface class',y='Reflectance',
+#'   ggplot2::labs(x='Surface class',y='Reflectance',
 #'       fill="Surface classes",
 #'       title = "Reflectance for different surface classes",
 #'       caption='Data: Sentinel-2 Level-2A')+
-#'    theme_minimal()
-#' }
+#'   ggplot2::theme_minimal()
+#'
 violin.plot <- function(data){
   # Create "dummy" wavelength object, containing mean wavelengths (nm) for Sentinel 2A
   # (https://en.wikipedia.org/wiki/Sentinel-2), for bands 2-12
