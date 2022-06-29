@@ -1,3 +1,6 @@
+[![CRAN](http://www.r-pkg.org/badges/version/spectralR)](http://cran.r-project.org/package=spectralR/)
+
+
 # spectralR <img src="inst/figures/stickers/sticker_lightgray.png" align="right" alt="" width="140">
 
 ### Spectral reflectance visualisations for user-defined areas
