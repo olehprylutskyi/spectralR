@@ -5,5 +5,7 @@
 
 # spectralR 0.1.2
 
-* Prepared package for submission to CRAN
-
+* The package was submitted to CRAN
+* New argument `target_classes` in `spectral.curves.plot` and `stat.summary.plot`
+* New arguments for adjusting point appearance in in `stat.summary.plot`
+* Updated automatic unit tests
