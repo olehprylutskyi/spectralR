@@ -49,6 +49,14 @@ Essential requirements:
 
 ## Installation
 
+Install the released version from CRAN
+
+``` r
+install.packages("spectralR")
+```
+
+You can install the development version of `spectralR` like so:
+
 ``` r
 library(remotes)
 install_github("olehprylutskyi/spectralR")
