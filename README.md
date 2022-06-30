@@ -8,6 +8,9 @@
 See our [vignette](https://olehprylutskyi.github.io/spectralR/) for
 detailed usage examples.
 
+**Authors**: [Oleh Prylutskyi](https://github.com/olehprylutskyi), 
+[Vladimir Mikryukov](https://github.com/vmikk), [Dariia Shyriaieva](https://github.com/driadash)
+
 ## Description
 
 This package provides tools for obtaining, processing, and visualization
