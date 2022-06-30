@@ -38,6 +38,8 @@ The overall workflow is following:
 3.  Visualize retrieved pixel data locally, mainly using ggplot2
     approach.
 
+![Overall workflow](https://github.com/olehprylutskyi/spectralR/blob/main/inst/figures/fig1_workflow_arc1.png)
+
 Essential requirements:
 
 -   stable Internet connection (for using API)
