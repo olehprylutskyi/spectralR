@@ -18,6 +18,7 @@ Imports:
     tibble (>= 3.1.0),
     tidyr (>= 1.2.0)
 Suggests:
+    covr,
     tinytest (>= 1.3.0)
 License: GPL-3
 URL:
