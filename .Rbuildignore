@@ -4,7 +4,8 @@
 ^inst/Dockerfile_spectralR$
 ^docs$
 ^figure$
-^vignettes/spectralR_vignette.Rmd$
+^vignettes/spectralR_vignette\.Rmd$
 ^LICENSE$
 ^\.github$
 ^codecov\.yml$
+^\.covrignore$
