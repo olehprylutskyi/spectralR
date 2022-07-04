@@ -6,3 +6,4 @@
 ^figure$
 ^vignettes/spectralR_vignette.Rmd$
 ^LICENSE$
+^\.github$
