@@ -352,7 +352,7 @@ ggsave("Violins_usecase1.png", width=22, height=16, unit="cm", dpi=300)
 
 ## Use case 2. Habitats of Buzkyi Gard National Park, Mykolaiv region, Ukraine.
 
-[**Buzkyi Gard National Park**](https://en.wikipedia.org/wiki/Buzk%27s_Gard_National_Nature_Park) locates in Southern Bug valley (south-western Ukraine, 31.08325,47.90720). Field inventory allowed to reveal 26 different habitat types (according to the EUNIS classification system) in the territory of the Park and its vicinity, i.e., a wide range of dry grasslands, rocky outcrops, and steppe forests. Artificial habitat types, like croplands or human settlements, are also included. Ground truth data contains 380 polygons with known habitat types.
+[**Buzkyi Gard National Park**](https://en.wikipedia.org/wiki/Buzk%27s_Gard_National_Nature_Park) is located in Southern Bug valley (south-western Ukraine, 31.08325,47.90720). Field inventory allowed to reveal 26 different habitat types (according to the EUNIS classification system) in the territory of the Park and its vicinity, i.e., a wide range of dry grasslands, rocky outcrops, and steppe forests. Artificial habitat types, like croplands or human settlements, are also included. Ground truth data contains 380 polygons with known habitat types.
 
 Environment preparation
 
