@@ -12,11 +12,11 @@
 #' @export
 #' @import sf dplyr
 #' @importFrom rlang .data
-#' 
+#'
 #' @examples
 #' # Load example data
 #' load(system.file("testdata/reflectance_test_data.RData", package = "spectralR"))
-#' 
+#'
 #' # Prepare vector data
 #' sf_df <- prepare.vector.data(
 #'   shapefile_name = system.file("extdata/test_shapefile.shp", package = "spectralR"),
@@ -40,8 +40,8 @@ prepare.vector.data <- function(shapefile_name, label_field){
   classes_cheatsheet$class <- rownames(as.data.frame(levels(factor(nc$label))))
   colnames(classes_cheatsheet) <- c("label", "class")
   classes_cheatsheet <-  classes_cheatsheet %>%
-    mutate(across(.data$label, as.factor)) %>%
-    mutate(across(.data$class, as.numeric))
+    mutate(across("label", as.factor)) %>%
+    mutate(across("class", as.numeric))
 
   # Add class IDs
   nc <- left_join(nc, classes_cheatsheet, by = "label")

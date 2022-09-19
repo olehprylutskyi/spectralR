@@ -81,10 +81,10 @@ colnames(waves)[1] <-  "variable"
 p3_1 <- tibble::as_tibble(reflectance) %>%
   reshape2::melt(id = "label") %>%
   left_join(as.data.frame(waves)) %>%
-  mutate(across(label, as.factor)) %>%
-  mutate(across(dummy_wavelength, as.numeric)) %>%
-  mutate(across(variable, as.factor)) %>%
-  mutate(across(value, as.numeric)) %>%
+  mutate(across("label", as.factor)) %>%
+  mutate(across("dummy_wavelength", as.numeric)) %>%
+  mutate(across("variable", as.factor)) %>%
+  mutate(across("value", as.numeric)) %>%
   mutate(variable = factor(variable,
                            levels = c("B2","B3","B4","B5","B6","B7","B8","B8A","B11","B12"))) %>%
   na.omit() %>%
