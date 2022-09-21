@@ -134,12 +134,12 @@ get.pixel.data <- function(sf_data, startday, endday, cloud_threshold, scale_val
   classes_cheatsheet$class <- rownames(as.data.frame(levels(factor(sf_data$label))))
   colnames(classes_cheatsheet) <- c("label", "class")
   classes_cheatsheet <-  classes_cheatsheet %>%
-    mutate(across(label, as.factor)) %>%
-    mutate(across(class, as.numeric))
+    mutate(across("label", as.factor)) %>%
+    mutate(across("class", as.numeric))
 
   # Get final dataframe with class labels and pixel values
   reflectance <-  values %>%
     left_join(classes_cheatsheet, by="class") %>%
     st_drop_geometry() %>%
-    select(-class)
+    select(-"class")
 }

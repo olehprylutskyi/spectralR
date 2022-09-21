@@ -18,7 +18,7 @@
 #' @examples
 #' # Load example data
 #' load(system.file("testdata/reflectance_test_data.RData", package = "spectralR"))
-#' 
+#'
 #' # Create a plot
 #' p <- spectral.curves.plot(data = reflectance)
 #'
@@ -50,10 +50,10 @@ spectral.curves.plot <- function(data, target_classes = NULL){
   df <- tibble::as_tibble(data) %>%
     reshape2::melt(id = "label") %>%
     left_join(as.data.frame(waves)) %>%
-    mutate(across(.data$label, as.factor)) %>%
-    mutate(across(dummy_wavelength, as.numeric)) %>%
-    mutate(across(.data$variable, as.factor)) %>%
-    mutate(across(.data$value, as.numeric)) %>%
+    mutate(across("label", as.factor)) %>%
+    mutate(across("dummy_wavelength", as.numeric)) %>%
+    mutate(across("variable", as.factor)) %>%
+    mutate(across("value", as.numeric)) %>%
     mutate(variable = factor(.data$variable,
                              levels = c("B2","B3","B4","B5","B6","B7","B8","B8A","B11","B12"))) %>%
     na.omit()
