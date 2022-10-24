@@ -85,6 +85,8 @@ band](https://github.com/olehprylutskyi/spectralR/blob/main/inst/figures/Violins
 
 ## References
 
+package from CRAN citation [TBD]
+
 Shyriaieva, D., Prylutskyi, O. (2021). Exploratory analysis of the
 spectral reflectance curves of habitat types: a case study on Southern
 Bug River valley, Ukraine. In: 63rd IAVS Annual Symposium: Book of
