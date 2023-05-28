@@ -22,15 +22,9 @@ The `spectralR` package ([homepage and source code](https://github.com/olehprylu
 
 The initial purpose of `spectralR` development was to quickly and visually explore the differences in spectral reflectance patterns for supervised vegetation (and, widely, habitat) mapping. While machine learning classification methods, such as [RandomForest](https://en.wikipedia.org/wiki/Random_forest), typically utilize the full set of available spectral data (satellite bands), we observed that highly similar habitat types (e.g., different types of grasslands, floodplain habitats) might have similar reflectance values during one season and different for another, so time-series reflectance data are also needed. Without the preliminary selection of the most discriminating satellite bands for given habitat types in given conditions, the models became overfitted and required extensive machine resources for calculation.
 
-The [first version](https://github.com/olehprylutskyi/habitat-spectral-reflectance) of our product was based on three code snippets, two written for R (shapefile preparation and visualization of the results) and one for Google Earth Engine for satellite image preparation and spectral data sampling itself. That approach, though, required a bunch of manual operations, and downloading big files on a local machine. So we moved to the recent [rgee](https://r-spatial.github.io/rgee/) R package, which provides a bridge between R and Python API for Google Earth Engine. All the operations with satellite images now run in a cloud, and the obtained pixel data is visualized locally afterward. Therefore, the most resource-hungry functions do not overload your local machine despite the large amount of input data. However, a stable Internet connection is required for using the API.
+The [first version](https://github.com/olehprylutskyi/habitat-spectral-reflectance) of our product was based on three code snippets, two written for R (shapefile preparation and visualization of the results) and one for Google Earth Engine for satellite image preparation and spectral data sampling itself. That approach, though, required a bunch of manual operations, and downloading big files on a local machine. So we moved to the recent [rgee](https://r-spatial.github.io/rgee/) R package, which provides a bridge between R and Python API for Google Earth Engine. All the operations with satellite images now run in a cloud, and the obtained pixel data is visualized locally afterward. Therefore, the most resource-hungry functions do not overload your local machine regardless the size of data. However, a stable Internet connection is required for using the API.
 
-For using `rgee` you should have a Google Earth Engine account. If you don't, first [register](https://earthengine.google.com/new_signup/) using your Google account.
-
-Depending on the operating system you use and your current Python configuration, it may require the installation of additional R and Python packages for running `rgee`. See the following links for instructions. See also [Quick Start User's Guide](https://www.rdocumentation.org/packages/rgee/versions/1.0.7), [Official documentation](https://r-spatial.github.io/rgee/index.html), and the [source code](https://github.com/r-spatial/rgee) of rgee for solving issues that arise during installation and setting up.
-
-We strongly encourage you to follow the official `rgee` installation guide and pay attention to the messages that arrive during installation.
-
-The overall workflow is following:
+The overall workflow is the following:
 
 1.  Load the user's ESRI shapefile containing polygons for user-defined surface classes, as well as the text or numerical field with class names (labels).
 2.  Apply `rgee` functionality to retrieve multi-band pixel data for class polygons from the Google Earth Engine service.
@@ -48,8 +42,17 @@ Essential requirements:
 
 ### Install and set up `rgee`
 
+For using `rgee` you should have a Google Earth Engine account. If you don't, first [register](https://earthengine.google.com/new_signup/) using your Google account.
+
+Depending on the operating system you are using and your current Python configuration, it may require the installation of additional R and Python packages for running `rgee`. See the following links for instructions. See also [Quick Start User's Guide](https://www.rdocumentation.org/packages/rgee/versions/1.0.7), [Official documentation](https://r-spatial.github.io/rgee/index.html), and the [source code](https://github.com/r-spatial/rgee) of `rgee` for solving issues that arise during installation and setting up.
+
+We strongly encourage you to follow the official `rgee` installation guide and pay attention to the messages that arrive during installation. Here we guide your for `rgee` installation and first setting up for using `spectralR`
+functions.
+
+First, install either stable or development version of the package (all `spectrlR` functions were tested under CRAN version of `rgee`):
+
 ```{r, eval = FALSE}
-install.packages('rgee') # install regular version from CRAN, more stable
+install.packages("rgee") # install regular version from CRAN, more stable
 # remotes::install_github("r-spatial/rgee") # to install development version, more recent
 ```
 
@@ -87,16 +90,23 @@ ee_Initialize()
 
 At this step, you would be prompted to link your Google Earth Engine account with `rgee`. Follow instructions in the R console, and you will be redirected to a web browser for logging into your Google Earth Engine account to confirm access rights. During this step, you should past an authorization code generated into R console to finalize authentication.
 
+During first initialization the following error message can arise on some systems:
+
+> Error: Exception: gcloud command not found. Please ensure that gcloud is installed.
+> More information: https://developers.google.com/earth-engine/guides/python_install
+
+It means that your system lacks Google Cloud Command Line Interface (gcloud), through which graphical authentification using your default web browser is supposed to happen. In this case, please follow [instructions](https://cloud.google.com/sdk/docs/install) to install gcloud CLI manually.
+
 If everything is OK at the last step and you see a message of successful initiation of API with your GEE username in the console, - congratulations, you managed to install and configure `rgee`!
 
 Pay attention that `rgee` uses `earthengine_api` package, which depends on Python. That's why we need to set up a local Python environment for using `rgee`.
 
-Unfortunately, you have to repeat the environment setting and re-authorization each time Python gets updates. For actively updated operating systems, like regular versions of Ubuntu, that's quite annoying. On the other hand, this built-in repairing system protects you from accidentally breaking the `earthengine` Python environment during installation or using any other Python-related tools, which is convenient, at least if you are a weak Python user like me. If you get an error message
+Unfortunately, you have to repeat the environment setting and re-authorization each time Python gets updates. For actively updated operating systems, like regular versions of Ubuntu, that's quite annoying. On the other hand, this built-in repairing system protects you from accidentally breaking the `earthengine` Python environment during installation or using any other Python-related tools, which is convenient, at least if you are not very experienced Python user. If you get an error message
 
-> "The current Python PATH: /home/user/.virtualenvs/rgee/bin/python does
+> The current Python PATH: /home/user/.virtualenvs/rgee/bin/python does
 > not have the Python package "earthengine-api" installed. Are you
 > restarted/terminated your R session after install miniconda or run
-> ee_install()?"
+> ee_install()?
 
 then proceed with the instruction that appeared in R console and will help you to delete your previous configuration and set it up again.
 
@@ -107,6 +117,14 @@ then proceed with the instruction that appeared in R console and will help you t
 ### Installation of spectralR
 
 `spectralR` can be installed from **GitHub** sources so far, although we are planning to land it on CRAN soon.
+
+Install the released version from CRAN (recommended):
+
+```{r}
+install.packages("spectralR")
+```
+
+You can install the development version of `spectralR` from **GitHub** sources:
 
 ```{r, eval = FALSE}
 library(remotes)
@@ -519,4 +537,4 @@ You also can save and/or transform resulting ggplot objects as you wish, using `
 
 If you have any feedback, please let us know via [GitHub Issues](https://github.com/olehprylutskyi/spectralR/issues) or [e-mail](mailto:oleh.prylutskyi@gmail.com).
 
-`spectralR` development team. GPL-3.0 License. Updated 2022-06
+`spectralR` development team. GPL-3.0 License. Document updated 2023-05-28
