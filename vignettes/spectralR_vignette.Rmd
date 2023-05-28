@@ -182,7 +182,7 @@ Explore the resulting spatial object:
 head(sf_df)
 ```
 
-The example above uses an internal test shapefile. To use your own data, put all the shapefile into your working directory and use the following syntax (uncomment the row and change file names before executing):
+The example above uses an internal test shapefile. To use your own data, put all the shapefile into your working directory and use the following syntax (uncomment the row and change names of the file and variable containing class labels before executing):
 
 ```{r, eval = FALSE}
 # sf_df <- prepare.vector.data("your-shapefile-within-working-directory-name.shp", "name-of-the-field-with-class-labels")
@@ -190,7 +190,7 @@ The example above uses an internal test shapefile. To use your own data, put all
 
 ### Obtain pixel values from Sentinel 2A image collection
 
-Function `get.pixel.data` is the heart of `spectralR`. It takes `sf` polygon object obtained at the previous step and retrieves a data frame with brightness values for each pixel intersected with polygons for each optical band of Sentinel-2 sensor, marked according to the label of surface class from the polygons. `get.pixel.data` starts with the conversion of the `sf` object into GEE feature collection. Then it prepares a satellite image for pixel sampling, performs sampling, and finally exports the resulting object back into an R data frame (non-spatial now).
+Function `get.pixel.data` is a heart of `spectralR`. It takes `sf` polygon object obtained at the previous step and retrieves a data frame with brightness values for each pixel intersected with polygons for each optical band of Sentinel-2 sensor, marked according to the label of surface class from the polygons. `get.pixel.data` starts with the conversion of the `sf` object into GEE feature collection. Then it prepares a satellite image for pixel sampling, performs sampling, and finally exports the resulting object back into the (non-spatial) R data frame.
 
 One of the most tricky and issues-causing steps of this procedure is the conversion between GEE feature collection and R `sf` object. `rgee` implements three ways to do so:
 
@@ -200,11 +200,18 @@ One of the most tricky and issues-causing steps of this procedure is the convers
 
 * using Google Cloud Storage (`gcs_to_asset`)
 
-The first one is the most straightforward and quick but usable only for small data (less than 15000 entries, or 1.5 MB size local files). The other two require transient storage to store your data between conversions (because Earth Engine is Google's service and seamlessly integrated with both Google Drive and Google Cloud Storage).
+The first one is the most straightforward and quick but usable only for small data (less than 15000 entries, or 1.5 MB size local files). The other two require transient storage to store your data between conversions, either Google Drive or  Google Cloud Storage (since Earth Engine is one of the Google web services it seamlessly interacts with both).
 
-In `spectralR`, we use the first two methods. `get.pixel.data` assesses the size of your `sf` object or a feature collection, then activates either `getInfo` or `getInfo_to_asset` pathway. If your data is considered to be "small", `getInfo` will be used, and you will notice nothing special. But, if your data is larger than our arbitrary threshold, the method `getInfo_to_asset` will be activated, and you may be prompted to authorize in Google Drive and allow `rgee` to access GDrive files and folders. In such a case, please follow instructions in the R console and then in your web browser. You may do it once you perform your first large query - your credits will be stored in your local `earthengine` environment.
+In `spectralR`, we use the first two methods, since they don't require paid subscriptions. `get.pixel.data` assesses the size of your `sf` object or a feature collection, then activates either `getInfo` or `getInfo_to_asset` pathway. If your data is considered to be "small", `getInfo` will be used, and you shall notice nothing special. But, if your data is larger than our arbitrary threshold, the method `getInfo_to_asset` will be activated, and you may be prompted to authorize in Google Drive and allow `rgee` to access GDrive files and folders. In such case, please follow instructions in the R console and then in your web browser. You have to do it once when you perform your first 'large' query - your credits will be stored in your local `earthengine` environment. You can also do it in advance, running the following command:
 
-After authorization and first use, folder *rgee_backup* will be created in your Google Drive storage when all the intermediate files will be stored. If you run out of storage, `get.pixel.data` won't be able to use your Google Drive as mediating storage, and you will receive an error. Though `get.pixel.data` re-write objects each time it will be launched, we strongly recommend cleaning *rgee_backup* folder in your Drive from time to time manually or using the following command from the `rgee` package:
+```{r}
+ee_Initialize(user = "myemail@gmail.com", drive = TRUE)
+```
+
+Don't forget to change "myemail" to your actual Google account username. After that, you will be re-directed to the new tab in web browser to allow Tidyverse API Packages to see, edit, create, and delete all of your Google Drive files. You have to manually put the checkmark in required field, otherwise it won't work.
+
+
+After authorization and first use, folder *rgee_backup* will be created in your Google Drive storage, where all the intermediate files will be stored. If you run out of storage, `get.pixel.data` won't be able to use your Google Drive as mediating storage, and you will receive an error. Though `get.pixel.data` re-writes objects each time it executes, we strongly recommend cleaning *rgee_backup* folder in your Drive from time to time manually or using the following command from the `rgee` package:
 
 ```{r, collapse = TRUE, eval = FALSE}
 ee_clean_container(name = "rgee_backup", type = "drive", quiet = FALSE)
@@ -228,16 +235,20 @@ To use the `get.pixel.data` function, we need to specify some values:
 
 The resulting pixel data will be saved within a working directory and can be loaded during the following sessions.
 
-**Note 1**. Particular satellite imagery is usually not ready for instant sampling -- it contains clouds, cloud shadows, aerosols, and may cover not all the territory of your interest. Another issue is that each particular pixel slightly differs in reflectance between images taken on different days due to differences in atmospheric conditions and angle of sunlight at the moments images were taken. The Google Earth Engine has its build-in algorithms for image pre-processing, atmospheric corrections and mosaicing, which allows one to obtain a ready-to-use, rectified image. The approach used in `spectralR` is to find a median value for each pixel between several images within each of 10 optical bands, thereby making a composite image. To define a set of imageries between which we are going to calculate the median, we should set a timespan of image collection. Sentinel-2 apparatus takes a picture once every five days, so if you set up a month-long timesnap, you can expect that each pixel value will be calculated based on 5 to 6 values (remember, some images might appear unsatisfactory cloudy).
+**Note 1**. Particular satellite imagery is usually not ready for instant sampling -- it contains clouds, cloud shadows, aerosols, and might cover not all the territory of your interest. Another issue is that each particular pixel slightly differs in reflectance between images taken on different days due to differences in atmospheric conditions and angle of sunlight at the moments images were taken. The Google Earth Engine has its build-in algorithms for image pre-processing, atmospheric corrections and mosaicing, which allows one to obtain a ready-to-use, rectified image. The approach which is used in `spectralR` is to find a median value for each pixel between several images within each of 10 optical bands, thereby making a composite image. To define a set of imageries between which we are going to calculate the median, we should set a timespan of image collection. Sentinel-2 apparatus takes a picture once every five days, so if you set up a month-long timesnap, you can expect that each pixel value will be calculated based on 5 to 6 values (remember, some images might appear unsatisfactory cloudy).
 
 **Note 2**. The finest resolution for Sentinel data is 10 m while using a higher *scale_value* decreases the required computational resources and size of the resulting data frame. Although sampling satellite data is performed in a cloud, there are some limitations for geocalculations placed by GEE itself. If you are about to sample large areas, consider setting a higher 'scale' value (e.g., 100, 1000). Read more in GEE [best practices](https://developers.google.com/earth-engine/guides/best_practices).
 
 ```{r, collapse = TRUE, eval = FALSE}
 # Get pixel data
-reflectance = get.pixel.data(sf_df, "2019-05-15", "2019-06-30", 10, 100)
+reflectance = get.pixel.data(sf_data = sf_df,
+                             startday = "2019-05-15",
+                             endday = "2019-06-30",
+                             cloud_threshold = 10,
+                             scale_value = 100)
 
-# Save pixel data for further sessions
-save(reflectance, file = "reflectance_test_data")
+# You can save pixel data for further sessions
+save(reflectance, file = "reflectance_test_data.RData")
 ```
 
 ```{r, include = FALSE}
@@ -270,7 +281,7 @@ First of all, one should explore the quality and comprehensiveness of obtained p
 summary(factor(reflectance$label)) # how many pixels in each class? 
 ```
 
-For reliable results, keeping the similar size of each surface class is recommended. Classes represented by a few sampled pixels should be excluded from further analysis.
+For reliable results, keeping the similar size of each surface class is recommended. Classes represented by a few sampled pixels better to be excluded from further analysis.
 
 Visual overview of pixel data
 
@@ -296,7 +307,7 @@ p1 <- spectral.curves.plot(reflectance)
 p1
 ```
 
-Since the output of `spectral.curves.plot` is `ggplot` object, we can apply any tools provided by `ggplot2` package to make it more visually pleasing.
+Since the output of `spectral.curves.plot` is a most simple as possible `ggplot` object, we can apply any tools provided by `ggplot2` package to make it more appealing.
 
 ```{r, fig.align='center', fig.width=7, fig.height=5}
 # Customized plot
@@ -306,16 +317,18 @@ p1+
        fill = "Surface classes",
        title = "Spectral reflectance curves for different surface classes",
        caption = 'Data: Sentinel-2 Level-2A')+
-  theme_minimal()
+  theme_bw() +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank())
 ```
 
-You can save the plot as a \*.png (or other standard graphical formats) file using `ggsave` or `png()` functions.
+You can save the plot as a \*.png (or other standard graphical formats) file using `ggsave`, `png()`, `svg()` functions or similar.
 
 ```{r}
-ggsave("Spectral_curves_usecase1.png", width=16, height=12, unit="cm", dpi=300)
+ggsave("Spectral_curves_usecase1.png", width = 16, height = 12, unit = "cm", dpi = 300)
 ```
 
-Function `stat.summary.plot` make a plot with a statistical summary of reflectance values (mean, mean-standard deviation, mean+standard deviation) for defined classes of the surface. Given reflectance data as input, the function returns a ggplot2 object with basic visual aesthetics. Default aesthetics are line with a statistical summary for each satellite band ([geom_line](https://ggplot2.tidyverse.org/reference/geom_linerange.html) + [geom_pointrange](https://ggplot2.tidyverse.org/reference/geom_path.html)).
+Function `stat.summary.plot` make a plot with a statistical summary of reflectance values (mean, mean - standard deviation, mean + standard deviation) for defined classes of the surface. It gives reflectance data as an input, and returns a `ggplot2` object with minimal visual aesthetics. Default aesthetics are line with a statistical summary for each satellite band ([geom_line](https://ggplot2.tidyverse.org/reference/geom_linerange.html) + [geom_pointrange](https://ggplot2.tidyverse.org/reference/geom_path.html)).
 
 Wavelength values (nm) are acquired from the mean known value for each optical band of the [Sentinel 2](https://en.wikipedia.org/wiki/Sentinel-2) sensor.
 
@@ -342,7 +355,7 @@ p2 +
 Save the plot as a \*.png file
 
 ```{r}
-ggsave("Statsummary_usecase1.png", width=16, height=12, unit="cm", dpi=300)
+ggsave("Statsummary_usecase1.png", width = 16, height = 12, unit = "cm", dpi = 300)
 ```
 
 Function `violin.plot` helps to visualize a reflectance as violin plots for each surface class per satellite bands. It gets reflectance data as input and returns *ggplot2* object with basic visual aesthetics. The default aesthetics is [geom_violin](https://ggplot2.tidyverse.org/reference/geom_violin.html).
@@ -399,7 +412,11 @@ head(sf_df)
 Get reflectance values
 
 ```{r, eval = FALSE}
-reflectance = get.pixel.data(sf_df, "2019-05-15", "2019-06-30", 10, 10)
+reflectance = get.pixel.data(sf_data = sf_df,
+                             startday = "2019-05-15",
+                             endday = "2019-06-30",
+                             cloud_threshold = 10,
+                             scale_value = 10)
 
 # save pixel data for further sessions
 save(reflectance, file = "reflectance_BG_data") 
@@ -409,7 +426,7 @@ save(reflectance, file = "reflectance_BG_data")
 load(file = "../inst/testdata/reflectance_BG_data.RData")
 ```
 
-The habitats of the Southern Buh River Valley often are represented by small areas (especially rocky outcrops, grasslands, etc.). Therefore, many polygons are relatively small -- up to 1 ha -- and have an irregular shape.  We recommend decreasing scale values (pixel size) in such cases, approaching the minimum value (10 m). On the other hand, that will require more computational power and processing time.
+Some habitat types of the Southern Buh River Valley cover small area (especially rocky outcrops, grasslands, etc.). Therefore, many polygons are relatively small -- up to 1 ha -- and have an irregular shape.  We recommend decreasing scale values (pixel size) in such cases, approaching the minimum value (10 m). On the other hand, that will require more computational power and processing time.
 
 Quantitative overview of pixel data
 
@@ -417,7 +434,7 @@ Quantitative overview of pixel data
 summary(factor(reflectance$label)) # how many pixels in each class?
 ```
 
-With "big data", `spectralR` uses your Google Drive as intermittent storage between **R** and **GEE**. Please take care of having enough storage in the Drive and purge *rgee_backup* directory manually from time to time.
+As we explained above, `spectralR` uses your Google Drive as intermittent storage between **R** and **GEE** to dealing with "big data". Please take care of having enough storage in the Drive and purge *rgee_backup* directory manually from time to time.
 
 Spectral reflectance curves for different habitat types
 
@@ -435,7 +452,7 @@ p1 +
   theme_minimal()
 ```
 
-The plot above, unlike the one from use-case 1, looks messy and hard to read, because of a large number of surface classes (habitat types). To make the resulting plot easier to comprehend, both functions `spectral.curves.plot` and `stat.summary.plot` have an argument *target_classes*, which takes as an input the list of the classes of surface which should be highlighted, while others will be turned in gray, as a background. Defaults value is NULL - all the classes would be colourized, as above. Let's give it a try.
+The plot above, unlike the one from use-case 1, looks messy and hard to read, because of a large number of surface classes (habitat types). To make the resulting plot easier to comprehend, both functions `spectral.curves.plot` and `stat.summary.plot` have optional argument *target_classes*, which takes as an input the list of the classes of surface which should be highlighted, while others will be turned in gray, as a background. Defaults value is NULL - all the classes would be colourized, as above. Let's give it a try.
 
 ```{r, fig.align='center', fig.width=7, fig.height=5}
 p1_1 <- spectral.curves.plot(
@@ -453,14 +470,14 @@ p1_1 +
   theme_minimal()
 ```
 
-Not to mention, that the user is able to filter input data to obtain what they want.
+Not to mention, that the user is always able to filter the input data to obtain what they want.
 
 Suppose we need only grasslands in our reflectance plot (habitats which code started from R) and want to highlight the differences/similarities in spectral reflectance of Continental dry grasslands (true steppe, type R1B).
 
 ```{r, fig.align='center', fig.width=7, fig.height=5}
 # Filter reflectance data
 grasslands <- reflectance %>%
-  filter(label == c("R12", "R1A", "R1B", "R21", "R36"))
+  filter(label %in% c("R12", "R1A", "R1B", "R21", "R36"))
 
 # Construct a ggplot object with basic aestetics 
 p1_2 <- spectral.curves.plot(
@@ -499,7 +516,7 @@ Same way, create a plot that highlighted only tall-helophyte beds (type Q51), co
 ```{r, fig.align='center', fig.width=7, fig.height=5}
 # Filter reflectance data
 floodplain <- reflectance %>%
-  filter(label == c("Q51", "R21", "T11"))
+  filter(label %in% c("Q51", "R21", "T11"))
 
 # Create basic ggplot object
 p2_1 <- stat.summary.plot(
