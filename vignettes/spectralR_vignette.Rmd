@@ -1,6 +1,6 @@
 ---
 title: "spectralR: Spectral reflectance visualisations for user-defined areas"
-author: "Oleh Prylutskyi, Vladimir Mikryukov, Dariia Shyriaieva"
+author: "Oleh Prylutskyi, Vladimir Mikryukov, Dariia Borovyk"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -157,9 +157,13 @@ library(spectralR)
 
 ### Upload and process vector data
 
-Function `prepare.vector.data` takes a shapefile with polygons of different classes of surface (habitats, crops, vegetation, etc.) and retrieves the ready-for-sampling `sf` object. One should specify the shapefile name (which should be within the working directory, using absolute paths that were not tested) and the name of the field that contains class labels. The function extracts geometries of all polygons, marks them with custom labels ('label'), and automatically assigns integer class ID ('class') for each entry. The last variable is required because the Google Earth Engine sampler respects only numerical class ID - don't delete any field! Don't panic, the resulting dataframe will be marked according to your custom labels, not hard-to-memorizable numbers.
+Function `prepare.vector.data` takes a user's geodata with polygons of different classes of surface (habitats, crops, vegetation, etc.) and retrieves the `simple features` object with all the variables required for interaction with Google Earth Engine. Input data can be either spatial data object ('simple features', 'SpatialPolygonDataFrame', 'spatVector') or user's local file (ESRI Shapefile, KML, and GeoJSON file formats are currently supported). Actually, any spatial polygons which can be converted into `simple features` object and has a variable/field with surface class names can be fed to `prepare.vector.data` function.
 
-While preparing a shapefile with custom polygons using desktop GIS software (e.d., in [QGIS](https://qgis.org/en/site/)), it is highly recommended to follow the recommendation:
+One should specify the data/file name (including path for local files) and the name of the variable/field containing class labels. We strongly advise do not use spaces, commas, semicolons, or any other special symbols (#, $, %, !, ?, +, -, @) in label names. Those names are supposed to be used multiple times during further data transformation and visualization, so using ambiguous symbols might cause problems.
+
+The function extracts geometries of all polygons, marks them with custom labels ('label'), and automatically assigns integer class ID ('class') for each entry. The last variable is required because the Google Earth Engine sampler respects only numerical class ID - don't delete any field! Don't panic, the resulting data frame will be marked according to your custom labels, not difficult-to-memorize numbers.
+
+While preparing a local file with polygons using desktop GIS software (e.d., in [QGIS](https://qgis.org/en/site/)), it is highly recommended to follow the recommendation:
 
 * if possible, draw polygons in homogeneous landscapes and avoid class mixture;
 
@@ -172,7 +176,7 @@ While preparing a shapefile with custom polygons using desktop GIS software (e.d
 * GEE has its own memory limitation, which may result in extended processing time.
 
 ```{r}
-# Extract polygons from shapefile and prepare sf object with proper structure
+# Extract polygons from shapefile and prepare `sf` object with proper structure
 sf_df <- prepare.vector.data(system.file("extdata/test_shapefile.shp", package = "spectralR"), "veget_type")
 ```
 
@@ -182,7 +186,18 @@ Explore the resulting spatial object:
 head(sf_df)
 ```
 
-The example above uses an internal test shapefile. To use your own data, put all the shapefile into your working directory and use the following syntax (uncomment the row and change names of the file and variable containing class labels before executing):
+User can visually examine polygons with `mapview` package as following:
+
+```{r}
+library(mapview)
+
+mapview(sf_df,
+        zcol = "label")
+```
+
+
+
+The example above uses an internal test shapefile. To use your own data, put full shapefile into your working directory and use the following syntax (uncomment the row and change names of the file and variable containing class labels before executing):
 
 ```{r, eval = FALSE}
 # sf_df <- prepare.vector.data("your-shapefile-within-working-directory-name.shp", "name-of-the-field-with-class-labels")
@@ -295,39 +310,6 @@ ggplot(reflectance, aes(x=label))+
   theme_minimal()
 ```
 
-Function `spectral.reflectance.curve` transform the data and plot smoother curves for each surface class, using `ggplot2`'s `geom_smooth()` aesthetics. For large (thousands of rows) data (and we need large data for reliable conclusions!), `ggplot2` uses the *GAM* method for drawing a trendline.
-
-Depending on the data size, the processing may take some time.
-
-```{r, fig.align='center', fig.width=7, fig.height=5}
-# Make a ggplot object
-p1 <- spectral.curves.plot(reflectance)
-
-# Default plot
-p1
-```
-
-Since the output of `spectral.curves.plot` is a most simple as possible `ggplot` object, we can apply any tools provided by `ggplot2` package to make it more appealing.
-
-```{r, fig.align='center', fig.width=7, fig.height=5}
-# Customized plot
-p1+
-  labs(x = 'Wavelength, nm', y = 'Reflectance',
-       colour = "Surface classes",
-       fill = "Surface classes",
-       title = "Spectral reflectance curves for different surface classes",
-       caption = 'Data: Sentinel-2 Level-2A')+
-  theme_bw() +
-  theme(panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank())
-```
-
-You can save the plot as a \*.png (or other standard graphical formats) file using `ggsave`, `png()`, `svg()` functions or similar.
-
-```{r}
-ggsave("Spectral_curves_usecase1.png", width = 16, height = 12, unit = "cm", dpi = 300)
-```
-
 Function `stat.summary.plot` make a plot with a statistical summary of reflectance values (mean, mean - standard deviation, mean + standard deviation) for defined classes of the surface. It gives reflectance data as an input, and returns a `ggplot2` object with minimal visual aesthetics. Default aesthetics are line with a statistical summary for each satellite band ([geom_line](https://ggplot2.tidyverse.org/reference/geom_linerange.html) + [geom_pointrange](https://ggplot2.tidyverse.org/reference/geom_path.html)).
 
 Wavelength values (nm) are acquired from the mean known value for each optical band of the [Sentinel 2](https://en.wikipedia.org/wiki/Sentinel-2) sensor.
@@ -340,7 +322,7 @@ p2 <- stat.summary.plot(reflectance)
 p2
 ```
 
-Add a touch of customization.
+Since the output of `spectral.curves.plot` is a most simple as possible `ggplot` object, we can apply any tools provided by `ggplot2` package to make it more appealing.
 
 ```{r, , fig.align='center', fig.width=7, fig.height=5}
 # Customized plot
@@ -349,13 +331,47 @@ p2 +
        colour = "Surface classes",
        title = "Reflectance for different surface classes",
        caption='Data: Sentinel-2 Level-2A\nmean ± standard deviation')+
-  theme_minimal()
+  theme_bw() +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank())
 ```
 
 Save the plot as a \*.png file
 
 ```{r}
 ggsave("Statsummary_usecase1.png", width = 16, height = 12, unit = "cm", dpi = 300)
+```
+
+
+Function `spectral.reflectance.curve` transform the data and plot smoother curves for each surface class, using `ggplot2`'s `geom_smooth()` aesthetics. For large (thousands of rows) data (and we need large data for reliable conclusions!), `ggplot2` uses the *GAM* method for drawing smoothers.
+
+Depending on the data size, the processing may take some time.
+
+```{r, fig.align='center', fig.width=7, fig.height=5}
+# Make a ggplot object
+p1 <- spectral.curves.plot(reflectance)
+
+# Default plot
+p1
+```
+
+Add a touch of customization.
+
+```{r, fig.align='center', fig.width=7, fig.height=5}
+# Customized plot
+p1+
+  labs(x = 'Wavelength, nm', y = 'Reflectance',
+       colour = "Surface classes",
+       fill = "Surface classes",
+       title = "Spectral reflectance curves for different surface classes",
+       caption = 'Data: Sentinel-2 Level-2A')+
+  theme_minimal()
+```
+
+You can save the plot as a \*.png (or other standard graphical formats) file using `ggsave`, `png()`, `svg()` functions or similar.
+
+```{r}
+ggsave("Spectral_curves_usecase1.png", width = 16, height = 12, unit = "cm", dpi = 300)
 ```
 
 Function `violin.plot` helps to visualize a reflectance as violin plots for each surface class per satellite bands. It gets reflectance data as input and returns *ggplot2* object with basic visual aesthetics. The default aesthetics is [geom_violin](https://ggplot2.tidyverse.org/reference/geom_violin.html).
