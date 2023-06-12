@@ -48,10 +48,9 @@ prepare.vector.data <- function(shapefile_name, label_field){
   nc$class <- as.numeric(nc$class)
   # delete objects with NA in the target variable
   nc <- nc[!is.na(nc$label) ,]
-  return(nc)
 
   # Print area information for each class
-  areas <- sf_df %>%
+  areas <- nc %>%
     mutate(area = st_area(.)) %>%
     group_by(label) %>%
     summarise(area.m2 = sum(area)) %>%
@@ -66,8 +65,8 @@ prepare.vector.data <- function(shapefile_name, label_field){
       area.m2 / total.area < 0.05 & area.m2 / total.area > 0 ~ "."
     )
     ) %>% st_drop_geometry() %>%
-    select(-total.area)
+    select(-total.area) %>% print(n = Inf)
 
-  print(areas)
+  return(nc)
 }
 
