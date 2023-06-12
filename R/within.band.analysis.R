@@ -34,13 +34,18 @@
 #' two.class.difs <- within.band.analysis(data = reflectance,
 #'                                        target_classes = list("deciduous_forest", "coniferous_forest"),
 #'                                        method = "t-test")
-#'
+#' # Boxplot across all bands
 #' two.class.difs$boxplot
 #'
+#' # Statistical summary plot across bands
 #' two.class.difs$bandplot
 #'
+#' # Differences in means, lower, upper, ad full confidence intervals for
+#' a differences in class means.
 #' two.class.difs$confidenceIntervals
 #'
+#' # Significance in differences between selected classes per band, according to
+#' selected statistical test.
 #' two.class.difs$significantDifferences
 #'
 within.band.analysis <- function(data,
@@ -53,9 +58,7 @@ within.band.analysis <- function(data,
 
   if(is.null(target_classes)) {
     print("Error: No classes provided. You shall explicitly specify a list of two classes")
-  } else if (length(target_classes != 2)) {
-    print("Error: Wrong mumber of target classes provided. You shall explicitly specify a list of two classes")
-  } else {
+  } else if (length(target_classes == 2)) {
     # Calculate 95% confidence intervals for a difference in means
     # Create an empty list
     ci_dif <- list()
@@ -204,5 +207,8 @@ within.band.analysis <- function(data,
     )
 
     return(outputs)
+  }
+  else {
+    print("Error: Wrong mumber of target classes provided. You shall explicitly specify a list of two classes")
   }
 }

@@ -44,9 +44,7 @@ stat.tests <- function(data, target_classes) {
 
   if(is.null(target_classes)) {
     print("Error: No classes provided. You shall explicitly specify a list of two classes")
-  } else if (length(target_classes != 2)) {
-    print("Error: Wrong mumber of target classes provided. You shall explicitly specify a list of two classes")
-  } else {
+  } else if (length(target_classes == 2)) {
     ## Shapiro-Wilk Normality Test
     # Normality calculated for each surface class separately
     # class #1
@@ -255,5 +253,7 @@ stat.tests <- function(data, target_classes) {
     names(outputs) <- c("normality", "homogeneity", "imbalance", "plot")
 
     return(outputs)
+  } else {
+    print("Error: Wrong mumber of target classes provided. You shall explicitly specify a list of two classes")
   }
 }
