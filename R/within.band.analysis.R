@@ -17,7 +17,7 @@
 #'
 #' @return list of four: .$boxplot, .$bandplot, .$confidenceIntervals, .$significantDifferences
 #'
-#' @export
+#' @export within.band.analysis
 #'
 #' @import tibble reshape2 dplyr ggplot2 DescTools
 #' @importFrom stats t.test
