@@ -33,9 +33,9 @@
 #'
 #' stattests$homogeneity # to look at Bartlett Test of Homogeneity of Variances
 #'
-#' stattests$imbalance
+#' stattests$imbalance # to explore possible class imbalance
 #'
-#' stattests$plot
+#' stattests$plot # to look at reflectance values distribution per band
 #'
 stat.tests <- function(data, target_classes) {
   mytheme <- theme_bw() +
