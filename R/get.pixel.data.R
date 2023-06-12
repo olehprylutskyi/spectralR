@@ -141,5 +141,6 @@ get.pixel.data <- function(sf_data, startday, endday, cloud_threshold, scale_val
   reflectance <-  values %>%
     left_join(classes_cheatsheet, by="class") %>%
     st_drop_geometry() %>%
-    select(-"class")
+    select(-"class") %>%
+    as_tibble()
 }
