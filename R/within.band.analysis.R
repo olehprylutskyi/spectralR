@@ -20,6 +20,8 @@
 #' @export
 #'
 #' @import tibble reshape2 dplyr ggplot2 DescTools
+#' @importFrom stats t.test
+#' @importFrom stats wilcox.test
 #'
 #' @examples
 #' # Load example data
