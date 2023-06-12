@@ -157,7 +157,7 @@ library(spectralR)
 
 ### Upload and process vector data
 
-Function `prepare.vector.data` takes a user's geodata with polygons of different classes of surface (habitats, crops, vegetation, etc.) and retrieves the `simple features` object with all the variables required for interaction with Google Earth Engine. Input data can be either spatial data object ('simple features', 'SpatialPolygonDataFrame', 'spatVector') or user's local file (ESRI Shapefile, KML, and GeoJSON file formats are currently supported). Actually, any spatial polygons which can be converted into `simple features` object and has a variable/field with surface class names can be fed to `prepare.vector.data` function.
+Function `prepare.vector.data` takes a user's geodata with polygons of different classes of surface (habitats, crops, vegetation, etc.) and returns the `simple features` object with all the variables required for interaction with Google Earth Engine. Input data can be either spatial data object ('simple features', 'SpatialPolygonDataFrame', 'spatVector') or user's local file (ESRI Shapefile, KML, and GeoJSON file formats are currently supported). Actually, any spatial polygons which can be converted into `simple features` object and has a variable/field with surface class names can be fed to `prepare.vector.data` function.
 
 One should specify the data/file name (including path for local files) and the name of the variable/field containing class labels. We strongly advise do not use spaces, commas, semicolons, or any other special symbols (#, $, %, !, ?, +, -, @) in label names. Those names are supposed to be used multiple times during further data transformation and visualization, so using ambiguous symbols might cause problems.
 
@@ -180,6 +180,8 @@ While preparing a local file with polygons using desktop GIS software (e.d., in 
 sf_df <- prepare.vector.data(system.file("extdata/test_shapefile.shp", package = "spectralR"), "veget_type")
 ```
 
+After successfully executing, `prepare.vector.data` also prints brief info about areas of each class in squared meters, as well as symbolic info about relative class sizes (may be useful for quick assess of class imbalance).
+
 Explore the resulting spatial object:
 
 ```{r}
@@ -194,8 +196,6 @@ library(mapview)
 mapview(sf_df,
         zcol = "label")
 ```
-
-
 
 The example above uses an internal test shapefile. To use your own data, put full shapefile into your working directory and use the following syntax (uncomment the row and change names of the file and variable containing class labels before executing):
 
@@ -279,7 +279,7 @@ load(file = "./reflectance_test_data") # restore previously saved pixel data
 Let's have a look at the resulting data:
 
 ```{r}
-head(reflectance)
+reflectance
 ```
 
 We have a data frame with the number of rows equal to the number of sampled "pixels" of satellite image and 10 variables with reflectance values for each optical band of Sentinel 2. Each sampled pixel has a label of a surface class of the user's polygon it intersected.
