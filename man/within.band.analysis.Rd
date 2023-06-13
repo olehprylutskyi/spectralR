@@ -37,13 +37,16 @@ levels(reflectance$label)
 two.class.difs <- within.band.analysis(data = reflectance,
                                        target_classes = list("deciduous_forest", "coniferous_forest"),
                                        method = "t-test")
-
+# Boxplot across all bands
 two.class.difs$boxplot
 
+# Statistical summary plot across bands
 two.class.difs$bandplot
 
+# Differences in means, lower, upper, and full confidence intervals for a differences in class means.
 two.class.difs$confidenceIntervals
 
+# Significance in differences between selected classes per band, according to selected statistical test.
 two.class.difs$significantDifferences
 
 }

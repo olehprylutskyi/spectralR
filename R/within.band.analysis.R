@@ -40,12 +40,10 @@
 #' # Statistical summary plot across bands
 #' two.class.difs$bandplot
 #'
-#' # Differences in means, lower, upper, ad full confidence intervals for
-#' a differences in class means.
+#' # Differences in means, lower, upper, and full confidence intervals for a differences in class means.
 #' two.class.difs$confidenceIntervals
 #'
-#' # Significance in differences between selected classes per band, according to
-#' selected statistical test.
+#' # Significance in differences between selected classes per band, according to selected statistical test.
 #' two.class.difs$significantDifferences
 #'
 within.band.analysis <- function(data,

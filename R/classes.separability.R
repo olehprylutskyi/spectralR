@@ -24,7 +24,7 @@
 #'
 #' @export classes.separability
 #' @import tibble reshape2 dplyr ggplot2 FactoMineR factoextra
-#' @importFrom RactoMineR PCA
+#' @importFrom FactoMineR PCA
 #' @importFrom factoextra fviz_pca_biplot
 #' @importFrom factoextra fviz_eig
 #' @importFrom utils combn
@@ -44,13 +44,13 @@
 #' separability_all
 #'
 #' # Another way to plot Principal Components 1 and 2
-#' separability$PC1.PC2
+#' separability_all$PC1.PC2
 #'
 #' # Plot PC2 and PC3
-#' separability$PC2.PC3
+#' separability_all$PC2.PC3
 #'
 #' # Scree plot (Fraction of total variance covered by each Principal Component)
-#' separability$screeplot
+#' separability_all$screeplot
 #'
 #' # Explore separability for three selected classes, and write a pand-to-band plots
 #' # into the working directory
