@@ -7,6 +7,7 @@
 #' are obtained through the Google Earth Engine service and used as a source of spectral data.
 #'
 #' @section Currently spectralR package provides several main functions:
+#' \code{\link{classes.separability}}
 #' \code{\link{get.pixel.data}}
 #' \code{\link{prepare.vector.data}}
 #' \code{\link{spectral.curves.plot}}
