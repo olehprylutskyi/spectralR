@@ -5,7 +5,7 @@
 #' Input should be a shapefile with polygons of surface classes (it might be different habitat types, 
 #' crops, vegetation, etc.). The Sentinel-2 L2A satellite mission optical bands pixel data 
 #' are obtained through the Google Earth Engine service and used as a source of spectral data.
-#' 
+
 #' @section Currently spectralR package provides several main functions:
 #' \code{\link{get.pixel.data}}
 #' \code{\link{prepare.vector.data}}
@@ -15,5 +15,9 @@
 #'
 #' @docType package
 #' @name spectralR
+#' @keywords internal
+"_PACKAGE"
+
+## usethis namespace: start
+## usethis namespace: end
 NULL
-#> NULL
