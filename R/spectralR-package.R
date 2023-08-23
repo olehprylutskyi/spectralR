@@ -15,7 +15,6 @@
 #'
 #' @docType package
 #' @name spectralR
-#' @keywords internal
 "_PACKAGE"
 
 ## usethis namespace: start
