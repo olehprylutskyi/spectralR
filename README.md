@@ -1,4 +1,4 @@
-[![CRAN](http://www.r-pkg.org/badges/version/spectralR)](http://cran.r-project.org/package=spectralR/)
+[![CRAN](https://www.r-pkg.org/badges/version/spectralR)](https://cran.r-project.org/package=spectralR/)
 [![R-CMD-check](https://github.com/olehprylutskyi/spectralR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/olehprylutskyi/spectralR/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/olehprylutskyi/spectralR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/olehprylutskyi/spectralR?branch=main)
 
