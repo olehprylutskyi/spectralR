@@ -12,6 +12,10 @@ detailed usage examples.
 **Authors**: [Oleh Prylutskyi](https://github.com/olehprylutskyi), 
 [Vladimir Mikryukov](https://github.com/vmikk), [Dariia Shyriaieva](https://github.com/driadash)
 
+## Important update!
+
+Dear `spectralR` users, we are sorry to inform you that our package seems not to be functional due to `rgee`'s uresolved issue with the Google Earth Engine API, and therefore suspended. We hope to get back to the development once API get back working. Meanwhile, there will be no updates and bugfixes yet.
+
 ## Description
 
 This package provides tools for obtaining, processing, and visualization
