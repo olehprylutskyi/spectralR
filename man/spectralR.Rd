@@ -2,8 +2,8 @@
 % Please edit documentation in R/spectralR-package.R
 \docType{package}
 \name{spectralR}
-\alias{spectralR}
 \alias{spectralR-package}
+\alias{spectralR}
 \title{spectralR: A package for obtaining and visualizing spectral reflectance data for earth surface polygons}
 \description{
 This package aims to obtain, process, and visualize spectral reflectance data for the user-defined 
