@@ -49,7 +49,7 @@ spectral.curves.plot <- function(data, target_classes = NULL){
   # Reshape the dataframe to make it appropriate to ggplot2 syntax
   df <- tibble::as_tibble(data) %>%
     reshape2::melt(id = "label") %>%
-    left_join(as.data.frame(waves)) %>%
+    left_join(as.data.frame(waves), by = "variable") %>%
     mutate(across("label", as.factor)) %>%
     mutate(across("dummy_wavelength", as.numeric)) %>%
     mutate(across("variable", as.factor)) %>%
@@ -74,15 +74,15 @@ spectral.curves.plot <- function(data, target_classes = NULL){
     # Make a plot
     p <- ggplot()+
       geom_smooth(data = background,
-        aes_string(x = "dummy_wavelength", y = "value", group = "label"),
+        aes(x = .data$dummy_wavelength, y = .data$value, group = .data$label),
         colour = "gray", fill = "gray",
         method = 'gam', formula = y ~ s(x, bs = "cs"), se = TRUE) +
       geom_smooth(data = target,
-        aes_string(x = "dummy_wavelength", y = "value", colour = "label", fill = "label"),
+        aes(x = .data$dummy_wavelength, y = .data$value, colour = .data$label, fill = .data$label),
         method = 'gam', formula = y ~ s(x, bs = "cs"), se = TRUE)
   } else {
-    p <- ggplot(data = df, aes_string(x = "dummy_wavelength", y = "value", colour = "label"))+
-      geom_smooth(aes_string(fill = "label"),
+    p <- ggplot(data = df, aes(x = .data$dummy_wavelength, y = .data$value, colour = .data$label))+
+      geom_smooth(aes(fill = .data$label),
         method = 'gam', formula = y ~ s(x, bs = "cs"), se = TRUE)
   }
 

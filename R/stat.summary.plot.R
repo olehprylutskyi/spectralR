@@ -63,7 +63,7 @@ stat.summary.plot <- function(data, target_classes = NULL,
   # Reshape the dataframe to make it appropriate to ggplot2 syntax
   df <- tibble::as_tibble(data) %>%
     reshape2::melt(id = "label") %>%
-    left_join(as.data.frame(waves)) %>%
+    left_join(as.data.frame(waves), by = "variable") %>%
     mutate(across("label", as.factor)) %>%
     mutate(across("dummy_wavelength", as.numeric)) %>%
     mutate(across("variable", as.factor)) %>%
@@ -76,7 +76,7 @@ stat.summary.plot <- function(data, target_classes = NULL,
       mean_refl = mean(.data$value),
       min_refl = mean(.data$value)-sd(.data$value),
       max_refl = mean(.data$value)+sd(.data$value)) %>%
-    left_join(as.data.frame(waves)) %>%
+    left_join(as.data.frame(waves), by = "variable") %>%
     mutate(across("dummy_wavelength", as.numeric)) %>%
     rename(band = .data$variable, wavelength = .data$dummy_wavelength) %>%
     mutate(band = factor(.data$band,
@@ -101,30 +101,30 @@ stat.summary.plot <- function(data, target_classes = NULL,
     p <- ggplot()+
       geom_line(
         data = background,
-        aes_string(x = "band", y = "mean_refl", group = "label"),
+        aes(x = .data$band, y = .data$mean_refl, group = .data$label),
         colour = "gray",
         position = position_dodge(width = x_dodge))+
       geom_pointrange(
         data = background,
-        aes_string(x = "band", y = "mean_refl", ymin = "min_refl", ymax = "max_refl"),
+        aes(x = .data$band, y = .data$mean_refl, ymin = .data$min_refl, ymax = .data$max_refl),
         colour = "gray",
         size = point_size, fatten = fatten,
         position = position_dodge(width = x_dodge)) +
       geom_line(
         data = target,
-        aes_string(x = "band", y = "mean_refl", colour = "label", group = "label"),
+        aes(x = .data$band, y = .data$mean_refl, colour = .data$label, group = .data$label),
         position = position_dodge(width = x_dodge))+
       geom_pointrange(
         data = target,
-        aes_string(x = "band", y = "mean_refl", colour = "label", ymin = "min_refl", ymax = "max_refl"),
+        aes(x = .data$band, y = .data$mean_refl, colour = .data$label, ymin = .data$min_refl, ymax = .data$max_refl),
         size = point_size, fatten = fatten,
         position = position_dodge(width = x_dodge))
 
   } else {
-    p <- ggplot(data = df, aes_string(x = "band", y = "mean_refl", colour = "label"))+
-      geom_line(aes_string(group = "label"), position = position_dodge(width = x_dodge))+
+    p <- ggplot(data = df, aes(x = .data$band, y = .data$mean_refl, colour = .data$label))+
+      geom_line(aes(group = .data$label), position = position_dodge(width = x_dodge))+
       geom_pointrange(
-        aes_string(ymin = "min_refl", ymax = "max_refl"),
+        aes(ymin = .data$min_refl, ymax = .data$max_refl),
         size = point_size, fatten = fatten,
         position = position_dodge(width = x_dodge))
   }

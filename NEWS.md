@@ -14,3 +14,7 @@
 
 * Minor fix correcting the `@docType package` documentation; no functional changes made.
 
+# spectralR 0.1.4
+
+* Deprecating the `aes_string()` in `spectral.curves.plot`, `stat.summary.plot`, and `violin.plot` to comply with the ggplot2 v4 syntax (Issue #16, https://github.com/olehprylutskyi/spectralR/issues/16).
+
