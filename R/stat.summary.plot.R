@@ -63,7 +63,7 @@ stat.summary.plot <- function(data, target_classes = NULL,
   # Reshape the dataframe to make it appropriate to ggplot2 syntax
   df <- tibble::as_tibble(data) %>%
     reshape2::melt(id = "label") %>%
-    left_join(as.data.frame(waves)) %>%
+    left_join(as.data.frame(waves), by = "variable") %>%
     mutate(across("label", as.factor)) %>%
     mutate(across("dummy_wavelength", as.numeric)) %>%
     mutate(across("variable", as.factor)) %>%
@@ -76,7 +76,7 @@ stat.summary.plot <- function(data, target_classes = NULL,
       mean_refl = mean(.data$value),
       min_refl = mean(.data$value)-sd(.data$value),
       max_refl = mean(.data$value)+sd(.data$value)) %>%
-    left_join(as.data.frame(waves)) %>%
+    left_join(as.data.frame(waves), by = "variable") %>%
     mutate(across("dummy_wavelength", as.numeric)) %>%
     rename(band = .data$variable, wavelength = .data$dummy_wavelength) %>%
     mutate(band = factor(.data$band,

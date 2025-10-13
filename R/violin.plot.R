@@ -39,7 +39,7 @@ violin.plot <- function(data){
   # Reshape the dataframe to make it appropriate to ggplot2 syntax
   p <- tibble::as_tibble(data) %>%
     reshape2::melt(id = "label") %>%
-    left_join(as.data.frame(waves)) %>%
+    left_join(as.data.frame(waves), by = "variable") %>%
     mutate(across("label", as.factor)) %>%
     mutate(across("dummy_wavelength", as.numeric)) %>%
     mutate(across("variable", as.factor)) %>%
